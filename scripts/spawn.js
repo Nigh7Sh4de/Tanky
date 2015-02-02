@@ -18,11 +18,11 @@ pc.script.create("spawn", function (context) {
         },
 
         update: function (dt) {
-            this.time += dt;
-            if (this.time > INTERVAL) {
-                this.time = 0;
-                this.spawnEnemy();
-            }
+//            this.time += dt;
+ //            if (this.time > INTERVAL) {
+ //                this.time = 0;
+ //                this.spawnEnemy();
+ //            }
 
 
         },

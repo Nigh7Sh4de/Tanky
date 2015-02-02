@@ -4,12 +4,11 @@ pc.script.create("shoot", function (context) {
         this.entity = entity;
 
         context.mouse.on(pc.input.EVENT_MOUSEDOWN, this.onMouseDown, this);
+        context.touch.on('touchstart', this.onTouchStart, this);
     };
 
     shootScript.prototype = {
-        initialize: function () {
-
-        },
+        initialize: function () {},
 
         update: function (dt) {
             if (context.keyboard.wasPressed(pc.input.KEY_SPACE)) {
@@ -19,12 +18,23 @@ pc.script.create("shoot", function (context) {
         },
 
         onMouseDown: function (event) {
-            // When the mouse button is clicked try and capture the pointer
-            if (!pc.Mouse.isPointerLocked())
-                context.mouse.enablePointerLock();
-            else
-                this.createBullet();
+            //            this.createBullet();
 
+        },
+
+        onTouchStart: function (event) {
+            //            event.preventDefault();
+            console.log('You touched me!? o.O');
+            var touches = event.changedTouches;
+            var width = event.element.width;
+
+            for (var i = 0; i < touches.length; i++) {
+                var t = touches[0];
+                console.log(t.x < width / 2);
+                if (t.x < width / 2) {
+                    this.createBullet();
+                }
+            }
         },
 
         createBullet: function () {

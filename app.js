@@ -4,13 +4,16 @@ canvas.focus();
 
 var app = new pc.fw.Application(canvas, {
     mouse: new pc.input.Mouse(canvas),
-    keyboard: new pc.input.Keyboard(canvas)
+    keyboard: new pc.input.Keyboard(canvas),
+    touch: new pc.input.TouchDevice(canvas)
 });
 
 app.context.loader._handlers['texture'].crossOrigin = 'anonymous';
 app.context.loader._handlers['model'].crossOrigin = 'anonymous';
 
 app.start();
+
+//pc.input.TouchDevice.attach(canvas);
 
 // Fill the available space at full resolution
 app.setCanvasFillMode(pc.fw.FillMode.FILL_WINDOW);
@@ -121,7 +124,7 @@ app.context.systems.rigidbody.addComponent(floor, {
 
 app.context.systems.collision.addComponent(floor, {
     type: 'box',
-//    halfExtents: ,
+    //    halfExtents: ,
     halfExtents: new pc.Vec3(5, 0.5, 5)
 });
 
@@ -148,7 +151,7 @@ app.context.systems.light.addComponent(light, {
     color: new pc.Color(1, 1, 1)
 });
 
-    // load all textures
+// load all textures
 var textures = [
     "assets/Hex_Plating.png"
 ];
@@ -156,16 +159,16 @@ var textures = [
 var promises = [];
 
 for (var i = 0; i < textures.length; i++) {
-  promises.push(app.context.assets.loadFromUrl(textures[i], "texture"));
+    promises.push(app.context.assets.loadFromUrl(textures[i], "texture"));
 }
 
 // check for all assets to load then create skybox
 pc.promise.all(promises).then(function (results) {
 
-	var floorMaterial = new pc.scene.PhongMaterial();
-	floorMaterial.diffuseMap = results[0].resource[0];
-	floorMaterial.update();
-	floor.model.model.meshInstances[0].material = floorMaterial;
+    var floorMaterial = new pc.scene.PhongMaterial();
+    floorMaterial.diffuseMap = results[0].resource[0];
+    floorMaterial.update();
+    floor.model.model.meshInstances[0].material = floorMaterial;
 
 });
 
