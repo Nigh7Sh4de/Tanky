@@ -67,7 +67,7 @@ pc.script.create("look", function (context) {
         },
 
         onTouchEnd: function (event) {
-            console.log('touch end');
+            //            console.log('touch end');
             for (var i = 0; i < event.changedTouches.length; i++)
                 if (event.changedTouches[i].x > event.element.width / 2)
                 //Then it must be a look command ending

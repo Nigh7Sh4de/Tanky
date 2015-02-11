@@ -11,11 +11,14 @@ pc.script.create("bullet", function (context) {
 
     bulletScript.prototype = {
         initialize: function () {
-            this.force = this.entity.forward.clone().scale(-10);
+            this.force = this.entity.forward.clone().scale(-50);
             this.entity.rigidbody.applyImpulse(this.force);
         },
 
         update: function (dt) {
+            if (!this.entity.script.burn.active)
+                this.entity.rigidbody.applyForce(0, 9.8, 0);
+
             this.entity.time += dt;
             if (this.entity.time > MAX_TIME) {
                 this.entity.destroy();
