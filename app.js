@@ -54,6 +54,9 @@ app.context.systems.light.addComponent(light, {
 var skybox = new pc.fw.Entity();
 skybox.setName('skybox');
 
+//Container for all gameobjects
+var gameObjects = new pc.fw.Entity();
+
 // Create tank entity
 var tank = new pc.fw.Entity();
 tank.setName('tank');
@@ -310,7 +313,10 @@ pc.promise.all(promises).then(function (results) {
 
 
 // Add to hierarchy
-app.context.root.addChild(tank);
+//app.context.root.addChild(tank);
+//app.context.root.addChild(floor);
+gameObjects.addChild(tank);
+gameObjects.addChild(floor);
+app.context.root.addChild(gameObjects);
 app.context.root.addChild(light);
-app.context.root.addChild(floor);
 app.context.root.addChild(stats);

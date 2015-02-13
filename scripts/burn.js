@@ -70,6 +70,7 @@ pc.script.create('burn', function (context) {
                 // Bounce value of t 0->1->0
                 var t = (this.time % 2);
                 if (t > 1) {
+                    this.entity.enabled = false;
                     this.entity.destroy();
                 }
 

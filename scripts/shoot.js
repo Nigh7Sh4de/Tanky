@@ -37,6 +37,7 @@ pc.script.create("shoot", function (context) {
         },
 
         createBullet: function () {
+
             var newBullet = new pc.fw.Entity();
             newBullet.setName('enemy');
 

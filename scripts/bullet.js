@@ -21,6 +21,7 @@ pc.script.create("bullet", function (context) {
 
             this.entity.time += dt;
             if (this.entity.time > MAX_TIME) {
+                this.entity.enabled = false;
                 this.entity.destroy();
             }
         }

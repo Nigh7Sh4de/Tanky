@@ -28,12 +28,11 @@ pc.script.create("enemy", function (context) {
             //            console.log(result.other.isBullet === true);
             if (result.other.isBullet) {
                 this.burn(this.entity, result.other);
-                //                result.other.destroy();
                 this.score.script.score.increase(10);
             } else if (result.other.name == 'tank') {
                 //                this.burn(this.entity, result.other);
                 this.health.script.health.decrease(1);
-                this.burn(this.entity);
+                //                this.burn(this.entity);
             }
 
         },
@@ -53,8 +52,10 @@ pc.script.create("enemy", function (context) {
             if (!this.entity.script.burn.active)
                 this.entity.rigidbody.applyImpulse(this.dir);
 
-            if (this.entity.getPosition().y < -1)
+            if (this.entity.getPosition().y < -1) {
+                this.entity.enabled = false;
                 this.entity.destroy();
+            }
 
         }
     }
