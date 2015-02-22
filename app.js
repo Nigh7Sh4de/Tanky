@@ -217,13 +217,56 @@ var stats = new pc.fw.Entity();
 stats.setName('stats');
 var score = new pc.fw.Entity();
 score.setName('score');
+var gameOver = new pc.fw.Entity();
+gameOver.setName('gameOver');
+
+var gameOverText = {
+    name: 'gameOverText',
+    url: 'scripts/font_renderer.js',
+    attributes: [{
+        name: 'fontAtlas',
+        value: 'boombox_144.png'
+    }, {
+        name: 'fontJson',
+        value: 'boombox_144'
+    }, {
+        name: 'text',
+        value: 'Play Again'
+    }, {
+        name: 'maxTextLength',
+        value: '64'
+    }, {
+        name: 'x',
+        value: 5
+    }, {
+        name: 'y',
+        value: -5
+    }, {
+        name: 'anchor',
+        value: 4
+    }, {
+        name: 'pivot',
+        value: 4
+    }, {
+        name: 'tint',
+        type: 'rgba',
+        value: [0, 0, 0, 1]
+    }, {
+        name: 'maxResHeight',
+        value: 720
+    }, {
+        name: 'depth',
+        value: 1
+    }]
+
+};
 
 var scoreText = {
     name: 'scoreText',
     url: 'scripts/font_renderer.js',
     attributes: [{
         name: 'fontAtlas',
-        value: 'boombox_0.png'
+        value: 'boombox_72.png'
     }, {
         name: 'fontJson',
         value: 'boombox'
@@ -259,6 +302,18 @@ var scoreText = {
 
 };
 
+var gameOverScript = {
+    name: 'gameOver',
+    url: 'scripts/gameOver.js'
+}
+
+app.context.systems.script.addComponent(gameOver, {
+    enabled: true,
+    scripts: [gameOverText, gameOverScript]
+});
+
+gameOver.enabled = false;
+
 var scoreScript = {
     name: 'score',
     url: 'scripts/score.js'
@@ -281,6 +336,7 @@ app.context.systems.script.addComponent(health, {
     scripts: [healthScript]
 });
 
+stats.addChild(gameOver);
 stats.addChild(score);
 stats.addChild(health);
 //score.script.scoreText
@@ -297,12 +353,14 @@ var textures = [
     "assets/clouds.jpg",
     "assets/red.png",
     "assets/green.png",
-    "assets/fonts/boombox_0.png",
-    "assets/tank/tank_icon.png"
+    "assets/fonts/boombox_72.png",
+    "assets/tank/tank_icon.png",
+    "assets/fonts/boombox_144.png"
 ];
 
 var assets_json = [
-        "assets/fonts/boombox.json"
+    "assets/fonts/boombox.json",
+    "assets/fonts/boombox_144.json"
 ];
 
 var promises = [];

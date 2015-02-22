@@ -18,6 +18,7 @@ pc.script.create("tank", function (context) {
         update: function (dt) {
             if (this.gun.dead || this.base.dead) {
                 var children = this.entity.getChildren();
+                context.root.findByName('gameOver').enabled = true;
                 children.forEach(function (x) {
                     //x.enabled = false;
                     x.model.enabled = false;
@@ -25,7 +26,7 @@ pc.script.create("tank", function (context) {
 
                 });
                 //this.entity.enabled = false;
-//                this.entity.model.enabled = false;
+                //this.entity.model.enabled = false;
                 this.entity.script.enabled = false;
                 this.entity.collision.enabled = false;
 
@@ -36,15 +37,16 @@ pc.script.create("tank", function (context) {
             if (this.gun.dead || this.base.dead) {
                 context.root.findByName('health').script.health.reset();
                 context.root.findByName('score').script.score.reset();
+                context.root.findByName('gameOver').enabled = false;
                 var children = this.entity.getChildren();
                 children.forEach(function (x) {
-//                    x.enabled = true;
+                    //x.enabled = true;
                     x.script.enabled = true
                     x.script.burn.reset();
                     x.model.enabled = true;
                     x.dead = false;
                 });
-//                this.entity.enabled = true;
+                //                this.entity.enabled = true;
                 this.entity.script.enabled = true;
                 this.entity.collision.enabled = true;
 
