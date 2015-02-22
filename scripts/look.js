@@ -32,9 +32,13 @@ pc.script.create("look", function (context) {
         update: function (dt) {
             this.entity.setEulerAngles(this.ex, this.ey, 0);
             if (this.isPressed) {
-                this.ex += Math.pow(this.curTouch.y - this.firstTouch.y, 1) * MULT;
-                this.ey += -Math.pow(this.curTouch.x - this.firstTouch.x, 1) * MULT * 0.1;
+                var x = Math.pow(this.curTouch.y - this.firstTouch.y, 1) * MULT;
+                if (this.ex + x > -17 && this.ex + x < 40)
+                    this.ex += x;
+                var y = -Math.pow(this.curTouch.x - this.firstTouch.x, 1) * MULT * 0.1;
+                this.ey += y;
                 this.entity.setEulerAngles(this.ex, this.ey, 0);
+//                console.log(this.ex + ' '  + this.ey);
             }
         },
 
