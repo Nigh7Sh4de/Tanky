@@ -31,7 +31,11 @@ pc.script.create("enemy", function (context) {
                 this.score.script.score.increase(10);
             } else if (result.other.name == 'tank') {
                 //                this.burn(this.entity, result.other);
-                this.health.script.health.decrease(1);
+                if (this.health.script.health.canDecrease(1)) {
+                    this.health.script.health.decrease(1);
+                    this.burn(this.entity);
+                } else
+                    this.burn(this.entity, result.other.findByName('base'), result.other.findByName('gun'));
                 //                this.burn(this.entity);
             }
 
@@ -41,7 +45,8 @@ pc.script.create("enemy", function (context) {
 
         burn: function () {
             for (var i = 0; i < arguments.length; i++) {
-                arguments[i].rigidbody.enabled = false;
+                if (arguments[i].rigidbody)
+                    arguments[i].rigidbody.enabled = false;
                 arguments[i].script.burn.activate();
                 //                arguments[i].rigidbody.
                 arguments[i].model.castShadows = false;
@@ -49,11 +54,17 @@ pc.script.create("enemy", function (context) {
         },
 
         update: function (dt) {
+            if (this.entity.dead) {
+//                this.entity.enabled = false;
+                this.entity.destroy();
+                return;
+            }
+
             if (!this.entity.script.burn.active)
                 this.entity.rigidbody.applyImpulse(this.dir);
 
             if (this.entity.getPosition().y < -1) {
-                this.entity.enabled = false;
+//                this.entity.enabled = false;
                 this.entity.destroy();
             }
 

@@ -28,6 +28,8 @@ pc.script.create("spawn", function (context) {
         },
 
         spawnEnemy: function () {
+            context.root.findByName('tank').script.tank.reset();
+
             var enemy = new pc.fw.Entity();
             enemy.setName('enemy');
 

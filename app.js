@@ -56,6 +56,7 @@ skybox.setName('skybox');
 
 //Container for all gameobjects
 var gameObjects = new pc.fw.Entity();
+gameObjects.name = 'gameObjects';
 
 // Create tank entity
 var tank = new pc.fw.Entity();
@@ -71,6 +72,17 @@ app.context.systems.collision.addComponent(tank, {
     //    halfExtents: new pc.Vec3(1, 1, 1)
     halfExtents: tank.getLocalScale().clone().scale(0.5)
 
+});
+
+var tankScript = {
+    name: 'tank',
+    url: 'scripts/tank.js'
+};
+
+
+app.context.systems.script.addComponent(tank, {
+    enabled: true,
+    scripts: [tankScript]
 });
 
 
@@ -120,9 +132,19 @@ var shootScript = {
     url: 'scripts/shoot.js'
 }
 
+var burnScript = {
+    name: 'burn',
+    url: 'scripts/burn.js',
+    attributes: [{
+        name: 'maps',
+        type: 'string',
+        value: 'clouds.jpg'
+    }]
+};
+
 app.context.systems.script.addComponent(gun, {
     enabled: true,
-    scripts: [lookScript, shootScript]
+    scripts: [lookScript, shootScript, burnScript]
 });
 
 var moveScript = {
@@ -133,6 +155,11 @@ var moveScript = {
 app.context.systems.script.addComponent(tank, {
     enable: true,
     scripts: [moveScript]
+});
+
+app.context.systems.script.addComponent(base, {
+    enable: true,
+    scripts: [burnScript]
 });
 
 tank.addChild(base);

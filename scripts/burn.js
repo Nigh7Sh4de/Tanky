@@ -12,16 +12,19 @@ pc.script.create('burn', function (context) {
         this.shader = null;
 
         this.active = false;
+        this.originalMaterial;
     };
 
 
     burnScript.prototype = {
         // Called once after all resources are loaded and before the first update
         initialize: function () {
-
+            this.originalMaterial = this.entity.model.model.meshInstances[0].material;
         },
 
         activate: function () {
+            this.time = 0;
+
             var model = this.entity.model.model;
             var gd = context.graphicsDevice;
             var vs = burn_vshader(gd.precision);
@@ -67,16 +70,19 @@ pc.script.create('burn', function (context) {
             if (this.active) {
                 this.time += dt * MULT;
 
-                // Bounce value of t 0->1->0
                 var t = (this.time % 2);
-                if (t > 1) {
-                    this.entity.enabled = false;
-                    this.entity.destroy();
+                if (t < 1)
+                    // Update the time value in the material
+                    this.material.setParameter('uTime', t);
+                else {
+                    this.entity.dead = true;
+                    this.active = false;
                 }
-
-                // Update the time value in the material
-                this.material.setParameter('uTime', t);
             }
+        },
+
+        reset: function() {
+            this.entity.model.model.meshInstances[0].material = this.originalMaterial;
         }
     };
 
