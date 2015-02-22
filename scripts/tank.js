@@ -50,6 +50,10 @@ pc.script.create("tank", function (context) {
                 this.entity.script.enabled = true;
                 this.entity.collision.enabled = true;
 
+                var x;
+                while (x = context.root.findByName('enemy'))
+                    x.destroy();
+
             }
         }
     }

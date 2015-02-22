@@ -22,16 +22,18 @@ pc.script.create("shoot", function (context) {
         },
 
         onTouchStart: function (event) {
-            //            event.preventDefault();
-            //            console.log('You touched me!? o.O');
-            var touches = event.changedTouches;
-            var width = event.element.width;
+            if (this.entity.script.enabled) {
+                //            event.preventDefault();
+                //            console.log('You touched me!? o.O');
+                var touches = event.changedTouches;
+                var width = event.element.width;
 
-            for (var i = 0; i < touches.length; i++) {
-                var t = touches[0];
-                //                console.log(t.x < width / 2);
-                if (t.x < width / 2) {
-                    this.createBullet();
+                for (var i = 0; i < touches.length; i++) {
+                    var t = touches[0];
+                    //                console.log(t.x < width / 2);
+                    if (t.x < width / 2) {
+                        this.createBullet();
+                    }
                 }
             }
         },
