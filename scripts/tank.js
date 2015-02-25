@@ -37,7 +37,9 @@ pc.script.create("tank", function (context) {
             if (this.gun.dead || this.base.dead) {
                 context.root.findByName('health').script.health.reset();
                 context.root.findByName('score').script.score.reset();
-                context.root.findByName('gameOver').enabled = false;
+                var gameOver = context.root.findByName('gameOver');
+                gameOver.enabled = false;
+                gameOver.script.font_renderer.text = 'Play Again';
                 var children = this.entity.getChildren();
                 children.forEach(function (x) {
                     //x.enabled = true;

@@ -79,14 +79,6 @@ var tankScript = {
     url: 'scripts/tank.js'
 };
 
-
-app.context.systems.script.addComponent(tank, {
-    enabled: true,
-    scripts: [tankScript]
-});
-
-
-
 var base = new pc.fw.Entity();
 base.setName('base');
 
@@ -143,7 +135,7 @@ var burnScript = {
 };
 
 app.context.systems.script.addComponent(gun, {
-    enabled: true,
+    enabled: false,
     scripts: [lookScript, shootScript, burnScript]
 });
 
@@ -153,12 +145,12 @@ var moveScript = {
 }
 
 app.context.systems.script.addComponent(tank, {
-    enable: true,
-    scripts: [moveScript]
+    enabled: false,
+    scripts: [moveScript, tankScript]
 });
 
 app.context.systems.script.addComponent(base, {
-    enable: true,
+    enabled: false,
     scripts: [burnScript]
 });
 
@@ -208,7 +200,7 @@ var spawnScript = {
 }
 
 app.context.systems.script.addComponent(spawner, {
-    enabled: true,
+    enabled: false,
     scripts: [spawnScript]
 });
 
@@ -231,7 +223,7 @@ var gameOverText = {
         value: 'boombox_144'
     }, {
         name: 'text',
-        value: 'Play Again'
+        value: 'Start Game'
     }, {
         name: 'maxTextLength',
         value: '64'
@@ -308,7 +300,7 @@ var gameOverScript = {
 }
 
 app.context.systems.script.addComponent(gameOver, {
-    enabled: true,
+    enabled: false,
     scripts: [gameOverText, gameOverScript]
 });
 
@@ -320,7 +312,7 @@ var scoreScript = {
 }
 
 app.context.systems.script.addComponent(score, {
-    enabled: true,
+    enabled: false,
     scripts: [scoreText, scoreScript]
 });
 
@@ -332,7 +324,7 @@ var healthScript = {
 }
 
 app.context.systems.script.addComponent(health, {
-    enabled: true,
+    enabled: false,
     scripts: [healthScript]
 });
 
@@ -393,6 +385,17 @@ pc.promise.all(promises).then(function (results) {
     //    results[7].asset.name = 'heightMap ';
     //    results[8].asset.name = 'red';
     //    results[9].asset.name = 'green';
+
+    gun.dead = true;
+    base.dead = true;
+
+    tank.script.enabled = true;
+    gun.script.enabled = true;
+    spawner.script.enabled = true;
+    score.script.enabled = true;
+    health.script.enabled = true;
+    gameOver.enabled = true;
+    gameOver.script.enabled = true;
 
 });
 

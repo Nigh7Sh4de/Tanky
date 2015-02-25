@@ -1,6 +1,6 @@
 pc.script.create("look", function (context) {
 
-    const MULT = 0.01;
+    const MULT = 0.01 * 2;
 
     var lookScript = function (entity) {
         this.entity = entity;
@@ -32,13 +32,13 @@ pc.script.create("look", function (context) {
         update: function (dt) {
             this.entity.setEulerAngles(this.ex, this.ey, 0);
             if (this.isPressed) {
-                var x = Math.pow(this.curTouch.y - this.firstTouch.y, 1) * MULT;
+                var x = Math.pow(this.curTouch.y - this.firstTouch.y, 1) * MULT * 0.25;
                 if (this.ex + x > -17 && this.ex + x < 40)
                     this.ex += x;
-                var y = -Math.pow(this.curTouch.x - this.firstTouch.x, 1) * MULT * 0.1;
+                var y = -Math.pow(this.curTouch.x - this.firstTouch.x, 1) * MULT; // * 0.1;
                 this.ey += y;
                 this.entity.setEulerAngles(this.ex, this.ey, 0);
-//                console.log(this.ex + ' '  + this.ey);
+                //                console.log(this.ex + ' '  + this.ey);
             }
         },
 
