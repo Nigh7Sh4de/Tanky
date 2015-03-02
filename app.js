@@ -407,4 +407,4 @@ gameObjects.addChild(tank);
 gameObjects.addChild(floor);
 app.context.root.addChild(gameObjects);
 app.context.root.addChild(light);
-app.context.root.addChild(stats);
+app.context.root.addChild(stats)
