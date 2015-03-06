@@ -53,11 +53,12 @@ for (var i = 0; i < assets_json.length; i++)
 pc.promise.all(promises).then(function (results) {
 
     app.context.systems.rigidbody.setGravity(0, -10, 0);
+    app.scene.ambientLight = new pc.Color(0.35, 0.35, 0.35);
 
     // Create camera entity
     var cam = new pc.fw.Entity();
     cam.setName('cam');
-    app.context.systems.camera.addComponent(cam, {
+    cam.addComponent('camera', {
         clearColor: [0.3, 0.3, 0.3]
     });
 
@@ -68,7 +69,7 @@ pc.promise.all(promises).then(function (results) {
     var light = new pc.fw.Entity();
     light.setName('light');
     light.translate(0, 2, 0);
-    app.context.systems.light.addComponent(light, {
+    light.addComponent('light', {
         type: 'point',
         color: new pc.Color(0.5, 0.5, 1),
         range: 1000,
@@ -76,16 +77,16 @@ pc.promise.all(promises).then(function (results) {
         castShadows: true
     });
 
-    app.context.systems.light.addComponent(light, {
-        color: new pc.Color(1, 1, 1),
-        intensity: 0.5
-    });
+    //    light.addComponent('light', {
+    //        color: new pc.Color(1, 1, 1),
+    //        intensity: 0.5
+    //    });
 
     //Create a skybox entity
     var skybox = new pc.fw.Entity();
     skybox.setName('skybox');
 
-    app.context.systems.skybox.addComponent(skybox, {
+    skybox.addComponent('skybox', {
         enabled: true,
         posy: results[0].asset.id,
         negy: results[1].asset.id,
@@ -100,11 +101,11 @@ pc.promise.all(promises).then(function (results) {
     tank.setName('tank');
     tank.rotate(0, 180, 0);
 
-    app.context.systems.rigidbody.addComponent(tank, {
+    tank.addComponent('rigidbody', {
         type: 'static'
     });
 
-    app.context.systems.collision.addComponent(tank, {
+    tank.addComponent('collision', {
         type: 'box',
         halfExtents: tank.getLocalScale().clone().scale(0.5)
 
@@ -128,7 +129,7 @@ pc.promise.all(promises).then(function (results) {
         var model = results.resource;
         var asset = results.asset;
 
-        app.context.systems.model.addComponent(base, {
+        base.addComponent('model', {
             type: "asset",
             asset: asset,
             castShadows: true,
@@ -142,7 +143,7 @@ pc.promise.all(promises).then(function (results) {
         var model = results.resource;
         var asset = results.asset;
 
-        app.context.systems.model.addComponent(gun, {
+        gun.addComponent('model', {
             type: "asset",
             asset: asset,
             castShadows: true,
@@ -170,7 +171,7 @@ pc.promise.all(promises).then(function (results) {
     }]
     };
 
-    app.context.systems.script.addComponent(gun, {
+    gun.addComponent('script', {
         enabled: true,
         scripts: [lookScript, shootScript, burnScript]
     });
@@ -180,12 +181,12 @@ pc.promise.all(promises).then(function (results) {
         url: 'scripts/move.js'
     }
 
-    app.context.systems.script.addComponent(tank, {
+    tank.addComponent('script', {
         enabled: true,
         scripts: [moveScript, tankScript]
     });
 
-    app.context.systems.script.addComponent(base, {
+    base.addComponent('script', {
         enabled: true,
         scripts: [burnScript]
     });
@@ -203,7 +204,7 @@ pc.promise.all(promises).then(function (results) {
 
     floor.setLocalScale(100, 1, 100);
 
-    app.context.systems.model.addComponent(floor, {
+    floor.addComponent('model', {
         type: "box",
         castShadows: true,
         receiveShadows: true
@@ -213,11 +214,11 @@ pc.promise.all(promises).then(function (results) {
     floorMaterial.update();
     floor.model.model.meshInstances[0].material = floorMaterial;
 
-    app.context.systems.rigidbody.addComponent(floor, {
+    floor.addComponent('rigidbody', {
         type: 'static'
     });
 
-    app.context.systems.collision.addComponent(floor, {
+    floor.addComponent('collision', {
         type: 'box',
         halfExtents: floor.getLocalScale().clone().scale(0.5)
     });
@@ -234,7 +235,7 @@ pc.promise.all(promises).then(function (results) {
         url: 'scripts/spawn.js'
     }
 
-    app.context.systems.script.addComponent(spawner, {
+    spawner.addComponent('script', {
         enabled: true,
         scripts: [spawnScript]
     });
@@ -334,7 +335,7 @@ pc.promise.all(promises).then(function (results) {
         url: 'scripts/gameOver.js'
     }
 
-    app.context.systems.script.addComponent(gameOver, {
+    gameOver.addComponent('script', {
         enabled: true,
         scripts: [gameOverText, gameOverScript]
     });
@@ -346,7 +347,7 @@ pc.promise.all(promises).then(function (results) {
         url: 'scripts/score.js'
     }
 
-    app.context.systems.script.addComponent(score, {
+    score.addComponent('script', {
         enabled: true,
         scripts: [scoreText, scoreScript]
     });
@@ -358,7 +359,7 @@ pc.promise.all(promises).then(function (results) {
         url: 'scripts/health.js'
     }
 
-    app.context.systems.script.addComponent(health, {
+    health.addComponent('script', {
         enabled: true,
         scripts: [healthScript]
     });

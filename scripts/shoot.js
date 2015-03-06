@@ -45,7 +45,7 @@ pc.script.create("shoot", function (context) {
 
             newBullet.isBullet = true;
 
-            context.systems.model.addComponent(newBullet, {
+            newBullet.addComponent('model', {
                 type: "box",
                 castShadows: true,
                 receiveShadows: true
@@ -56,13 +56,13 @@ pc.script.create("shoot", function (context) {
             newBullet.setPosition(this.entity.getPosition());
             newBullet.translateLocal(0, 0.1523, 0);
 
-            context.systems.rigidbody.addComponent(newBullet, {
+            newBullet.addComponent('rigidbody', {
                 type: 'dynamic',
                 mass: 1,
                 restitution: 0.5
             });
 
-            app.context.systems.collision.addComponent(newBullet, {
+            newBullet.addComponent('collision', {
                 type: "box",
                 halfExtents: newBullet.getLocalScale().clone().scale(0.5)
             });
@@ -91,7 +91,7 @@ pc.script.create("shoot", function (context) {
                 }]
             };
 
-            context.systems.script.addComponent(newBullet, {
+            newBullet.addComponent('script', {
                 enabled: true,
                 scripts: [bulletScript, burnScript]
             });

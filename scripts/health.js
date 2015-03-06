@@ -57,7 +57,7 @@ pc.script.create("health", function (context) {
                     }]
                 }
 
-                context.systems.script.addComponent(healthSprite, {
+                healthSprite.addComponent('script', {
                     enabled: true,
                     scripts: [healthSpriteScript]
                 });
