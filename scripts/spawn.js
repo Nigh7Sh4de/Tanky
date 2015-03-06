@@ -1,4 +1,4 @@
-pc.script.create("spawn", function (context) {
+pc.script.create("spawn", function (app) {
 
     const INTERVAL = 3;
 
@@ -37,7 +37,7 @@ pc.script.create("spawn", function (context) {
             enemy.translateLocal(0, 0, -40);
             enemy.setLocalScale(1, 1, 1);
 
-            context.systems.model.addComponent(enemy, {
+            enemy.addComponent('model', {
                 type: "box",
                 castShadows: true,
                 receiveShadows: true
@@ -45,12 +45,12 @@ pc.script.create("spawn", function (context) {
 
             //            enemy.setLocalScale(0.5, 0.5, 0.1);
 
-            context.systems.rigidbody.addComponent(enemy, {
+            enemy.addComponent('rigidbody', {
                 type: 'dynamic',
                 mass: 1
             });
 
-            app.context.systems.collision.addComponent(enemy, {
+            enemy.addComponent('collision', {
                 type: "box",
                 halfExtents: enemy.getLocalScale().clone().scale(0.5)
             });
@@ -58,7 +58,7 @@ pc.script.create("spawn", function (context) {
             enemy.rigidbody.syncEntityToBody();
 
             var material = new pc.scene.PhongMaterial();
-            var texture = context.assets.find('red.png');
+            var texture = app.assets.find('red.png');
             material.diffuseMap = texture.resource;
             //            material.diffuse = new pc.Color(1.0, 0.0, 0.0, 1.0);
             material.update();
@@ -80,13 +80,13 @@ pc.script.create("spawn", function (context) {
                 }]
             };
 
-            context.systems.script.addComponent(enemy, {
+            enemy.addComponent('script', {
                 enabled: true,
                 scripts: [enemyScript, burnScript]
             });
 
 
-            context.root.addChild(enemy);
+            app.root.addChild(enemy);
 
         }
     };

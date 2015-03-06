@@ -1,6 +1,6 @@
 pc.script.attribute('maps', 'string');
 
-pc.script.create('burn', function (context) {
+pc.script.create('burn', function (app) {
     // Creates a new burnScript instance
     const MULT = 2;
 
@@ -26,7 +26,7 @@ pc.script.create('burn', function (context) {
             this.time = 0;
 
             var model = this.entity.model.model;
-            var gd = context.graphicsDevice;
+            var gd = app.graphicsDevice;
             var vs = burn_vshader(gd.precision);
             var fs = burn_fshader(gd.precision);
 
@@ -58,7 +58,7 @@ pc.script.create('burn', function (context) {
             model.meshInstances[0].material = this.material;
 
             // Get the "clouds" height map from the assets and set the material to use it
-            this.heightMap = context.assets.find(this.maps).resource;
+            this.heightMap = app.assets.find(this.maps).resource;
             //            this.heightMap = this.maps;
             this.material.setParameter('uHeightMap', this.heightMap);
 
@@ -72,7 +72,7 @@ pc.script.create('burn', function (context) {
 
                 var t = (this.time % 2);
                 if (t < 1)
-                    // Update the time value in the material
+                // Update the time value in the material
                     this.material.setParameter('uTime', t);
                 else {
                     this.entity.dead = true;
@@ -81,7 +81,7 @@ pc.script.create('burn', function (context) {
             }
         },
 
-        reset: function() {
+        reset: function () {
             this.entity.model.model.meshInstances[0].material = this.originalMaterial;
         }
     };

@@ -1,4 +1,4 @@
-pc.script.create("tank", function (context) {
+pc.script.create("tank", function (app) {
 
     const MULT = 25;
     const MAX_TIME = 2;
@@ -18,7 +18,7 @@ pc.script.create("tank", function (context) {
         update: function (dt) {
             if (this.gun.dead || this.base.dead) {
                 var children = this.entity.getChildren();
-                context.root.findByName('gameOver').enabled = true;
+                app.root.findByName('gameOver').enabled = true;
                 children.forEach(function (x) {
                     //x.enabled = false;
                     x.model.enabled = false;
@@ -35,9 +35,9 @@ pc.script.create("tank", function (context) {
 
         reset: function () {
             if (this.gun.dead || this.base.dead) {
-                context.root.findByName('health').script.health.reset();
-                context.root.findByName('score').script.score.reset();
-                var gameOver = context.root.findByName('gameOver');
+                app.root.findByName('health').script.health.reset();
+                app.root.findByName('score').script.score.reset();
+                var gameOver = app.root.findByName('gameOver');
                 gameOver.enabled = false;
                 gameOver.script.font_renderer.text = 'Play Again';
                 var children = this.entity.getChildren();
@@ -53,7 +53,7 @@ pc.script.create("tank", function (context) {
                 this.entity.collision.enabled = true;
 
                 var x;
-                while (x = context.root.findByName('enemy'))
+                while (x = app.root.findByName('enemy'))
                     x.destroy();
 
             }

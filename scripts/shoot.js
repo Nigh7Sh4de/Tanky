@@ -1,17 +1,17 @@
-pc.script.create("shoot", function (context) {
+pc.script.create("shoot", function (app) {
 
     var shootScript = function (entity) {
         this.entity = entity;
 
-        context.mouse.on(pc.input.EVENT_MOUSEDOWN, this.onMouseDown, this);
-        context.touch.on('touchstart', this.onTouchStart, this);
+        app.mouse.on(pc.input.EVENT_MOUSEDOWN, this.onMouseDown, this);
+        app.touch.on('touchstart', this.onTouchStart, this);
     };
 
     shootScript.prototype = {
         initialize: function () {},
 
         update: function (dt) {
-            if (context.keyboard.wasPressed(pc.input.KEY_SPACE)) {
+            if (app.keyboard.wasPressed(pc.input.KEY_SPACE)) {
                 this.createBullet();
             }
         },
@@ -45,7 +45,7 @@ pc.script.create("shoot", function (context) {
 
             newBullet.isBullet = true;
 
-            context.systems.model.addComponent(newBullet, {
+            newBullet.addComponent('model', {
                 type: "box",
                 castShadows: true,
                 receiveShadows: true
@@ -56,20 +56,20 @@ pc.script.create("shoot", function (context) {
             newBullet.setPosition(this.entity.getPosition());
             newBullet.translateLocal(0, 0.1523, 0);
 
-            context.systems.rigidbody.addComponent(newBullet, {
+            newBullet.addComponent('rigidbody', {
                 type: 'dynamic',
                 mass: 1,
                 restitution: 0.5
             });
 
-            app.context.systems.collision.addComponent(newBullet, {
+            newBullet.addComponent('collision', {
                 type: "box",
                 halfExtents: newBullet.getLocalScale().clone().scale(0.5)
             });
 
 
             var material = new pc.scene.PhongMaterial();
-            var texture = context.assets.find('green.png');
+            var texture = app.assets.find('green.png');
             material.diffuseMap = texture.resource;
             //            material.diffuse = new pc.Color(0.0, 0.5, 0.0, 1.0);
             material.update();
@@ -91,14 +91,14 @@ pc.script.create("shoot", function (context) {
                 }]
             };
 
-            context.systems.script.addComponent(newBullet, {
+            newBullet.addComponent('script', {
                 enabled: true,
                 scripts: [bulletScript, burnScript]
             });
 
 
 
-            context.root.addChild(newBullet);
+            app.root.addChild(newBullet);
 
         }
     };

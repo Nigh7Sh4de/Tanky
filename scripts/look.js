@@ -1,4 +1,4 @@
-pc.script.create("look", function (context) {
+pc.script.create("look", function (app) {
 
     const MULT = 0.01 * 2;
 
@@ -13,13 +13,13 @@ pc.script.create("look", function (context) {
         this.curTouch = {};
         this.isPressed = false;
 
-        //        context.mouse.on(pc.input.EVENT_MOUSEMOVE, this.onMouseMove, this);
-        //        context.mouse.on(pc.input.EVENT_MOUSEDOWN, this.onMouseDown, this);
-        context.touch.on('touchstart', this.onTouchStart, this);
-        context.touch.on('touchmove', this.onTouchMove, this);
-        context.touch.on('touchend', this.onTouchEnd, this);
-        context.touch.on('touchleave', this.onTouchEnd, this);
-        context.touch.on('touchcancel', this.onTouchEnd, this);
+        //        app.mouse.on(pc.input.EVENT_MOUSEMOVE, this.onMouseMove, this);
+        //        app.mouse.on(pc.input.EVENT_MOUSEDOWN, this.onMouseDown, this);
+        app.touch.on('touchstart', this.onTouchStart, this);
+        app.touch.on('touchmove', this.onTouchMove, this);
+        app.touch.on('touchend', this.onTouchEnd, this);
+        app.touch.on('touchleave', this.onTouchEnd, this);
+        app.touch.on('touchcancel', this.onTouchEnd, this);
 
 
     };
@@ -87,7 +87,7 @@ pc.script.create("look", function (context) {
         onMouseDown: function (event) {
             // When the mouse button is clicked try and capture the pointer
             //            if (!pc.Mouse.isPointerLocked())
-            //                context.mouse.enablePointerLock();
+            //                app.mouse.enablePointerLock();
         }
 
     };
