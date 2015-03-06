@@ -1,4 +1,4 @@
-pc.script.create("spawn", function (context) {
+pc.script.create("spawn", function (app) {
 
     const INTERVAL = 3;
 
@@ -58,7 +58,7 @@ pc.script.create("spawn", function (context) {
             enemy.rigidbody.syncEntityToBody();
 
             var material = new pc.scene.PhongMaterial();
-            var texture = context.assets.find('red.png');
+            var texture = app.assets.find('red.png');
             material.diffuseMap = texture.resource;
             //            material.diffuse = new pc.Color(1.0, 0.0, 0.0, 1.0);
             material.update();
@@ -86,7 +86,7 @@ pc.script.create("spawn", function (context) {
             });
 
 
-            context.root.addChild(enemy);
+            app.root.addChild(enemy);
 
         }
     };

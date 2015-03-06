@@ -1,4 +1,4 @@
-pc.script.create("score", function (context) {
+pc.script.create("score", function (app) {
 
     const MULT = 25;
     const MAX_TIME = 2;

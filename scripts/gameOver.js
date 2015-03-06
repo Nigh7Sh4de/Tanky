@@ -1,4 +1,4 @@
-pc.script.create("gameOver", function (context) {
+pc.script.create("gameOver", function (app) {
 
     const MULT = 25;
     const MAX_TIME = 2;
@@ -15,7 +15,7 @@ pc.script.create("gameOver", function (context) {
         },
 
         onTouch: function () {
-            context.root.findByName('tank').script.tank.reset();
+            app.root.findByName('tank').script.tank.reset();
         },
 
         update: function (dt) {}

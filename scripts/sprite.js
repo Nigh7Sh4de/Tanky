@@ -68,7 +68,7 @@ pc.script.attribute('pivot', 'enumeration', 0, {
 });
 pc.script.attribute('tint', 'rgba', [1, 1, 1, 1]);
 pc.script.attribute('maxResHeight', 'number', 720);
-pc.script.create('sprite', function (context) {
+pc.script.create('sprite', function (app) {
     var shader = null;
     var vertexFormat = null;
     var resolution = new pc.Vec2();
@@ -84,7 +84,7 @@ pc.script.create('sprite', function (context) {
             this.anchorOffset = new pc.Vec2();
             this.pivotOffset = new pc.Vec2();
             // Create shader
-            var gd = context.graphicsDevice;
+            var gd = app.graphicsDevice;
             if (!shader) {
                 var shaderDefinition = {
                     attributes: {
@@ -140,9 +140,9 @@ pc.script.create('sprite', function (context) {
             }
             // Load font assets
             var assets = [
-context.assets.find(this.textureAsset),
+app.assets.find(this.textureAsset),
 ];
-            context.assets.load(assets).then(function (resources) {
+            app.assets.load(assets).then(function (resources) {
                 this.texture = resources[0];
                 // Create a vertex buffer
                 this.vertexBuffer = new pc.VertexBuffer(gd, vertexFormat, 6, pc.BUFFER_DYNAMIC);
@@ -173,11 +173,11 @@ context.assets.find(this.textureAsset),
                 }.bind(this));
                 this.command = command;
                 command.key = this.depth;
-                context.scene.drawCalls.push(command);
+                app.scene.drawCalls.push(command);
             }.bind(this));
-            context.mouse.on('mousedown', this.onMouseDown, this);
-            if (context.touch) {
-                context.touch.on('touchstart', this.onTouchDown, this);
+            app.mouse.on('mousedown', this.onMouseDown, this);
+            if (app.touch) {
+                app.touch.on('touchstart', this.onTouchDown, this);
             }
         },
         onMouseDown: function (e) {
@@ -197,7 +197,7 @@ context.assets.find(this.textureAsset),
          * sprite and fires 'click' event if it has
          */
         onClick: function (cursor) {
-            var canvas = context.graphicsDevice.canvas;
+            var canvas = app.graphicsDevice.canvas;
             var tlx, tly, brx, bry, mx, my;
             var scaling = this.scaling;
             var offset = this.offset;
@@ -229,7 +229,7 @@ context.assets.find(this.textureAsset),
             }
             // Fill the vertex buffer
             this.vertexBuffer.lock();
-            var canvas = context.graphicsDevice.canvas;
+            var canvas = app.graphicsDevice.canvas;
             // Add vertices
             var iterator = new pc.VertexIterator(this.vertexBuffer);
             iterator.element[pc.SEMANTIC_POSITION].set(0, -this.height);
@@ -252,7 +252,7 @@ context.assets.find(this.textureAsset),
             this.vertexBuffer.unlock();
         },
         calculateOffset: function () {
-            var canvas = context.graphicsDevice.canvas;
+            var canvas = app.graphicsDevice.canvas;
             this.calculateAnchorOffset();
             this.calculatePivotOffset();
             this.offset.set(this.x * this.scaling.x, this.y * this.scaling.y)
@@ -263,13 +263,13 @@ context.assets.find(this.textureAsset),
             return this.offset;
         },
         calculateScaling: function () {
-            var canvas = context.graphicsDevice.canvas;
+            var canvas = app.graphicsDevice.canvas;
             var scale = canvas.offsetHeight / this.maxResHeight;
             this.scaling.set(scale, scale);
             return this.scaling;
         },
         calculateAnchorOffset: function () {
-            var canvas = context.graphicsDevice.canvas;
+            var canvas = app.graphicsDevice.canvas;
             var width = canvas.offsetWidth;
             var height = canvas.offsetHeight;
             switch (this.anchor) {

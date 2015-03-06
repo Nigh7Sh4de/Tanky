@@ -1,4 +1,4 @@
-pc.script.create("bullet", function (context) {
+pc.script.create("bullet", function (app) {
 
     const MULT = 25;
     const MAX_TIME = 2;
@@ -17,8 +17,8 @@ pc.script.create("bullet", function (context) {
 
         update: function (dt) {
             if (this.entity.dead) {
-//                this.entity.enabled = false;
-//                this.entity.model.
+                //                this.entity.enabled = false;
+                //                this.entity.model.
                 this.entity.destroy();
                 return;
 
@@ -29,7 +29,7 @@ pc.script.create("bullet", function (context) {
 
             this.entity.time += dt;
             if (this.entity.time > MAX_TIME) {
-//                this.entity.enabled = false;
+                //                this.entity.enabled = false;
                 this.entity.destroy();
             }
         }

@@ -1,4 +1,4 @@
-pc.script.create("move", function (context) {
+pc.script.create("move", function (app) {
 
     const MULT = 2;
     const ROTATEMULT = MULT * 90;
@@ -16,19 +16,19 @@ pc.script.create("move", function (context) {
         update: function (dt) {
 
             var boost = 1;
-            if (context.keyboard.isPressed(pc.input.KEY_SHIFT)) {
+            if (app.keyboard.isPressed(pc.input.KEY_SHIFT)) {
                 boost = 3;
             }
-            if (context.keyboard.isPressed(pc.input.KEY_W)) {
+            if (app.keyboard.isPressed(pc.input.KEY_W)) {
                 this.entity.translateLocal(0, 0, +dt * MULT * boost);
             }
-            if (context.keyboard.isPressed(pc.input.KEY_S)) {
+            if (app.keyboard.isPressed(pc.input.KEY_S)) {
                 this.entity.translateLocal(0, 0, -dt * MULT * boost);
             }
-            if (context.keyboard.isPressed(pc.input.KEY_A)) {
+            if (app.keyboard.isPressed(pc.input.KEY_A)) {
                 this.entity.rotateLocal(0, +dt * ROTATEMULT, 0 * boost);
             }
-            if (context.keyboard.isPressed(pc.input.KEY_D)) {
+            if (app.keyboard.isPressed(pc.input.KEY_D)) {
                 this.entity.rotateLocal(0, -dt * ROTATEMULT, 0 * boost);
             }
         }

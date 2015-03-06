@@ -1,10 +1,10 @@
-pc.script.create("health", function (context) {
+pc.script.create("health", function (app) {
 
     const defaultValue = 3;
 
     var healthScript = function (entity) {
         this.entity = entity;
-        //        this.health = context.root.findByName('health');
+        //        this.health = app.root.findByName('health');
         this.value = defaultValue;
     };
 
@@ -63,7 +63,7 @@ pc.script.create("health", function (context) {
                 });
 
                 this.entity.addChild(healthSprite);
-                //                context.root.addChild(healthSprite);
+                //                app.root.addChild(healthSprite);
 
             }
         },
@@ -82,13 +82,13 @@ pc.script.create("health", function (context) {
                 amount = 1;
             for (var i = 0; i < amount; i++) {
                 var name = 'healthSprite' + (this.value - i - 1);
-                //                console.log(context.root.findByName(name));
+                //                console.log(app.root.findByName(name));
                 var e = this.entity.findByName(name);
 
                 e.enabled = false;
                 e.destroy();
 
-                //                console.log(context.root.findByName(name));
+                //                console.log(app.root.findByName(name));
                 this.value--;
                 //                console.log();
 
@@ -110,7 +110,7 @@ pc.script.create("health", function (context) {
 
         die: function () {
             console.log("lol you're dead");
-            //            var gameObjects = context.root.findByName('gameObjects');
+            //            var gameObjects = app.root.findByName('gameObjects');
             //            gameObjects.enabled = false;
             //            gameObjects.off();
             //            gameObjects.getChildren().forEach(function (x) {

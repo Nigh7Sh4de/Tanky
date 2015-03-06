@@ -1,4 +1,4 @@
-pc.script.create("enemy", function (context) {
+pc.script.create("enemy", function (app) {
 
     const MULT = 5;
     const MAX_TIME = 2;
@@ -8,14 +8,14 @@ pc.script.create("enemy", function (context) {
         this.dir = new pc.Vec3;
         this.entity.collision.on('collisionstart', this.onCollisionStart, this);
         this.entity.collision.on('triggerenter', this.onTriggerEnter, this);
-        this.stats = context.root.findByName('stats');
+        this.stats = app.root.findByName('stats');
         this.score = this.stats.findByName('score');
         this.health = this.stats.findByName('health');
     };
 
     enemyScript.prototype = {
         initialize: function () {
-            var player = context.root.findByName('tank').getPosition().clone();
+            var player = app.root.findByName('tank').getPosition().clone();
             var pos = this.entity.getPosition().clone();
             this.dir = new pc.Vec3(
                 player.x - pos.x,
@@ -55,7 +55,7 @@ pc.script.create("enemy", function (context) {
 
         update: function (dt) {
             if (this.entity.dead) {
-//                this.entity.enabled = false;
+                //                this.entity.enabled = false;
                 this.entity.destroy();
                 return;
             }
@@ -64,7 +64,7 @@ pc.script.create("enemy", function (context) {
                 this.entity.rigidbody.applyImpulse(this.dir);
 
             if (this.entity.getPosition().y < -1) {
-//                this.entity.enabled = false;
+                //                this.entity.enabled = false;
                 this.entity.destroy();
             }
 
