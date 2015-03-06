@@ -82,24 +82,26 @@ pc.script.create("health", function (context) {
                 amount = 1;
             for (var i = 0; i < amount; i++) {
                 var name = 'healthSprite' + (this.value - i - 1);
-//                console.log(context.root.findByName(name));
+                //                console.log(context.root.findByName(name));
                 var e = this.entity.findByName(name);
 
                 e.enabled = false;
                 e.destroy();
 
-//                console.log(context.root.findByName(name));
+                //                console.log(context.root.findByName(name));
                 this.value--;
-//                console.log();
+                //                console.log();
 
             }
         },
 
-        reset: function() {
-            this.entity.getChildren().forEach(function (x) {
-                x.enabled = false;
-                x.destroy();
-            });
+        reset: function () {
+            var sprites = this.entity.getChildren();
+
+            while (sprites.length) {
+                sprites[0].enabled = false;
+                sprites[0].destroy();
+            }
 
             this.value = defaultValue;
             this.initialize();
