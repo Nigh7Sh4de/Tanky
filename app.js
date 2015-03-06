@@ -40,14 +40,21 @@ var assets_json = [
     "assets/fonts/boombox_144.json"
 ];
 
+var models = [
+    "assets/tank/Tank_base.json",
+    "assets/tank/Tank_gun_turret.json"
+];
+
 var promises = [];
 
-for (var i = 0; i < textures.length; i++) {
+for (var i = 0; i < textures.length; i++)
     promises.push(app.context.assets.loadFromUrl(textures[i], "texture"));
-}
 
 for (var i = 0; i < assets_json.length; i++)
     promises.push(app.context.assets.loadFromUrl(assets_json[i], "json"));
+
+for (var i = 0; i < models.length; i++)
+    promises.push(app.context.assets.loadFromUrl(models[i], "model"));
 
 // check for all assets to load then create skybox
 pc.promise.all(promises).then(function (results) {
@@ -77,11 +84,6 @@ pc.promise.all(promises).then(function (results) {
         castShadows: true
     });
 
-    //    light.addComponent('light', {
-    //        color: new pc.Color(1, 1, 1),
-    //        intensity: 0.5
-    //    });
-
     //Create a skybox entity
     var skybox = new pc.fw.Entity();
     skybox.setName('skybox');
@@ -108,7 +110,6 @@ pc.promise.all(promises).then(function (results) {
     tank.addComponent('collision', {
         type: 'box',
         halfExtents: tank.getLocalScale().clone().scale(0.5)
-
     });
 
     var tankScript = {
@@ -123,32 +124,20 @@ pc.promise.all(promises).then(function (results) {
     gun.setName('gun');
     gun.translateLocal(0, 0.55, 0);
 
-    var url = "assets/tank/Tank_base.json";
-
-    app.context.assets.loadFromUrl(url, "model").then(function (results) {
-        var model = results.resource;
-        var asset = results.asset;
-
-        base.addComponent('model', {
-            type: "asset",
-            asset: asset,
-            castShadows: true,
-            receiveShadows: true
-        });
+    base.addComponent('model', {
+        type: "asset",
+        asset: app.assets.find('Tank_base'),
+        castShadows: true,
+        receiveShadows: true,
+        enabled: false
     });
 
-    url = "assets/tank/Tank_gun_turret.json";
-
-    app.context.assets.loadFromUrl(url, "model").then(function (results) {
-        var model = results.resource;
-        var asset = results.asset;
-
-        gun.addComponent('model', {
-            type: "asset",
-            asset: asset,
-            castShadows: true,
-            receiveShadows: true
-        });
+    gun.addComponent('model', {
+        type: "asset",
+        asset: app.assets.find('Tank_gun_turret'),
+        castShadows: true,
+        receiveShadows: true,
+        enabled: false
     });
 
     var lookScript = {
@@ -168,7 +157,7 @@ pc.promise.all(promises).then(function (results) {
             name: 'maps',
             type: 'string',
             value: 'clouds.jpg'
-    }]
+        }]
     };
 
     gun.addComponent('script', {
