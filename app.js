@@ -34,24 +34,24 @@ var tank,
 
 // load all textures
 var textures = [
-    "assets/skybox/posy.png",
-    "assets/skybox/negy.png",
-    "assets/skybox/negx.png",
-    "assets/skybox/posx.png",
-    "assets/skybox/posz.png",
-    "assets/skybox/negz.png",
+//    "assets/skybox/posy.png",
+//    "assets/skybox/negy.png",
+//    "assets/skybox/negx.png",
+//    "assets/skybox/posx.png",
+//    "assets/skybox/posz.png",
+//    "assets/skybox/negz.png",
     "assets/Hex_Plating.png",
     "assets/clouds.jpg",
     "assets/red.png",
     "assets/green.png",
     "assets/fonts/boombox_72.png",
     "assets/tank/tank_icon.png",
-    "assets/fonts/boombox_144.png"
+//    "assets/fonts/boombox_144.png"
 ];
 
 var assets_json = [
     "assets/fonts/boombox.json",
-    "assets/fonts/boombox_144.json"
+//    "assets/fonts/boombox_144.json"
 ];
 
 var models = [
@@ -83,7 +83,7 @@ pc.promise.all(promises).then(function (results) {
         clearColor: [0.3, 0.3, 0.3]
     });
 
-    cam.setLocalPosition(0, 3, -10);
+    cam.setLocalPosition(0, 1, -3.5);
     cam.rotateLocal(-2, 180, 0);
 
     // Create directional light entity
@@ -93,24 +93,24 @@ pc.promise.all(promises).then(function (results) {
     light.addComponent('light', {
         type: 'point',
         color: new pc.Color(0.5, 0.5, 1),
-        range: 1000,
+        range: 50,
         intensity: 2,
         castShadows: true
     });
 
-    //Create a skybox entity
-    skybox = new pc.fw.Entity();
-    skybox.setName('skybox');
-
-    skybox.addComponent('skybox', {
-        enabled: true,
-        posy: results[0].asset.id,
-        negy: results[1].asset.id,
-        negx: results[2].asset.id,
-        posx: results[3].asset.id,
-        posz: results[4].asset.id,
-        negz: results[5].asset.id
-    });
+    //    //Create a skybox entity
+    //    skybox = new pc.fw.Entity();
+    //    skybox.setName('skybox');
+    //
+    //    skybox.addComponent('skybox', {
+    //        enabled: true,
+    //        posy: results[0].asset.id,
+    //        negy: results[0].asset.id,
+    //        negx: results[0].asset.id,
+    //        posx: results[0].asset.id,
+    //        posz: results[0].asset.id,
+    //        negz: results[0].asset.id
+    //    });
 
     // Create tank entity
     tank = new pc.fw.Entity();
@@ -215,7 +215,8 @@ pc.promise.all(promises).then(function (results) {
         receiveShadows: true
     });
     var floorMaterial = new pc.scene.PhongMaterial();
-    floorMaterial.diffuseMap = results[6].resource[0];
+    floorMaterial.diffuseMap = results[0].resource[0];
+    floorMaterial.diffuseMapTiling = pc.Vec2.ONE.clone().scale(10); //(1, 10);
     floorMaterial.update();
     floor.model.model.meshInstances[0].material = floorMaterial;
 
@@ -230,6 +231,36 @@ pc.promise.all(promises).then(function (results) {
 
     floor.translate(0, -0.5, 0);
     floor.rigidbody.syncEntityToBody();
+
+    var wall = floor.clone();
+    wall.removeComponent('rigidbody');
+    wall.removeComponent('collision');
+    wall.setName('wall');
+    //    wall.rotate(0, 0, 90);
+
+    wall.setLocalScale(1, 100, 100);
+    wall.setLocalPosition(-50, 50, 0);
+
+    //    wall.addComponent('model', {
+    //        type: "box",
+    //        castShadows: true,
+    //        receiveShadows: true
+    //    });
+    //    var wallMaterial = new pc.scene.PhongMaterial();
+    //    wallMaterial.diffuseMap = results[0].resource[0];
+    //    wallMaterial.diffuseMapTiling = new pc.Vec2(10, 10);
+    //    wallMaterial.update();
+    //    wall.model.model.meshInstances[0].material = wallMaterial;
+
+    var wall2 = wall.clone();
+    wall2.translate(100, 0, 0);
+
+    var wall3 = wall.clone();
+    wall3.translate(50, 0, 50);
+    wall3.rotate(0, 90, 0);
+
+    var wall4 = wall3.clone();
+    wall4.translate(0, 0, -100);
 
     //Create an enemy spawner
     spawner = new pc.fw.Entity();
@@ -258,10 +289,10 @@ pc.promise.all(promises).then(function (results) {
         url: 'scripts/font_renderer.js',
         attributes: [{
             name: 'fontAtlas',
-            value: 'boombox_144.png'
+            value: 'boombox_72.png'
     }, {
             name: 'fontJson',
-            value: 'boombox_144'
+            value: 'boombox'
     }, {
             name: 'text',
             value: 'Start Game'
@@ -283,10 +314,10 @@ pc.promise.all(promises).then(function (results) {
     }, {
             name: 'tint',
             type: 'rgba',
-            value: [0, 0, 0, 1]
+            value: [1, 1, 1, 1]
     }, {
             name: 'maxResHeight',
-            value: 720
+            value: 300
     }, {
             name: 'depth',
             value: 1
@@ -324,7 +355,8 @@ pc.promise.all(promises).then(function (results) {
     }, {
             name: 'tint',
             type: 'rgba',
-            value: [0, 0, 0, 1]
+            value: [1, 1, 1, 1]
+                //            value: [0, 0, 0, 1]
     }, {
             name: 'maxResHeight',
             value: 720
@@ -397,7 +429,11 @@ pc.promise.all(promises).then(function (results) {
     app.context.root.addChild(tank);
     app.context.root.addChild(floor);
     app.context.root.addChild(light);
-    app.context.root.addChild(stats)
+    app.context.root.addChild(stats);
+    app.context.root.addChild(wall);
+    app.context.root.addChild(wall2);
+    app.context.root.addChild(wall3);
+    app.context.root.addChild(wall4);
 
 
 });

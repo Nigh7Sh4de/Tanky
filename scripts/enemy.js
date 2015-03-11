@@ -36,6 +36,13 @@ pc.script.create("enemy", function (app) {
         onCollisionStart: function (result) {
             //            console.log(result.other.isBullet === true);
             if (result.other.isBullet) {
+                var material = new pc.scene.PhongMaterial();
+                var texture = app.assets.find('green.png');
+                material.diffuseMap = texture.resource;
+                //            material.diffuse = new pc.Color(1.0, 0.0, 0.0, 1.0);
+                material.update();
+
+                this.entity.model.material = material;
                 this.burn(this.entity, result.other);
                 score.script.score.increase(10);
             } else if (result.other.name == 'tank') {

@@ -17,14 +17,13 @@ pc.script.create("bullet", function (app) {
         },
 
         update: function (dt) {
-            if (this.entity.dead) {
-                //                this.entity.enabled = false;
-                //                this.entity.model.
-                this.entity.destroy();
-                return;
-
-            }
-
+//            if (this.entity.dead) {
+    //                //                this.entity.enabled = false;
+    //                //                this.entity.model.
+    //                this.entity.destroy();
+    //                return;
+    //
+    //            }
             if (!this.entity.script.burn.active)
                 this.entity.rigidbody.applyForce(0, 9.8, 0);
 

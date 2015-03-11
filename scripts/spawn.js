@@ -32,7 +32,7 @@ pc.script.create("spawn", function (app) {
             var enemy = new pc.fw.Entity();
             enemy.setName('enemy');
 
-            enemy.setPosition(0, 0, 0);
+            enemy.setPosition(tank.getPosition());
             enemy.setEulerAngles(0, pc.math.random(0, 360), 0);
             enemy.translateLocal(0, 0, -40);
             enemy.setLocalScale(1, 1, 1);
@@ -85,6 +85,7 @@ pc.script.create("spawn", function (app) {
                 scripts: [enemyScript, burnScript]
             });
 
+            enemy.rigidbody.syncEntityToBody();
 
             app.root.addChild(enemy);
 

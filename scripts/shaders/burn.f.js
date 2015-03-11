@@ -15,8 +15,8 @@ var burn_fshader = function (precision) {
                     "    if (height < uTime) {",
                     "      discard;",
                     "    }",
-                    "    if (height < (uTime+0.04)) {",
-                    "      color = vec4(1.0, 0.0, 0.0, 1.0);",
+                    "    if (height < (uTime+0.2)) {",
+                    "      color = vec4(0.0, 0.0, 0.0, 1.0);",
                     "    }",
                     "    gl_FragColor = color;",
                     "}"

@@ -19,10 +19,12 @@ pc.script.create('burn', function (app) {
     burnScript.prototype = {
         // Called once after all resources are loaded and before the first update
         initialize: function () {
-            this.originalMaterial = this.entity.model.model.meshInstances[0].material;
+            //            this.originalMaterial = this.entity.model.model.meshInstances[0].material;
         },
 
         activate: function () {
+            this.originalMaterial = this.entity.model.model.meshInstances[0].material;
+
             this.time = 0;
 
             var model = this.entity.model.model;
