@@ -15,6 +15,7 @@ pc.script.create("enemy", function (app) {
 
     enemyScript.prototype = {
         initialize: function () {
+            this.entity.script.burn.die = this.die;
             var player = app.root.findByName('tank').getPosition().clone();
             var pos = this.entity.getPosition().clone();
             this.dir = new pc.Vec3(
@@ -24,6 +25,14 @@ pc.script.create("enemy", function (app) {
             ).scale(0.001 * MULT);
         },
 
+        die: function () {
+            //            if (this.entity.dead) {
+            //                this.entity.enabled = false;
+            this.entity.destroy();
+            //                return;
+            //            }
+        },
+
         onCollisionStart: function (result) {
             //            console.log(result.other.isBullet === true);
             if (result.other.isBullet) {
@@ -31,11 +40,11 @@ pc.script.create("enemy", function (app) {
                 this.score.script.score.increase(10);
             } else if (result.other.name == 'tank') {
                 //                this.burn(this.entity, result.other);
-                if (this.health.script.health.canDecrease(1)) {
-                    this.health.script.health.decrease(1);
+                if (this.health.script.health.decrease(1))
                     this.burn(this.entity);
-                } else
+                else {
                     this.burn(this.entity, result.other.findByName('base'), result.other.findByName('gun'));
+                }
                 //                this.burn(this.entity);
             }
 
@@ -54,11 +63,6 @@ pc.script.create("enemy", function (app) {
         },
 
         update: function (dt) {
-            if (this.entity.dead) {
-                //                this.entity.enabled = false;
-                this.entity.destroy();
-                return;
-            }
 
             if (!this.entity.script.burn.active)
                 this.entity.rigidbody.applyImpulse(this.dir);

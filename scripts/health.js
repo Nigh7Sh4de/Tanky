@@ -6,6 +6,9 @@ pc.script.create("health", function (app) {
         this.entity = entity;
         //        this.health = app.root.findByName('health');
         this.value = defaultValue;
+        this.tank = app.root.findByName('tank');
+        this.gameOver = app.root.findByName('gameOver');
+
     };
 
     healthScript.prototype = {
@@ -70,14 +73,18 @@ pc.script.create("health", function (app) {
 
         update: function (dt) {},
 
-        canDecrease: function (amount) {
-            if (this.value - amount < 0) {
-                return false;
-            }
-            return true;
-        },
+        //        canDecrease: function(amount) {
+        //            if (this.value - amount < 0) {
+        //                return false;
+        //            }
+        //            return true;
+        //        },
 
         decrease: function (amount) {
+            if (this.value - amount < 0) {
+                //                this.die();
+                return false;
+            }
             if (amount < 1)
                 amount = 1;
             for (var i = 0; i < amount; i++) {
@@ -93,6 +100,7 @@ pc.script.create("health", function (app) {
                 //                console.log();
 
             }
+            return true;
         },
 
         reset: function () {
@@ -108,17 +116,28 @@ pc.script.create("health", function (app) {
 
         },
 
-        die: function () {
-            console.log("lol you're dead");
-            //            var gameObjects = app.root.findByName('gameObjects');
-            //            gameObjects.enabled = false;
-            //            gameObjects.off();
-            //            gameObjects.getChildren().forEach(function (x) {
-            //                x.enabled = false;
-            //            });
-
-
-        }
+        //        die: function () {
+        //            console.log("lol you're dead");
+        //            this.gameOver.enabled = true;
+        //            this.tank.getChildren().forEach(function (x) {
+        //                //x.enabled = false;
+        //                x.model.enabled = false;
+        //                x.script.enabled = false;
+        //
+        //            });
+        //            //this.entity.enabled = false;
+        //            //this.entity.model.enabled = false;
+        //            this.tank.script.enabled = false;
+        //            this.tank.collision.enabled = false;
+        //            //            var gameObjects = app.root.findByName('gameObjects');
+        //            //            gameObjects.enabled = false;
+        //            //            gameObjects.off();
+        //            //            gameObjects.getChildren().forEach(function (x) {
+        //            //                x.enabled = false;
+        //            //            });
+        //
+        //
+        //        }
     }
 
     return healthScript;

@@ -180,12 +180,14 @@ pc.promise.all(promises).then(function (results) {
         scripts: [burnScript]
     });
 
-    gun.dead = true;
-    base.dead = true;
+    //    gun.dead = true;
+    //    base.dead = true;
 
     tank.addChild(base);
     tank.addChild(gun);
     gun.addChild(cam);
+
+    //    tank.script.tank.die();
 
     //Create a floor
     var floor = new pc.fw.Entity();

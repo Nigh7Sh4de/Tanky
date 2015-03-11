@@ -75,7 +75,8 @@ pc.script.create('burn', function (app) {
                 // Update the time value in the material
                     this.material.setParameter('uTime', t);
                 else {
-                    this.entity.dead = true;
+                    this.reset();
+                    this.die(); // = true;
                     this.active = false;
                 }
             }
@@ -83,7 +84,9 @@ pc.script.create('burn', function (app) {
 
         reset: function () {
             this.entity.model.model.meshInstances[0].material = this.originalMaterial;
-        }
+        },
+
+        die: function () {}
     };
 
     return burnScript;
