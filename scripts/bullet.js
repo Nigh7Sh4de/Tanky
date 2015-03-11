@@ -13,6 +13,7 @@ pc.script.create("bullet", function (app) {
         initialize: function () {
             this.force = this.entity.forward.clone().scale(-50);
             this.entity.rigidbody.applyImpulse(this.force);
+            this.entity.script.burn.die = this.die;
         },
 
         update: function (dt) {
@@ -32,6 +33,10 @@ pc.script.create("bullet", function (app) {
                 //                this.entity.enabled = false;
                 this.entity.destroy();
             }
+        },
+
+        die: function () {
+            this.entity.destroy();
         }
     }
 
