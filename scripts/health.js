@@ -6,8 +6,8 @@ pc.script.create("health", function (app) {
         this.entity = entity;
         //        this.health = app.root.findByName('health');
         this.value = defaultValue;
-        this.tank = app.root.findByName('tank');
-        this.gameOver = app.root.findByName('gameOver');
+        //        this.tank = app.root.findByName('tank');
+        //        this.gameOver = app.root.findByName('gameOver');
 
     };
 

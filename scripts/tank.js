@@ -8,15 +8,15 @@ pc.script.create("tank", function (app) {
         this.entity = entity;
         this.force = new pc.Vec3;
 
-        this.base = this.entity.findByName('base');
-        this.gun = this.entity.findByName('gun');
-        this.gameOver = app.root.findByName('gameOver');
+        //        this.base = this.entity.findByName('base');
+        //        this.gun = this.entity.findByName('gun');
+        //        this.gameOver = app.root.findByName('gameOver');
     };
 
     tankScript.prototype = {
         initialize: function () {
-            this.base.script.burn.die = this.die_child;
-            this.gun.script.burn.die = this.die_child;
+            base.script.burn.die = this.die_child;
+            gun.script.burn.die = this.die_child;
             //            this.die();
         },
 
@@ -33,7 +33,7 @@ pc.script.create("tank", function (app) {
 
         die: function () {
             this.toggleState(false);
-            this.gameOver.enabled = true;
+            gameOver.enabled = true;
         },
 
         reset: function () {

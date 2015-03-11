@@ -17,6 +17,20 @@ app.start();
 app.setCanvasFillMode(pc.fw.FillMode.FILL_WINDOW);
 app.setCanvasResolution(pc.fw.ResolutionMode.AUTO);
 
+//Prepare global variables for Entities
+var tank,
+    base,
+    gun,
+    gameOver,
+    stats,
+    health,
+    score,
+    floor,
+    skybox,
+    light,
+    cam;
+
+
 
 // load all textures
 var textures = [
@@ -63,7 +77,7 @@ pc.promise.all(promises).then(function (results) {
     app.scene.ambientLight = new pc.Color(0.35, 0.35, 0.35);
 
     // Create camera entity
-    var cam = new pc.fw.Entity();
+    cam = new pc.fw.Entity();
     cam.setName('cam');
     cam.addComponent('camera', {
         clearColor: [0.3, 0.3, 0.3]
@@ -73,7 +87,7 @@ pc.promise.all(promises).then(function (results) {
     cam.rotateLocal(-2, 180, 0);
 
     // Create directional light entity
-    var light = new pc.fw.Entity();
+    light = new pc.fw.Entity();
     light.setName('light');
     light.translate(0, 2, 0);
     light.addComponent('light', {
@@ -85,7 +99,7 @@ pc.promise.all(promises).then(function (results) {
     });
 
     //Create a skybox entity
-    var skybox = new pc.fw.Entity();
+    skybox = new pc.fw.Entity();
     skybox.setName('skybox');
 
     skybox.addComponent('skybox', {
@@ -99,7 +113,7 @@ pc.promise.all(promises).then(function (results) {
     });
 
     // Create tank entity
-    var tank = new pc.fw.Entity();
+    tank = new pc.fw.Entity();
     tank.setName('tank');
     tank.rotate(0, 180, 0);
 
@@ -117,10 +131,10 @@ pc.promise.all(promises).then(function (results) {
         url: 'scripts/tank.js'
     };
 
-    var base = new pc.fw.Entity();
+    base = new pc.fw.Entity();
     base.setName('base');
 
-    var gun = new pc.fw.Entity();
+    gun = new pc.fw.Entity();
     gun.setName('gun');
     gun.translateLocal(0, 0.55, 0);
 
@@ -190,7 +204,7 @@ pc.promise.all(promises).then(function (results) {
     //    tank.script.tank.die();
 
     //Create a floor
-    var floor = new pc.fw.Entity();
+    floor = new pc.fw.Entity();
     floor.setName('floor');
 
     floor.setLocalScale(100, 1, 100);
@@ -218,7 +232,7 @@ pc.promise.all(promises).then(function (results) {
     floor.rigidbody.syncEntityToBody();
 
     //Create an enemy spawner
-    var spawner = new pc.fw.Entity();
+    spawner = new pc.fw.Entity();
     spawner.setName('spawner');
 
     var spawnScript = {
@@ -232,11 +246,11 @@ pc.promise.all(promises).then(function (results) {
     });
 
     //Create a HUD
-    var stats = new pc.fw.Entity();
+    stats = new pc.fw.Entity();
     stats.setName('stats');
-    var score = new pc.fw.Entity();
+    score = new pc.fw.Entity();
     score.setName('score');
-    var gameOver = new pc.fw.Entity();
+    gameOver = new pc.fw.Entity();
     gameOver.setName('gameOver');
 
     var gameOverText = {
@@ -343,7 +357,7 @@ pc.promise.all(promises).then(function (results) {
         scripts: [scoreText, scoreScript]
     });
 
-    var health = new pc.fw.Entity();
+    health = new pc.fw.Entity();
     health.setName('health');
     var healthScript = {
         name: 'health',

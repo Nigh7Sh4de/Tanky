@@ -8,15 +8,15 @@ pc.script.create("enemy", function (app) {
         this.dir = new pc.Vec3;
         this.entity.collision.on('collisionstart', this.onCollisionStart, this);
         this.entity.collision.on('triggerenter', this.onTriggerEnter, this);
-        this.stats = app.root.findByName('stats');
-        this.score = this.stats.findByName('score');
-        this.health = this.stats.findByName('health');
+        //        this.stats = app.root.findByName('stats');
+        //        this.score = this.stats.findByName('score');
+        //        this.health = this.stats.findByName('health');
     };
 
     enemyScript.prototype = {
         initialize: function () {
             this.entity.script.burn.die = this.die;
-            var player = app.root.findByName('tank').getPosition().clone();
+            var player = tank.getPosition().clone();
             var pos = this.entity.getPosition().clone();
             this.dir = new pc.Vec3(
                 player.x - pos.x,
@@ -37,13 +37,13 @@ pc.script.create("enemy", function (app) {
             //            console.log(result.other.isBullet === true);
             if (result.other.isBullet) {
                 this.burn(this.entity, result.other);
-                this.score.script.score.increase(10);
+                score.script.score.increase(10);
             } else if (result.other.name == 'tank') {
                 //                this.burn(this.entity, result.other);
-                if (this.health.script.health.decrease(1))
+                if (health.script.health.decrease(1))
                     this.burn(this.entity);
                 else {
-                    this.burn(this.entity, result.other.findByName('base'), result.other.findByName('gun'));
+                    this.burn(this.entity, base, gun);
                 }
                 //                this.burn(this.entity);
             }
