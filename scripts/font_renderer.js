@@ -344,7 +344,7 @@ pc.script.create('font_renderer', function (app) {
 
                 // offset the cursor by the appropriate amount for each letter
                 tempCursorX = cursorX + xoffset;
-                tempCursorY = -yoffset;
+                tempCursorY = 0; // -yoffset; DIRTY HACK
 
                 this.width = Math.max(this.width, tempCursorX + width);
                 this.height = Math.max(this.height, tempCursorY + height);
@@ -517,6 +517,16 @@ pc.script.create('font_renderer', function (app) {
         update: function (dt) {
             this.eventsEnabled = true;
         },
+
+        destroy: function () {
+            // remove draw call
+            if (this.command) {
+                var i = app.scene.drawCalls.indexOf(this.command);
+                if (i >= 0) {
+                    app.scene.drawCalls.splice(i, 1);
+                }
+            }
+        }
     };
 
     return Font_renderer;
