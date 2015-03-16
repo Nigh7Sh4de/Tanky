@@ -21,8 +21,8 @@ pc.script.create("gameOver", function (app) {
             health.script.health.reset();
             score.script.score.reset();
             //            var gameOver = app.root.findByName('gameOver');
-            gameOver.enabled = false;
             gameOver.script.font_renderer.text = 'Play Again';
+            gameOver.enabled = false;
             tank.script.tank.reset();
 
             var x;

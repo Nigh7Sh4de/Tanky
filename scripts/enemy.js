@@ -7,7 +7,7 @@ pc.script.create("enemy", function (app) {
         this.entity = entity;
         this.dir = new pc.Vec3;
         this.entity.collision.on('collisionstart', this.onCollisionStart, this);
-        this.entity.collision.on('triggerenter', this.onTriggerEnter, this);
+        //        this.entity.collision.on('triggerenter', this.onTriggerEnter, this);
         //        this.stats = app.root.findByName('stats');
         //        this.score = this.stats.findByName('score');
         //        this.health = this.stats.findByName('health');
@@ -56,8 +56,6 @@ pc.script.create("enemy", function (app) {
             }
 
         },
-
-        onTriggerEnter: function (result) {},
 
         burn: function () {
             for (var i = 0; i < arguments.length; i++) {

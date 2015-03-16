@@ -55,13 +55,12 @@ pc.script.create("shoot", function (app) {
             newBullet.setLocalScale(0.08, 0.08, 0.4);
             newBullet.setPosition(this.entity.getPosition());
             newBullet.translateLocal(0, 0.1523, 0);
-
-            newBullet.addComponent('rigidbody', {
-                type: 'dynamic',
-                mass: 1,
-                restitution: 0.5
-            });
-
+//
+//            newBullet.addComponent('rigidbody', {
+//                type: 'dynamic',
+//                mass: 1,
+//                restitution: 0.5
+//            });
             newBullet.addComponent('collision', {
                 type: "box",
                 halfExtents: newBullet.getLocalScale().clone().scale(0.5)
