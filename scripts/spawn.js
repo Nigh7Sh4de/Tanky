@@ -34,7 +34,8 @@ pc.script.create("spawn", function (app) {
 
             enemy.setPosition(tank.getPosition());
             enemy.setEulerAngles(0, pc.math.random(0, 360), 0);
-            enemy.translateLocal(0, 0, -40);
+            //            enemy.setEulerAngles(0, 0, 0);
+            enemy.translateLocal(0, 0, -30);
             enemy.setLocalScale(1, 1, 1);
 
             enemy.addComponent('model', {

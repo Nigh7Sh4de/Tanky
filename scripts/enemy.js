@@ -1,6 +1,7 @@
 pc.script.create("enemy", function (app) {
 
-    const MULT = 5;
+    const MULT = 0.2;
+    const INTENSITY_MULT = 1;
     const MAX_TIME = 2;
 
     var enemyScript = function (entity) {
@@ -22,13 +23,15 @@ pc.script.create("enemy", function (app) {
                 player.x - pos.x,
                 player.y - pos.y,
                 player.z - pos.z
-            ).scale(0.001 * MULT);
+            );
         },
 
         die: function () {
             //            if (this.entity.dead) {
             //                this.entity.enabled = false;
             this.entity.destroy();
+            if (this.entity.glow)
+                this.entity.glow.destroy();
             //                return;
             //            }
         },
@@ -68,15 +71,44 @@ pc.script.create("enemy", function (app) {
         },
 
         update: function (dt) {
+            if (!this.entity.script.burn.active) {
+                //                console.log(dt);
+                this.entity.rigidbody.applyImpulse(this.dir.clone().scale(dt * MULT));
+                if (gun.script.enabled) {
+                    if (!this.entity.glow && !cam.camera.frustum.containsPoint(this.entity.getPosition())) {
 
-            if (!this.entity.script.burn.active)
-                this.entity.rigidbody.applyImpulse(this.dir);
+                        var glow = new pc.fw.Entity();
+                        glow.addComponent('light', {
+                            type: 'spot',
+                            color: new pc.Color(1, 0, 0),
+                            range: 20,
+                            intensity: 0,
+                            outerConeAngle: 15,
+                            innerConeAngle: 15
+                        });
+                        glow.translate(0, 0.05, 0);
+                        glow.lookAt(this.entity.getPosition());
+                        glow.rotateLocal(-90, 0, 0);
+                        glow.setName("glow");
+
+                        tank.addChild(glow);
+                        this.entity.glow = glow;
+
+                    } else if (this.entity.glow && this.entity.glow.light) {
+                        if (cam.camera.frustum.containsPoint(this.entity.getPosition())) {
+                            this.entity.glow.destroy();
+                            this.entity.glow = null;
+                        } else
+                            this.entity.glow.light.intensity = INTENSITY_MULT * (30 - this.entity.getPosition().length());
+
+                    }
+                }
+            }
 
             if (this.entity.getPosition().y < -1) {
                 //                this.entity.enabled = false;
-                this.entity.destroy();
+                this.die();
             }
-
         }
     }
 

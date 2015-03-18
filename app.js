@@ -28,7 +28,8 @@ var tank,
     floor,
     skybox,
     light,
-    cam;
+    cam,
+    spawner;
 
 
 
@@ -83,8 +84,8 @@ pc.promise.all(promises).then(function (results) {
         clearColor: [0.3, 0.3, 0.3]
     });
 
-    cam.setLocalPosition(0, 1, -3.5);
-    cam.rotateLocal(-2, 180, 0);
+    cam.setLocalPosition(0, 1.5, -3.5);
+    cam.rotateLocal(-20, 180, 0);
 
     // Create directional light entity
     light = new pc.fw.Entity();
@@ -93,7 +94,7 @@ pc.promise.all(promises).then(function (results) {
     light.addComponent('light', {
         type: 'point',
         color: new pc.Color(0.5, 0.5, 1),
-        range: 50,
+        range: 30,
         intensity: 2,
         castShadows: true
     });
@@ -238,8 +239,8 @@ pc.promise.all(promises).then(function (results) {
     wall.setName('wall');
     //    wall.rotate(0, 0, 90);
 
-    wall.setLocalScale(1, 100, 100);
-    wall.setLocalPosition(-50, 50, 0);
+    wall.setLocalScale(1, 60, 60);
+    wall.setLocalPosition(-30, 30, 0);
 
     //    wall.addComponent('model', {
     //        type: "box",
@@ -253,14 +254,14 @@ pc.promise.all(promises).then(function (results) {
     //    wall.model.model.meshInstances[0].material = wallMaterial;
 
     var wall2 = wall.clone();
-    wall2.translate(100, 0, 0);
+    wall2.translate(60, 0, 0);
 
     var wall3 = wall.clone();
-    wall3.translate(50, 0, 50);
+    wall3.translate(30, 0, 30);
     wall3.rotate(0, 90, 0);
 
     var wall4 = wall3.clone();
-    wall4.translate(0, 0, -100);
+    wall4.translate(0, 0, -60);
 
     //Create an enemy spawner
     spawner = new pc.fw.Entity();
@@ -404,28 +405,7 @@ pc.promise.all(promises).then(function (results) {
     stats.addChild(gameOver);
     stats.addChild(score);
     stats.addChild(health);
-    //score.script.scoreText
 
-
-
-    //    results[7].asset.name = 'heightMap ';
-    //    results[8].asset.name = 'red';
-    //    results[9].asset.name = 'green';
-    //
-    //    tank.script.enabled = true;
-    //    gun.script.enabled = true;
-    //    spawner.script.enabled = true;
-    //    score.script.enabled = true;
-    //    health.script.enabled = true;
-    //    gameOver.enabled = true;
-    //    gameOver.script.enabled = true;
-
-
-    // Add to hierarchy
-    //app.context.root.addChild(tank);
-    //app.context.root.addChild(floor);
-    //gameObjects.addChild(tank);
-    //gameObjects.addChild(floor);
     app.context.root.addChild(tank);
     app.context.root.addChild(floor);
     app.context.root.addChild(light);

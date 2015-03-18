@@ -33,6 +33,11 @@ pc.script.create("tank", function (app) {
 
         die: function () {
             this.toggleState(false);
+            var children = this.entity.getChildren(); // forEach(function (x) {
+            for (var i = 0; i < children.length; i++) {
+                if (children[i].name == 'glow')
+                    children[i--].destroy();
+            };
             gameOver.enabled = true;
         },
 
@@ -41,14 +46,19 @@ pc.script.create("tank", function (app) {
         },
 
         toggleState: function (state) {
-            this.entity.getChildren().forEach(function (x) {
-                //x.enabled = true;
-                x.script.enabled = state;
-                //                if (state)
-                //                    x.script.burn.reset();
-                x.model.enabled = state;
-            });
-            //                this.entity.enabled = true;
+            //            this.entity.getChildren().forEach(function (x) {
+            //                //x.enabled = true;
+            //                x.script.enabled = state;
+            //                //                if (state)
+            //                //                    x.script.burn.reset();
+            //                x.model.enabled = state;
+            //            });
+            //            //                this.entity.enabled = true;
+            gun.script.enabled = state;
+            gun.model.enabled = state;
+            base.script.enabled = state;
+            base.model.enabled = state;
+            //            glow.enabled = state;
             this.entity.script.enabled = state;
             this.entity.collision.enabled = state;
         },
