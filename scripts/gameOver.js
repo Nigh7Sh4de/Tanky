@@ -27,7 +27,7 @@ pc.script.create("gameOver", function (app) {
 
             var x;
             while (x = app.root.findByName('enemy'))
-                x.destroy();
+                x.script.enemy.die();
 
             //            }
         },
