@@ -47,6 +47,8 @@ var textures = [
     "assets/green.png",
     "assets/fonts/boombox_72.png",
     "assets/tank/tank_icon.png",
+    "assets/menu/shoot-icon.png",
+    "assets/menu/move-icon.png"
 //    "assets/fonts/boombox_144.png"
 ];
 
@@ -302,10 +304,10 @@ pc.promise.all(promises).then(function (results) {
             value: '64'
     }, {
             name: 'x',
-            value: 5
+            value: 0
     }, {
             name: 'y',
-            value: -5
+            value: 30
     }, {
             name: 'anchor',
             value: 4
@@ -401,6 +403,110 @@ pc.promise.all(promises).then(function (results) {
         enabled: true,
         scripts: [healthScript]
     });
+
+    var info_shoot = new pc.fw.Entity();
+    info_shoot.setName('info_shoot');
+
+    var info_shoot_sprite = {
+        name: 'sprite',
+        url: 'scripts/sprite.js',
+        attributes: [{
+            name: 'textureAsset',
+            value: 'shoot-icon.png'
+                    }, {
+            name: 'x',
+            value: 100
+                    }, {
+            name: 'y',
+            value: 50
+                    }, {
+            name: 'width',
+            value: 64
+                    }, {
+            name: 'height',
+            value: 64
+                    }, {
+            name: 'anchor',
+            value: 6
+                    }, {
+            name: 'pivot',
+            value: 6
+                    }, {
+            name: 'tint',
+            type: 'rgba',
+            value: [1, 1, 1, 1]
+                    }, {
+            name: 'maxResHeight',
+            value: 300
+                    }, {
+            name: 'depth',
+            value: 10
+                    }, {
+            name: 'uPercentage',
+            value: 1
+                    }, {
+            name: 'vPercentage',
+            value: 1
+                    }]
+    }
+
+    info_shoot.addComponent('script', {
+        enabled: true,
+        scripts: [info_shoot_sprite]
+    });
+
+    var info_move = new pc.fw.Entity;
+    info_move.setName('info_move');
+    var info_move_sprite = {
+        name: 'sprite',
+        url: 'scripts/sprite.js',
+        attributes: [{
+            name: 'textureAsset',
+            value: 'move-icon.png'
+                    }, {
+            name: 'x',
+            value: -100
+                    }, {
+            name: 'y',
+            value: 50
+                    }, {
+            name: 'width',
+            value: 64
+                    }, {
+            name: 'height',
+            value: 64
+                    }, {
+            name: 'anchor',
+            value: 8
+                    }, {
+            name: 'pivot',
+            value: 8
+                    }, {
+            name: 'tint',
+            type: 'rgba',
+            value: [1, 1, 1, 1]
+                    }, {
+            name: 'maxResHeight',
+            value: 300
+                    }, {
+            name: 'depth',
+            value: 10
+                    }, {
+            name: 'uPercentage',
+            value: 1
+                    }, {
+            name: 'vPercentage',
+            value: 1
+                    }]
+    }
+
+    info_move.addComponent('script', {
+        enabled: true,
+        scripts: [info_move_sprite]
+    });
+
+    gameOver.addChild(info_shoot);
+    gameOver.addChild(info_move);
 
     stats.addChild(gameOver);
     stats.addChild(score);
