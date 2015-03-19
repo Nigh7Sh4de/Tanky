@@ -32,6 +32,8 @@ pc.script.create('burn', function (app) {
             var vs = burn_vshader(gd.precision);
             var fs = burn_fshader(gd.precision);
 
+            this.entity.model.castShadows = false;
+
             // Save the diffuse map from the original material before we replace it.
             this.diffuseTexture = model.meshInstances[0].material.diffuseMap;
 
@@ -86,6 +88,7 @@ pc.script.create('burn', function (app) {
 
         reset: function () {
             this.entity.model.model.meshInstances[0].material = this.originalMaterial;
+            this.entity.model.castShadows = true;
         },
 
         die: function () {}

@@ -58,7 +58,7 @@ pc.script.create("bullet", function (app) {
                     arguments[i].rigidbody.enabled = false;
                 arguments[i].script.burn.activate();
                 //                arguments[i].rigidbody.
-                arguments[i].model.castShadows = false;
+//                arguments[i].model.castShadows = false;
             }
         },
 

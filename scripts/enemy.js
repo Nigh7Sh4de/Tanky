@@ -66,7 +66,7 @@ pc.script.create("enemy", function (app) {
                     arguments[i].rigidbody.enabled = false;
                 arguments[i].script.burn.activate();
                 //                arguments[i].rigidbody.
-                arguments[i].model.castShadows = false;
+//                arguments[i].model.castShadows = false;
             }
         },
 
