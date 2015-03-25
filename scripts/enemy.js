@@ -1,7 +1,9 @@
 pc.script.create("enemy", function (app) {
 
     const MULT = 0.2;
-    const INTENSITY_MULT = 1;
+    const INTENSITY_MULT = 5;
+    const INTENSITY_MIN = 25;
+    const INTENSITY_MAX = 125;
     const MAX_TIME = 2;
 
     var enemyScript = function (entity) {
@@ -66,7 +68,7 @@ pc.script.create("enemy", function (app) {
                     arguments[i].rigidbody.enabled = false;
                 arguments[i].script.burn.activate();
                 //                arguments[i].rigidbody.
-//                arguments[i].model.castShadows = false;
+                //                arguments[i].model.castShadows = false;
             }
         },
 
@@ -99,7 +101,7 @@ pc.script.create("enemy", function (app) {
                             this.entity.glow.destroy();
                             this.entity.glow = null;
                         } else
-                            this.entity.glow.light.intensity = INTENSITY_MULT * (30 - this.entity.getPosition().length());
+                            this.entity.glow.light.intensity = pc.math.clamp(INTENSITY_MULT * (30 - this.entity.getPosition().length()), INTENSITY_MIN, INTENSITY_MAX);
 
                     }
                 }
