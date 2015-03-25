@@ -1,6 +1,13 @@
 pc.script.create("look", function (app) {
 
-    const MULT = 0.01 * 2;
+    //    const MULT = 0.00001 * 2;
+    const MULT = 0.01 * 5;
+    const POW = 1;
+    //    const POW = 2;
+
+    //    const THRESHOLD = 2;
+    //    const LITTLEMULT = 1;
+    //    const LITTLEMULT = 0.75;
 
     var lookScript = function (entity) {
         this.entity = entity;
@@ -32,10 +39,13 @@ pc.script.create("look", function (app) {
         update: function (dt) {
             this.entity.setEulerAngles(this.ex, this.ey, 0);
             if (this.isPressed) {
-                var x = Math.pow(this.curTouch.y - this.firstTouch.y, 1) * MULT * 0.25;
+                var x = Math.pow(this.curTouch.y - this.firstTouch.y, POW) * MULT * 0.25;
                 if (this.ex + x > -17 && this.ex + x < 1)
                     this.ex += x;
-                var y = -Math.pow(this.curTouch.x - this.firstTouch.x, 1) * MULT; // * 0.1;
+                var y = -Math.pow(this.curTouch.x - this.firstTouch.x, POW) * MULT; // * 0.1;
+                //                if (Math.abs(y) < THRESHOLD)
+                //                    y *= LITTLEMULT;
+                //                console.log(x + ' ' + y);
                 this.ey += y;
                 this.entity.setEulerAngles(this.ex, this.ey, 0);
                 //                console.log(this.ex + ' '  + this.ey);
