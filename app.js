@@ -22,9 +22,11 @@ var tank,
     base,
     gun,
     gameOver,
-    stats,
+    congrats,
+//    stats,
     health,
     score,
+    highscore,
     floor,
     skybox,
     light,
@@ -280,10 +282,15 @@ pc.promise.all(promises).then(function (results) {
     });
 
     //Create a HUD
-    stats = new pc.fw.Entity();
-    stats.setName('stats');
+//    stats = new pc.fw.Entity();
+//    stats.setName('stats');
     score = new pc.fw.Entity();
     score.setName('score');
+    highscore = new pc.fw.Entity();
+    highscore.setName('highscore');
+    congrats = new pc.fw.Entity();
+    congrats.setName('congrats');
+    congrats.enabled = false;
     gameOver = new pc.fw.Entity();
     gameOver.setName('gameOver');
 
@@ -370,6 +377,91 @@ pc.promise.all(promises).then(function (results) {
 
     };
 
+    var highScoreText = {
+        name: 'scoreText',
+        url: 'scripts/font_renderer.js',
+        attributes: [{
+            name: 'fontAtlas',
+            value: 'boombox_72.png'
+    }, {
+            name: 'fontJson',
+            value: 'boombox'
+    }, {
+            name: 'text',
+            value: 'High Score: '
+    }, {
+            name: 'maxTextLength',
+            value: '20'
+    }, {
+            name: 'x',
+            value: -5
+    }, {
+            name: 'y',
+            value: -5
+    }, {
+            name: 'anchor',
+            value: 2
+    }, {
+            name: 'pivot',
+            value: 2
+    }, {
+            name: 'tint',
+            type: 'rgba',
+            value: [1, 1, 1, 1]
+                //            value: [0, 0, 0, 1]
+    }, {
+            name: 'maxResHeight',
+            value: 720
+    }, {
+            name: 'depth',
+            value: 1
+    }]
+
+    };
+
+    var congratsText = {
+        name: 'scoreText',
+        url: 'scripts/font_renderer.js',
+        attributes: [{
+            name: 'fontAtlas',
+            value: 'boombox_72.png'
+    }, {
+            name: 'fontJson',
+            value: 'boombox'
+    }, {
+            name: 'text',
+            value: 'You beat your high score!'
+    }, {
+            name: 'maxTextLength',
+            value: '32'
+    }, {
+            name: 'x',
+            value: 0
+    }, {
+            name: 'y',
+            value: -30
+    }, {
+            name: 'anchor',
+            value: 4
+    }, {
+            name: 'pivot',
+            value: 4
+    }, {
+            name: 'tint',
+            type: 'rgba',
+            value: [1, 1, 1, 1]
+                //            value: [0, 0, 0, 1]
+    }, {
+            name: 'maxResHeight',
+            value: 720
+    }, {
+            name: 'depth',
+            value: 1
+    }]
+
+    };
+
+
     var gameOverScript = {
         name: 'gameOver',
         url: 'scripts/gameOver.js'
@@ -390,6 +482,27 @@ pc.promise.all(promises).then(function (results) {
     score.addComponent('script', {
         enabled: true,
         scripts: [scoreText, scoreScript]
+    });
+
+    var highScoreScript = {
+        name: 'highscore',
+        url: 'scripts/highscore.js'
+    }
+
+    highscore.addComponent('script', {
+        enabled: true,
+        scripts: [highScoreText, highScoreScript]
+    });
+
+//    var highScoreScript = {
+//        name: 'highscore',
+//        url: 'scripts/highscore.js'
+//    }
+
+    congrats.addComponent('script', {
+        enabled: true,
+        scripts: [congratsText]
+//        scripts: [highScoreText, highScoreScript]
     });
 
     health = new pc.fw.Entity();
@@ -508,18 +621,19 @@ pc.promise.all(promises).then(function (results) {
     gameOver.addChild(info_shoot);
     gameOver.addChild(info_move);
 
-    stats.addChild(gameOver);
-    stats.addChild(score);
-    stats.addChild(health);
+    app.root.addChild(gameOver);
+    app.root.addChild(score);
+    app.root.addChild(health);
+    app.root.addChild(highscore);
+    app.root.addChild(congrats);
 
-    app.context.root.addChild(tank);
-    app.context.root.addChild(floor);
-    app.context.root.addChild(light);
-    app.context.root.addChild(stats);
-    app.context.root.addChild(wall);
-    app.context.root.addChild(wall2);
-    app.context.root.addChild(wall3);
-    app.context.root.addChild(wall4);
+    app.root.addChild(tank);
+    app.root.addChild(floor);
+    app.root.addChild(light);
+    app.root.addChild(wall);
+    app.root.addChild(wall2);
+    app.root.addChild(wall3);
+    app.root.addChild(wall4);
 
 
 });
