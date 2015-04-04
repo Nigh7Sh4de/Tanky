@@ -23,6 +23,7 @@ pc.script.create("gameOver", function (app) {
             //            var gameOver = app.root.findByName('gameOver');
             gameOver.script.font_renderer.text = 'Play Again';
             gameOver.enabled = false;
+            congrats.enabled = false;
             tank.script.tank.reset();
 
             var x;

@@ -39,6 +39,9 @@ pc.script.create("tank", function (app) {
                     children[i--].destroy();
             };
             gameOver.enabled = true;
+            if (highscore.script.highscore)
+                highscore.script.highscore.checkHighScore();
+
         },
 
         reset: function () {
