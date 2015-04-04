@@ -75,7 +75,7 @@ pc.script.create("enemy", function (app) {
         update: function (dt) {
             if (!this.entity.script.burn.active) {
                 //                console.log(dt);
-                this.entity.rigidbody.applyImpulse(this.dir.clone().scale(dt * MULT));
+                this.entity.rigidbody.applyImpulse(this.dir.clone().scale(dt * MULT * ((score.script.score.points / 100) + 1)));
                 if (gun.script.enabled) {
                     if (!this.entity.glow && !cam.camera.frustum.containsPoint(this.entity.getPosition())) {
 
