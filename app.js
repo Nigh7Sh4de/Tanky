@@ -189,7 +189,8 @@ pc.promise.all(promises).then(function (results) {
 
     tank.addComponent('script', {
         enabled: true,
-        scripts: [moveScript, tankScript]
+        scripts: [tankScript]
+            //        scripts: [moveScript, tankScript]
     });
 
     base.addComponent('script', {
