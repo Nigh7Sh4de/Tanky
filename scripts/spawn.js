@@ -5,7 +5,7 @@ pc.script.create("spawn", function (app) {
     var spawnScript = function (entity) {
         this.entity = entity;
         this.time = 0;
-
+        this.enemies = [];
 
     };
 
@@ -26,6 +26,10 @@ pc.script.create("spawn", function (app) {
 
 
         },
+
+        //        selectAllEnemy: function () {
+        //
+        //        },
 
         spawnEnemy: function () {
 
@@ -89,6 +93,7 @@ pc.script.create("spawn", function (app) {
             enemy.rigidbody.syncEntityToBody();
 
             app.root.addChild(enemy);
+            this.enemies.push(enemy);
 
         }
     };

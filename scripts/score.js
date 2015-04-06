@@ -11,10 +11,83 @@ pc.script.create("score", function (app) {
     scoreScript.prototype = {
         initialize: function () {
             //            this.entity.script.font_renderer.text = 'fuck you too';
+            this.entity.script.font_renderer.on('click', this.onTouch, this);
             this.reset();
         },
 
         update: function (dt) {},
+
+        onTouch: function () {
+            tank.script.tank.die();
+            var angles = cam.getLocalEulerAngles();
+            var pos = cam.getLocalPosition();
+            cam.setEulerAngles(-90, 0, 0);
+            cam.setLocalPosition(0, 5, 0);
+
+            var thing = new pc.fw.Entity();
+            thing.addComponent('model', {
+                type: 'box',
+                receiveShadows: false,
+                castShadows: false
+            });
+            thing.setPosition(0, 1, -1);
+
+            app.root.addChild(thing);
+            this.buildText('$0');
+
+        },
+
+        buildText: function (text) {
+            var thing = new pc.fw.Entity();
+            thing.setName('text_' + text);
+            var thingText = {
+                name: 'gameOverText',
+                url: 'scripts/font_renderer.js',
+                attributes: [{
+                    name: 'fontAtlas',
+                    value: 'boombox_72.png'
+        }, {
+                    name: 'fontJson',
+                    value: 'boombox'
+        }, {
+                    name: 'text',
+                    value: text
+        }, {
+                    name: 'maxTextLength',
+                    value: '64'
+        }, {
+                    name: 'x',
+                    value: 0
+        }, {
+                    name: 'y',
+                    value: 0
+        }, {
+                    name: 'anchor',
+                    value: 4
+        }, {
+                    name: 'pivot',
+                    value: 4
+        }, {
+                    name: 'tint',
+                    type: 'rgba',
+                    value: [0.5, 0.5, 0.5, 1]
+        }, {
+                    name: 'maxResHeight',
+                    value: 360
+        }, {
+                    name: 'depth',
+                    value: 1
+        }]
+
+            };
+
+            thing.addComponent('script', {
+                enabled: true,
+                scripts: [thingText]
+            });
+
+            app.root.addChild(thing);
+        },
 
         increase: function (amount) {
             this.points += amount;
