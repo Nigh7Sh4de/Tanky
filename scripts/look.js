@@ -37,6 +37,22 @@ pc.script.create("look", function (app) {
         },
 
         update: function (dt) {
+
+            if (app.keyboard.isPressed(pc.input.KEY_UP)) {
+                this.ex -= 1 * 100 * MULT * dt;
+            }
+            if (app.keyboard.isPressed(pc.input.KEY_DOWN)) {
+                this.ex += 1 * 100 * MULT * dt;
+            }
+            if (app.keyboard.isPressed(pc.input.KEY_LEFT)) {
+                this.ey += 20 * 100 * MULT * dt;
+            }
+            if (app.keyboard.isPressed(pc.input.KEY_RIGHT)) {
+                this.ey -= 20 * 100 * MULT * dt;
+            }
+
+            this.ex = pc.math.clamp(this.ex, -17, 1);
+
             this.entity.setEulerAngles(this.ex, this.ey, 0);
             if (this.isPressed) {
                 var x = Math.pow(this.curTouch.y - this.firstTouch.y, POW) * MULT * 0.25;
