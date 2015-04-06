@@ -33,7 +33,12 @@ pc.script.create("gameOver", function (app) {
             //            }
         },
 
-        update: function (dt) {}
+        update: function (dt) {
+            if (this.entity.enabled)
+                if (app.keyboard.isPressed(pc.input.KEY_SPACE)) {
+                    this.onTouch();
+                }
+        }
     }
 
     return gameOverScript;
