@@ -23,13 +23,15 @@ var tank,
     gun,
     gameOver,
     congrats,
-//    stats,
+    store,
+    //    stats,
     health,
     score,
     highscore,
     floor,
     skybox,
     light,
+    store_light,
     cam,
     spawner;
 
@@ -91,7 +93,7 @@ pc.promise.all(promises).then(function (results) {
     cam.setLocalPosition(0, 1.5, -3.5);
     cam.rotateLocal(-20, 180, 0);
 
-    // Create directional light entity
+    // Create light entities
     light = new pc.fw.Entity();
     light.setName('light');
     light.translate(0, 2, 0);
@@ -102,6 +104,18 @@ pc.promise.all(promises).then(function (results) {
         intensity: 2,
         castShadows: true
     });
+
+    store_light = new pc.Entity();
+    store_light.setName('store_light');
+    store_light.setPosition(0, 1, 0);
+    store_light.addComponent('light', {
+        type: 'directional',
+        color: light.light.color,
+        intensity: 1,
+        castShadows: true
+    });
+    store_light.enabled = false;
+
 
     //    //Create a skybox entity
     //    skybox = new pc.fw.Entity();
@@ -283,8 +297,8 @@ pc.promise.all(promises).then(function (results) {
     });
 
     //Create a HUD
-//    stats = new pc.fw.Entity();
-//    stats.setName('stats');
+    //    stats = new pc.fw.Entity();
+    //    stats.setName('stats');
     score = new pc.fw.Entity();
     score.setName('score');
     highscore = new pc.fw.Entity();
@@ -292,6 +306,8 @@ pc.promise.all(promises).then(function (results) {
     congrats = new pc.fw.Entity();
     congrats.setName('congrats');
     congrats.enabled = false;
+    store = new pc.Entity();
+    store.setName('store');
     gameOver = new pc.fw.Entity();
     gameOver.setName('gameOver');
 
@@ -462,6 +478,49 @@ pc.promise.all(promises).then(function (results) {
 
     };
 
+    var storeSprite = {
+        name: 'storeSprite',
+        url: 'scripts/sprite.js',
+        attributes: [{
+            name: 'textureAsset',
+            value: 'tank_icon.png'
+                    }, {
+            name: 'x',
+            value: 0
+                    }, {
+            name: 'y',
+            value: -10
+                    }, {
+            name: 'width',
+            value: 128
+                    }, {
+            name: 'height',
+            value: 128
+                    }, {
+            name: 'anchor',
+            value: 1
+                    }, {
+            name: 'pivot',
+            value: 1
+                    }, {
+            name: 'tint',
+            type: 'rgba',
+            value: [1, 1, 1, 1]
+                    }, {
+            name: 'maxResHeight',
+            value: 720
+                    }, {
+            name: 'depth',
+            value: 1
+                    }, {
+            name: 'uPercentage',
+            value: 1
+                    }, {
+            name: 'vPercentage',
+            value: 1
+                    }]
+    }
+
 
     var gameOverScript = {
         name: 'gameOver',
@@ -495,15 +554,20 @@ pc.promise.all(promises).then(function (results) {
         scripts: [highScoreText, highScoreScript]
     });
 
-//    var highScoreScript = {
-//        name: 'highscore',
-//        url: 'scripts/highscore.js'
-//    }
+    //    var highScoreScript = {
+    //        name: 'highscore',
+    //        url: 'scripts/highscore.js'
+    //    }
 
     congrats.addComponent('script', {
         enabled: true,
         scripts: [congratsText]
-//        scripts: [highScoreText, highScoreScript]
+            //        scripts: [highScoreText, highScoreScript]
+    });
+
+    store.addComponent('script', {
+        enabled: true,
+        scripts: [storeSprite]
     });
 
     health = new pc.fw.Entity();
@@ -627,10 +691,12 @@ pc.promise.all(promises).then(function (results) {
     app.root.addChild(health);
     app.root.addChild(highscore);
     app.root.addChild(congrats);
+    app.root.addChild(store);
 
     app.root.addChild(tank);
     app.root.addChild(floor);
     app.root.addChild(light);
+    app.root.addChild(store_light);
     app.root.addChild(wall);
     app.root.addChild(wall2);
     app.root.addChild(wall3);

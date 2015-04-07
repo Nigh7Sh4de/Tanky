@@ -28,11 +28,26 @@ pc.script.create("score", function (app) {
             thing.addComponent('model', {
                 type: 'box',
                 receiveShadows: false,
-                castShadows: false
+                castShadows: true
             });
+            //            var thing_light = new pc.Entity();
+            //            thing_light.addComponent('light', {
+            //                type: 'directional',
+            //                intensity: 0.5,
+            //                color: light.light.color,
+            //                castShadows: true
+            //            });
+            //            var thing_light = light.clone();
+            //            thing_light.light.intensity = 1;
+            //            thing_light.light.type = 'directional';
             thing.setPosition(0, 1, -1);
+            //            thing_light.setPosition(0, 1, 0);
+            //            light.light.intensity = 1;
+            light.enabled = false;
+            store_light.enabled = true;
 
             app.root.addChild(thing);
+            //            app.root.addChild(thing_light);
             this.buildText('$0');
 
         },
