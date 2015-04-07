@@ -29,9 +29,10 @@ pc.script.create("spawn", function (app) {
 
         spawnEnemy: function () {
 
-//            tmp_enemy_red
-//            var enemy = tmp_enemy_red.clone();
-            var enemy = tmp_enemy_red();
+//            Enemy
+//            var enemy = Enemy.clone();
+//            var enemy = Enemy();
+            var enemy = new RedEnemy();
 //            enemy.setPosition(tank.getPosition());
 
             app.root.addChild(enemy);
