@@ -18,6 +18,8 @@ pc.script.create("enemy", function (app) {
 
     enemyScript.prototype = {
         initialize: function () {
+            if (this.entity.move == null)
+                console.error("Creating script 'enemy' for entity '" + this.entity.getName() + "' failed. move(dt, MULT) function must be defined");
             this.entity.script.burn.die = this.die;
             var player = tank.getPosition().clone();
             var pos = this.entity.getPosition().clone();
@@ -26,6 +28,7 @@ pc.script.create("enemy", function (app) {
                 player.y - pos.y,
                 player.z - pos.z
             );
+            this.move = this.entity.move;
         },
 
         die: function () {
@@ -72,10 +75,12 @@ pc.script.create("enemy", function (app) {
             }
         },
 
+        move: function(dt, MULT) {},
+
         update: function (dt) {
             if (!this.entity.script.burn.active) {
                 //                console.log(dt);
-                this.entity.rigidbody.applyImpulse(this.dir.clone().scale(dt * MULT * ((score.script.score.points / 100) + 1)));
+                this.move(dt, MULT);
                 if (gun.script.enabled) {
                     if (!this.entity.glow && !cam.camera.frustum.containsPoint(this.entity.getPosition())) {
 
