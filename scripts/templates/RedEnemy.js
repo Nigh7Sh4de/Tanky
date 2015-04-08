@@ -1,9 +1,7 @@
-var RedEnemy = function() {
-    this.move = function(dt, MULT) {
+function RedEnemy() {
+    var move = function (dt, MULT) {
         this.entity.rigidbody.applyImpulse(this.dir.clone().scale(dt * MULT * ((score.script.score.points / 100) + 1)));
     };
-
-    Enemy.apply(this, arguments);
+    Enemy.call(this, move);
 }
-
-//RedEnemy = pc.inherits(RedEnemy, Enemy);
+pc.inherits(RedEnemy, Enemy);

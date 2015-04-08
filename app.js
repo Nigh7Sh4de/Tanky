@@ -1,3 +1,11 @@
+//Dis how it should be and hopefully will be if PlayCanvas gets their shit together
+pc.inherits = function (Self, Super) {
+    //    Self.prototype = Object.create(Super.prototype);
+    Self.prototype = Super.prototype;
+    //    Self.prototye = new Super;
+    Self.prototype.constructor = Self;
+}
+
 // Create a PlayCanvas application
 var canvas = document.getElementById("application-canvas");
 canvas.focus();
@@ -23,7 +31,7 @@ var tank,
     gun,
     gameOver,
     congrats,
-//    stats,
+    //    stats,
     health,
     score,
     highscore,
@@ -283,8 +291,8 @@ pc.promise.all(promises).then(function (results) {
     });
 
     //Create a HUD
-//    stats = new pc.fw.Entity();
-//    stats.setName('stats');
+    //    stats = new pc.fw.Entity();
+    //    stats.setName('stats');
     score = new pc.fw.Entity();
     score.setName('score');
     highscore = new pc.fw.Entity();
@@ -495,15 +503,15 @@ pc.promise.all(promises).then(function (results) {
         scripts: [highScoreText, highScoreScript]
     });
 
-//    var highScoreScript = {
-//        name: 'highscore',
-//        url: 'scripts/highscore.js'
-//    }
+    //    var highScoreScript = {
+    //        name: 'highscore',
+    //        url: 'scripts/highscore.js'
+    //    }
 
     congrats.addComponent('script', {
         enabled: true,
         scripts: [congratsText]
-//        scripts: [highScoreText, highScoreScript]
+            //        scripts: [highScoreText, highScoreScript]
     });
 
     health = new pc.fw.Entity();

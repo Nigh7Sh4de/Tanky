@@ -1,7 +1,7 @@
 //Subclass for entity
-var Enemy = function() {
-//    var enemy = new pc.fw.Entity();
-//    this.enabled = false;
+var Enemy = function (move) {
+
+    pc.Entity.call(this);
 
     this.setName('enemy');
     this.setPosition(tank.getPosition());
@@ -11,7 +11,7 @@ var Enemy = function() {
     this.setLocalScale(1, 1, 1);
 
     this.addComponent('model', {
-//        enabled: true,
+        //        enabled: true,
         type: "box",
         castShadows: true,
         receiveShadows: true
@@ -52,9 +52,7 @@ var Enemy = function() {
 
     };
 
-//    this.move = function(dt, MULT) {
-//        this.entity.rigidbody.applyImpulse(this.dir.clone().scale(dt * MULT * ((score.script.score.points / 100) + 1)));
-//    };
+    this.move = move;
 
     this.addComponent('script', {
         enabled: true,
@@ -62,9 +60,7 @@ var Enemy = function() {
     });
 
     this.rigidbody.syncEntityToBody();
-//    this.model.enabled = true;
-
-//    return enemy;
+    //    this.model.enabled = true;
 }
 
-Enemy = pc.inherits(Enemy, pc.fw.Entity);
+pc.inherits(Enemy, pc.Entity);
