@@ -341,7 +341,8 @@ pc.promise.all(promises).then(function (results) {
     }, {
             name: 'tint',
             type: 'rgba',
-            value: [1, 1, 1, 1]
+            //            value: [0.2, 0.5, 1, 1]
+            value: [0.8, 0.8, 0, 1]
     }, {
             name: 'maxResHeight',
             value: 300
@@ -478,48 +479,90 @@ pc.promise.all(promises).then(function (results) {
 
     };
 
-    var storeSprite = {
-        name: 'storeSprite',
-        url: 'scripts/sprite.js',
+    //    var storeSprite = {
+    //        name: 'storeSprite',
+    //        url: 'scripts/sprite.js',
+    //        attributes: [{
+    //            name: 'textureAsset',
+    //            value: 'tank_icon.png'
+    //                    }, {
+    //            name: 'x',
+    //            value: 0
+    //                    }, {
+    //            name: 'y',
+    //            value: -10
+    //                    }, {
+    //            name: 'width',
+    //            value: 128
+    //                    }, {
+    //            name: 'height',
+    //            value: 128
+    //                    }, {
+    //            name: 'anchor',
+    //            value: 1
+    //                    }, {
+    //            name: 'pivot',
+    //            value: 1
+    //                    }, {
+    //            name: 'tint',
+    //            type: 'rgba',
+    //            value: [1, 1, 1, 1]
+    //                    }, {
+    //            name: 'maxResHeight',
+    //            value: 720
+    //                    }, {
+    //            name: 'depth',
+    //            value: 1
+    //                    }, {
+    //            name: 'uPercentage',
+    //            value: 1
+    //                    }, {
+    //            name: 'vPercentage',
+    //            value: 1
+    //                    }]
+    //    }
+
+    var storeText = {
+        name: 'scoreText',
+        url: 'scripts/font_renderer.js',
         attributes: [{
-            name: 'textureAsset',
-            value: 'tank_icon.png'
-                    }, {
+            name: 'fontAtlas',
+            value: 'boombox_72.png'
+    }, {
+            name: 'fontJson',
+            value: 'boombox'
+    }, {
+            name: 'text',
+            value: '$'
+    }, {
+            name: 'maxTextLength',
+            value: '3'
+    }, {
             name: 'x',
             value: 0
-                    }, {
+    }, {
             name: 'y',
-            value: -10
-                    }, {
-            name: 'width',
-            value: 128
-                    }, {
-            name: 'height',
-            value: 128
-                    }, {
+            value: -5
+    }, {
             name: 'anchor',
             value: 1
-                    }, {
+    }, {
             name: 'pivot',
             value: 1
-                    }, {
+    }, {
             name: 'tint',
             type: 'rgba',
-            value: [1, 1, 1, 1]
-                    }, {
+            value: [0.8, 0.8, 0, 1]
+                //            value: [0, 0, 0, 1]
+    }, {
             name: 'maxResHeight',
-            value: 720
-                    }, {
+            value: 360
+    }, {
             name: 'depth',
             value: 1
-                    }, {
-            name: 'uPercentage',
-            value: 1
-                    }, {
-            name: 'vPercentage',
-            value: 1
-                    }]
-    }
+    }]
+
+    };
 
 
     var gameOverScript = {
@@ -565,9 +608,15 @@ pc.promise.all(promises).then(function (results) {
             //        scripts: [highScoreText, highScoreScript]
     });
 
+    var storeScript = {
+        name: 'store',
+        url: 'scripts/store.js'
+    }
+
     store.addComponent('script', {
         enabled: true,
-        scripts: [storeSprite]
+        scripts: [storeText, storeScript]
+            //        scripts: [storeSprite]
     });
 
     health = new pc.fw.Entity();
