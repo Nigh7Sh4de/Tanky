@@ -1,11 +1,3 @@
-//Dis how it should be and hopefully will be if PlayCanvas gets their shit together
-pc.inherits = function (Self, Super) {
-    //    Self.prototype = Object.create(Super.prototype);
-    Self.prototype = Super.prototype;
-    //    Self.prototye = new Super;
-    Self.prototype.constructor = Self;
-}
-
 // Create a PlayCanvas application
 var canvas = document.getElementById("application-canvas");
 canvas.focus();
@@ -41,7 +33,10 @@ var tank,
     cam,
     spawner;
 
-
+var EnemyTypes = {
+    Red: RedEnemy,
+    Yellow: YellowEnemy
+}
 
 // load all textures
 var textures = [
@@ -55,11 +50,16 @@ var textures = [
     "assets/clouds.jpg",
     "assets/red.png",
     "assets/green.png",
+    "assets/yellow.png",
     "assets/fonts/boombox_72.png",
     "assets/tank/tank_icon.png",
     "assets/menu/shoot-icon.png",
     "assets/menu/move-icon.png"
 //    "assets/fonts/boombox_144.png"
+];
+
+var materials = [
+    "assets/yellow.png",
 ];
 
 var assets_json = [
@@ -82,6 +82,10 @@ for (var i = 0; i < assets_json.length; i++)
 
 for (var i = 0; i < models.length; i++)
     promises.push(app.context.assets.loadFromUrl(models[i], "model"));
+
+//for (var i = 0; i < materials.length; i++)
+//    promises.push(app.context.assets.loadFromUrl(materials[i], "material"));
+
 
 // check for all assets to load then create skybox
 pc.promise.all(promises).then(function (results) {

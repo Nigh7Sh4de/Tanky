@@ -1,6 +1,6 @@
 pc.script.create("enemy", function (app) {
 
-    const MULT = 0.2;
+    const MULT = 8;
     const INTENSITY_MULT = 5;
     const INTENSITY_MIN = 25;
     const INTENSITY_MAX = 125;
@@ -80,7 +80,7 @@ pc.script.create("enemy", function (app) {
         update: function (dt) {
             if (!this.entity.script.burn.active) {
                 //                console.log(dt);
-                this.move(dt, MULT);
+                this.move(dt, MULT * ((score.script.score.points / 100) + 1));
                 if (gun.script.enabled) {
                     if (!this.entity.glow && !cam.camera.frustum.containsPoint(this.entity.getPosition())) {
 
