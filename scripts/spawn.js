@@ -31,6 +31,7 @@ pc.script.create("spawn", function (app) {
                 if (0 <= r && r < 0.34)
                     type = EnemyTypes.Yellow;
                 else if (0.34 <= r && r < 1.0)
+//                    type = EnemyTypes.Yellow;
                     type = EnemyTypes.Red;
 
 

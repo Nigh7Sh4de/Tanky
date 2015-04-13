@@ -17,7 +17,7 @@ function YellowEnemy() {
 //        this.entity.lookAt(tpos, tpos);
 //        this.entity.lookAt(0, 0, (pos.y / 2) - up);
         this.entity.rotateLocal(-90, 0, 0);
-        this.entity.rigidbody.applyForce(0, 10, 0);
+        this.entity.rigidbody.applyForce(0, 4.9, 0);
         this.entity.rigidbody.applyImpulse(dir.normalize().scale(dt * MULT));
 //        this.entity.rigidbody.applyImpulse(dir.normalize()
 //                                           .scale(dt * MULT * ((score.script.score.points / 100) + 1)));
@@ -25,12 +25,12 @@ function YellowEnemy() {
 //        if (pos.y < pos.length * 0.05) {
 //            this.entity.rigidbody.applyImpulse(0, 0.05 * 200 * MULT, 0);
 //        } else if (pos.y < pos.length() * 0.12) {
-        if (pos.y < pos.length() * 0.12) {
-            this.entity.rigidbody.applyImpulse(0, 0.05 * MULT, 0);
+        if (pos.y < pos.length() * 0.2) {
+            this.entity.rigidbody.applyImpulse(0, 0.1 * MULT, 0);
 //            this.entity.rigidbody.applyTorqueImpulse(-1 * 0.1, 0, 0);
 //            this.entity.rigidbody.applyTorqueImpulse(0, 1 * 0.01, 0);
         } else {
-            this.entity.rigidbody.applyImpulse(0, -0.05 * MULT, 0);
+            this.entity.rigidbody.applyImpulse(0, -0.1 * MULT, 0);
 //            this.entity.rigidbody.applyTorqueImpulse(+1 * 0.1, 0, 0);
 //            this.entity.rigidbody.applyTorqueImpulse(0, -1 * 0.01, 0);
 
