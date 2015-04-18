@@ -1,7 +1,7 @@
 pc.script.create("spawn", function (app) {
 
-    const INTERVAL_MIN = 2;
-    const INTERVAL_MAX = 5;
+    const INTERVAL_MIN = 1;
+    const INTERVAL_MAX = 4;
 
     var interval = pc.math.random(INTERVAL_MIN,INTERVAL_MAX);
 
