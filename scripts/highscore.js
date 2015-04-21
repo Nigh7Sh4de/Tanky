@@ -16,7 +16,7 @@ pc.script.create("highscore", function (app) {
                 var highScore = localStorage.getItem('tanky-high-score');
                 if (highScore !== null)
                     this.maxPoints = parseFloat(highScore);
-                console.log('High Score: ' + this.maxPoints);
+//                console.log('High Score: ' + this.maxPoints);
                 this.updateText();
             }
         },

@@ -55,7 +55,7 @@ pc.script.create("look", function (app) {
 
             this.entity.setEulerAngles(this.ex, this.ey, 0);
             if (this.isPressed) {
-                var x = Math.pow(this.curTouch.y - this.firstTouch.y, POW) * MULT * 0.25;
+                var x = Math.pow(this.curTouch.y - this.firstTouch.y, POW) * MULT * 0.5;
                 if (this.ex + x > -17 && this.ex + x < 1)
                     this.ex += x;
                 var y = -Math.pow(this.curTouch.x - this.firstTouch.x, POW) * MULT; // * 0.1;
