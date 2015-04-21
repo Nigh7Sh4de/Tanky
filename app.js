@@ -23,7 +23,7 @@ var tank,
     gun,
     gameOver,
     congrats,
-//    stats,
+    //    stats,
     health,
     score,
     highscore,
@@ -33,7 +33,10 @@ var tank,
     cam,
     spawner;
 
-
+var EnemyTypes = {
+    Red: RedEnemy,
+    Yellow: YellowEnemy
+}
 
 // load all textures
 var textures = [
@@ -47,11 +50,16 @@ var textures = [
     "assets/clouds.jpg",
     "assets/red.png",
     "assets/green.png",
+    "assets/yellow.png",
     "assets/fonts/boombox_72.png",
     "assets/tank/tank_icon.png",
     "assets/menu/shoot-icon.png",
     "assets/menu/move-icon.png"
 //    "assets/fonts/boombox_144.png"
+];
+
+var materials = [
+    "assets/yellow.png",
 ];
 
 var assets_json = [
@@ -74,6 +82,10 @@ for (var i = 0; i < assets_json.length; i++)
 
 for (var i = 0; i < models.length; i++)
     promises.push(app.context.assets.loadFromUrl(models[i], "model"));
+
+//for (var i = 0; i < materials.length; i++)
+//    promises.push(app.context.assets.loadFromUrl(materials[i], "material"));
+
 
 // check for all assets to load then create skybox
 pc.promise.all(promises).then(function (results) {
@@ -283,8 +295,8 @@ pc.promise.all(promises).then(function (results) {
     });
 
     //Create a HUD
-//    stats = new pc.fw.Entity();
-//    stats.setName('stats');
+    //    stats = new pc.fw.Entity();
+    //    stats.setName('stats');
     score = new pc.fw.Entity();
     score.setName('score');
     highscore = new pc.fw.Entity();
@@ -495,15 +507,15 @@ pc.promise.all(promises).then(function (results) {
         scripts: [highScoreText, highScoreScript]
     });
 
-//    var highScoreScript = {
-//        name: 'highscore',
-//        url: 'scripts/highscore.js'
-//    }
+    //    var highScoreScript = {
+    //        name: 'highscore',
+    //        url: 'scripts/highscore.js'
+    //    }
 
     congrats.addComponent('script', {
         enabled: true,
         scripts: [congratsText]
-//        scripts: [highScoreText, highScoreScript]
+            //        scripts: [highScoreText, highScoreScript]
     });
 
     health = new pc.fw.Entity();
