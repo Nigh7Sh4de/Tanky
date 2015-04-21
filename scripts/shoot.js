@@ -40,7 +40,7 @@ pc.script.create("shoot", function (app) {
 
         createBullet: function () {
 
-            var newBullet = new GreenBullet(this.entity.getRotation(),
+            var newBullet = new PinkBullet(this.entity.getRotation(),
                 this.entity.getPosition());
 
 

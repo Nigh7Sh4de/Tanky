@@ -43,7 +43,7 @@ pc.script.create("enemy", function (app) {
 
         onCollisionStart: function (result) {
             //            console.log(result.other.isBullet === true);
-            if (result.other.isBullet) {
+            /*if (result.other.isBullet) {
                 var material = new pc.scene.PhongMaterial();
                 var texture = app.assets.find('green.png');
                 material.diffuseMap = texture.resource;
@@ -53,7 +53,8 @@ pc.script.create("enemy", function (app) {
                 this.entity.model.material = material;
                 this.burn(this.entity, result.other);
                 score.script.score.increase(10);
-            } else if (result.other.name == 'tank') {
+            } else*/
+            if (result.other.name == 'tank' && !this.entity.charmed) {
                 //                this.burn(this.entity, result.other);
                 if (health.script.health.decrease(1))
                     this.burn(this.entity);
@@ -61,6 +62,15 @@ pc.script.create("enemy", function (app) {
                     this.burn(this.entity, base, gun);
                 }
                 //                this.burn(this.entity);
+            } else if (result.other.name == 'enemy' && !result.other.charmed && this.entity.charmed) {
+                var material = new pc.scene.PhongMaterial();
+                var texture = app.assets.find('green.png');
+                material.diffuseMap = texture.resource;
+                //            material.diffuse = new pc.Color(1.0, 0.0, 0.0, 1.0);
+                material.update();
+
+                result.other.model.material = material;
+                this.burn(this.entity, result.other);
             }
 
         },
@@ -75,14 +85,15 @@ pc.script.create("enemy", function (app) {
             }
         },
 
-        move: function(dt, MULT) {},
+        move: function (dt, MULT) {},
 
         update: function (dt) {
             if (!this.entity.script.burn.active) {
                 //                console.log(dt);
-                this.move(dt, MULT * ((score.script.score.points / 100) + 1));
+                if (!this.entity.charmed)
+                    this.move(dt, MULT * ((score.script.score.points / 100) + 1));
                 if (gun.script.enabled) {
-                    if (!this.entity.glow && !cam.camera.frustum.containsPoint(this.entity.getPosition())) {
+                    if (!this.entity.charmed && !this.entity.glow && !cam.camera.frustum.containsPoint(this.entity.getPosition())) {
 
                         var glow = new pc.fw.Entity();
                         glow.addComponent('light', {
@@ -102,7 +113,7 @@ pc.script.create("enemy", function (app) {
                         this.entity.glow = glow;
 
                     } else if (this.entity.glow && this.entity.glow.light) {
-                        if (cam.camera.frustum.containsPoint(this.entity.getPosition())) {
+                        if (this.entity.charmed || cam.camera.frustum.containsPoint(this.entity.getPosition())) {
                             this.entity.glow.destroy();
                             this.entity.glow = null;
                         } else

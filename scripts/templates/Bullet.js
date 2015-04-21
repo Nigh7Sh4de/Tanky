@@ -29,13 +29,13 @@ var Bullet = function (rotation, position) {
     });
 
 
-    var material = new pc.scene.PhongMaterial();
-    var texture = app.assets.find('green.png');
-    material.diffuseMap = texture.resource;
-    //            material.diffuse = new pc.Color(0.0, 0.5, 0.0, 1.0);
-    material.update();
-
-    this.model.material = material;
+//    var material = new pc.scene.PhongMaterial();
+//    var texture = app.assets.find('green.png');
+//    material.diffuseMap = texture.resource;
+//    //            material.diffuse = new pc.Color(0.0, 0.5, 0.0, 1.0);
+//    material.update();
+//
+//    this.model.material = material;
 
     var bulletScript = {
         url: 'scripts/bullet.js',
