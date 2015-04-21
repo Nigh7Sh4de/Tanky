@@ -40,60 +40,9 @@ pc.script.create("shoot", function (app) {
 
         createBullet: function () {
 
-            var newBullet = new pc.fw.Entity();
-            newBullet.setName('bullet');
+            var newBullet = new GreenBullet(this.entity.getRotation(),
+                this.entity.getPosition());
 
-            newBullet.isBullet = true;
-
-            newBullet.addComponent('model', {
-                type: "box",
-                castShadows: true,
-                receiveShadows: true
-            });
-
-            newBullet.setRotation(this.entity.getRotation());
-            newBullet.setLocalScale(0.08, 0.08, 0.4);
-            newBullet.setPosition(this.entity.getPosition());
-            newBullet.translateLocal(0, 0.1523, 0);
-            //
-            //            newBullet.addComponent('rigidbody', {
-            //                type: 'dynamic',
-            //                mass: 1,
-            //                restitution: 0.5
-            //            });
-            newBullet.addComponent('collision', {
-                type: "box",
-                halfExtents: newBullet.getLocalScale().clone().scale(0.5)
-            });
-
-
-            var material = new pc.scene.PhongMaterial();
-            var texture = app.assets.find('green.png');
-            material.diffuseMap = texture.resource;
-            //            material.diffuse = new pc.Color(0.0, 0.5, 0.0, 1.0);
-            material.update();
-
-            newBullet.model.material = material;
-
-            var bulletScript = {
-                url: 'scripts/bullet.js',
-                name: 'bullet'
-            };
-
-            var burnScript = {
-                name: 'burn',
-                url: 'scripts/burn.js',
-                attributes: [{
-                    name: 'maps',
-                    type: 'string',
-                    value: 'clouds.jpg'
-                }]
-            };
-
-            newBullet.addComponent('script', {
-                enabled: true,
-                scripts: [bulletScript, burnScript]
-            });
 
 
 
