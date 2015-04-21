@@ -53,6 +53,7 @@ var textures = [
     "assets/red.png",
     "assets/green.png",
     "assets/yellow.png",
+    "assets/pink.png",
     "assets/fonts/boombox_72.png",
     "assets/tank/tank_icon.png",
     "assets/menu/shoot-icon.png",
