@@ -11,6 +11,10 @@ pc.script.create("bullet", function (app) {
 
     bulletScript.prototype = {
         initialize: function () {
+            if (this.entity.onTriggerEnter == null)
+                console.error("Bullet requires onTriggerEnter");
+            this.onTriggerEnter = this.entity.onTriggerEnter;
+
             this.force = this.entity.forward.clone().scale(-50);
             //            this.entity.rigidbody.applyImpulse(this.force);
             this.entity.script.burn.die = this.die;
@@ -19,19 +23,7 @@ pc.script.create("bullet", function (app) {
             //            this.entity.collision.on
         },
 
-        onTriggerEnter: function (other) {
-            if (other.name == 'enemy') {
-                var material = new pc.scene.PhongMaterial();
-                var texture = app.assets.find('green.png');
-                material.diffuseMap = texture.resource;
-                //            material.diffuse = new pc.Color(1.0, 0.0, 0.0, 1.0);
-                material.update();
-
-                other.model.material = material;
-                this.burn(this.entity, other);
-                score.script.score.increase(10);
-            }
-        },
+        onTriggerEnter: function (other) {},
 
         update: function (dt) {
             //            if (this.entity.dead) {
@@ -58,7 +50,7 @@ pc.script.create("bullet", function (app) {
                     arguments[i].rigidbody.enabled = false;
                 arguments[i].script.burn.activate();
                 //                arguments[i].rigidbody.
-//                arguments[i].model.castShadows = false;
+                //                arguments[i].model.castShadows = false;
             }
         },
 
