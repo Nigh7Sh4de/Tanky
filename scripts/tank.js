@@ -27,7 +27,9 @@ pc.script.create("tank", function (app) {
             //            this.entity.model.enabled = false;
             //            this.entity.script.burn.reset();
             this.entity.getParent().script.tank.die();
-        },
+            gameOver.enabled = true;
+            if (highscore.script.highscore)
+                highscore.script.highscore.checkHighScore();        },
 
         //        killttttttttttrertrerfewrdsfderrfgreftgy
 
@@ -38,9 +40,9 @@ pc.script.create("tank", function (app) {
                 if (children[i].name == 'glow')
                     children[i--].destroy();
             };
-            gameOver.enabled = true;
-            if (highscore.script.highscore)
-                highscore.script.highscore.checkHighScore();
+//            gameOver.enabled = true;
+//            if (highscore.script.highscore)
+//                highscore.script.highscore.checkHighScore();
 
         },
 

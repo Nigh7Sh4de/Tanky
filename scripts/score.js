@@ -1,5 +1,4 @@
 pc.script.create("score", function (app) {
-
     const MULT = 25;
     const MAX_TIME = 2;
 
@@ -9,8 +8,9 @@ pc.script.create("score", function (app) {
     };
 
     scoreScript.prototype = {
+
         initialize: function () {
-            //            this.entity.script.font_renderer.text = 'fuck you too';
+            // this.entity.script.font_renderer.text = 'fuck you too';
             this.reset();
         },
 
@@ -32,5 +32,4 @@ pc.script.create("score", function (app) {
     }
 
     return scoreScript;
-
 });

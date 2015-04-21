@@ -23,6 +23,7 @@ var tank,
     gun,
     gameOver,
     congrats,
+    store,
     //    stats,
     health,
     score,
@@ -30,6 +31,7 @@ var tank,
     floor,
     skybox,
     light,
+    store_light,
     cam,
     spawner;
 
@@ -51,6 +53,7 @@ var textures = [
     "assets/red.png",
     "assets/green.png",
     "assets/yellow.png",
+    "assets/pink.png",
     "assets/fonts/boombox_72.png",
     "assets/tank/tank_icon.png",
     "assets/menu/shoot-icon.png",
@@ -103,7 +106,7 @@ pc.promise.all(promises).then(function (results) {
     cam.setLocalPosition(0, 1.5, -3.5);
     cam.rotateLocal(-20, 180, 0);
 
-    // Create directional light entity
+    // Create light entities
     light = new pc.fw.Entity();
     light.setName('light');
     light.translate(0, 2, 0);
@@ -114,6 +117,18 @@ pc.promise.all(promises).then(function (results) {
         intensity: 2,
         castShadows: true
     });
+
+    store_light = new pc.Entity();
+    store_light.setName('store_light');
+    store_light.setPosition(0, 1, 0);
+    store_light.addComponent('light', {
+        type: 'directional',
+        color: light.light.color,
+        intensity: 1,
+        castShadows: true
+    });
+    store_light.enabled = false;
+
 
     //    //Create a skybox entity
     //    skybox = new pc.fw.Entity();
@@ -304,6 +319,8 @@ pc.promise.all(promises).then(function (results) {
     congrats = new pc.fw.Entity();
     congrats.setName('congrats');
     congrats.enabled = false;
+    store = new pc.Entity();
+    store.setName('store');
     gameOver = new pc.fw.Entity();
     gameOver.setName('gameOver');
 
@@ -337,7 +354,8 @@ pc.promise.all(promises).then(function (results) {
     }, {
             name: 'tint',
             type: 'rgba',
-            value: [1, 1, 1, 1]
+            //            value: [0.2, 0.5, 1, 1]
+            value: [0.8, 0.8, 0, 1]
     }, {
             name: 'maxResHeight',
             value: 300
@@ -474,6 +492,91 @@ pc.promise.all(promises).then(function (results) {
 
     };
 
+    //    var storeSprite = {
+    //        name: 'storeSprite',
+    //        url: 'scripts/sprite.js',
+    //        attributes: [{
+    //            name: 'textureAsset',
+    //            value: 'tank_icon.png'
+    //                    }, {
+    //            name: 'x',
+    //            value: 0
+    //                    }, {
+    //            name: 'y',
+    //            value: -10
+    //                    }, {
+    //            name: 'width',
+    //            value: 128
+    //                    }, {
+    //            name: 'height',
+    //            value: 128
+    //                    }, {
+    //            name: 'anchor',
+    //            value: 1
+    //                    }, {
+    //            name: 'pivot',
+    //            value: 1
+    //                    }, {
+    //            name: 'tint',
+    //            type: 'rgba',
+    //            value: [1, 1, 1, 1]
+    //                    }, {
+    //            name: 'maxResHeight',
+    //            value: 720
+    //                    }, {
+    //            name: 'depth',
+    //            value: 1
+    //                    }, {
+    //            name: 'uPercentage',
+    //            value: 1
+    //                    }, {
+    //            name: 'vPercentage',
+    //            value: 1
+    //                    }]
+    //    }
+
+    var storeText = {
+        name: 'scoreText',
+        url: 'scripts/font_renderer.js',
+        attributes: [{
+            name: 'fontAtlas',
+            value: 'boombox_72.png'
+    }, {
+            name: 'fontJson',
+            value: 'boombox'
+    }, {
+            name: 'text',
+            value: '$'
+    }, {
+            name: 'maxTextLength',
+            value: '3'
+    }, {
+            name: 'x',
+            value: 0
+    }, {
+            name: 'y',
+            value: -5
+    }, {
+            name: 'anchor',
+            value: 1
+    }, {
+            name: 'pivot',
+            value: 1
+    }, {
+            name: 'tint',
+            type: 'rgba',
+            value: [0.8, 0.8, 0, 1]
+                //            value: [0, 0, 0, 1]
+    }, {
+            name: 'maxResHeight',
+            value: 360
+    }, {
+            name: 'depth',
+            value: 1
+    }]
+
+    };
+
 
     var gameOverScript = {
         name: 'gameOver',
@@ -516,6 +619,17 @@ pc.promise.all(promises).then(function (results) {
         enabled: true,
         scripts: [congratsText]
             //        scripts: [highScoreText, highScoreScript]
+    });
+
+    var storeScript = {
+        name: 'store',
+        url: 'scripts/store.js'
+    }
+
+    store.addComponent('script', {
+        enabled: true,
+        scripts: [storeText, storeScript]
+            //        scripts: [storeSprite]
     });
 
     health = new pc.fw.Entity();
@@ -639,10 +753,12 @@ pc.promise.all(promises).then(function (results) {
     app.root.addChild(health);
     app.root.addChild(highscore);
     app.root.addChild(congrats);
+    app.root.addChild(store);
 
     app.root.addChild(tank);
     app.root.addChild(floor);
     app.root.addChild(light);
+    app.root.addChild(store_light);
     app.root.addChild(wall);
     app.root.addChild(wall2);
     app.root.addChild(wall3);
