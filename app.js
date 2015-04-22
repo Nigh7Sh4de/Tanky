@@ -49,6 +49,11 @@ var BulletTypes = [
     PinkBullet
 ]
 
+BulletTypes.DefaultBullet = GreenBullet;
+BulletTypes.DefaultBullet.prototype.ammo = 999;
+//GreenBullet.ammo = 999;
+//PinkBullet.ammo = 0;
+
 // load all textures
 var textures = [
     //    "assets/skybox/posy.png",
@@ -158,6 +163,8 @@ pc.promise.all(promises).then(function (results) {
     activeBullet.setName('activeBullet');
     activeBullet.removeComponent('collision');
     activeBullet.displayOnly = true;
+    activeBullet.addChild(buildText(activeBullet.ammo.toString(), -132, 300));
+    activeBullet.enabled = false;
 
     store_bullet_green = new GreenBullet(pc.Vec3.ZERO, new pc.Vec3(0, 1, -0.8));
     store_bullet_green.setName('store_bullet_green');

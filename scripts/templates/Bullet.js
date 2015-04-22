@@ -61,3 +61,5 @@ var Bullet = function (rotation, position) {
 }
 
 inherit(Bullet, pc.Entity);
+
+Bullet.prototype.ammo = 0;

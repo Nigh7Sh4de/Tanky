@@ -40,6 +40,13 @@ pc.script.create("shoot", function (app) {
                         index = index >= BulletTypes.length ? 0 : index;
                         this.bullet = BulletTypes[index];
                         activeBullet.model.material = this.bullet.getMaterial();
+                        var text = activeBullet.getChildren()[1];
+                        text.script.font_renderer.text = this.bullet.prototype.ammo.toString();
+                        //                        text.enabled = false;
+                        //                        text.destroy();
+                        //                        activeBullet.removeChild();
+                        //                        activeBullet.addChild(buildText(this.bullet.prototype.ammo.toString(), -100, 250));
+                        console.log(activeBullet._children.length);
                     } else if (t.x < width / 2) {
                         this.createBullet();
                     }
@@ -49,14 +56,13 @@ pc.script.create("shoot", function (app) {
 
         createBullet: function () {
 
-            var newBullet = new this.bullet(this.entity.getEulerAngles(),
-                this.entity.getPosition());
-
-
-
-
-            app.root.addChild(newBullet);
-
+            if (this.bullet.prototype.ammo > 0) {
+                if (this.bullet != BulletTypes.DefaultBullet)
+                    this.bullet.prototype.ammo--;
+                var newBullet = new this.bullet(this.entity.getEulerAngles(),
+                    this.entity.getPosition());
+                app.root.addChild(newBullet);
+            }
         }
     };
 
