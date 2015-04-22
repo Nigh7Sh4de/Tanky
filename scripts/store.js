@@ -6,6 +6,10 @@ pc.script.create("store", function (app) {
     var storeScript = function (entity) {
         this.entity = entity;
         this.active = false;
+        this.angles = new pc.Vec3(-90, 0, 0);
+        this.pos = new pc.Vec3(0, 5, 0);
+        this.delay = 0;
+        //        this.thing;
         //        this.points = 0;
     };
 
@@ -16,107 +20,62 @@ pc.script.create("store", function (app) {
             //            this.reset();
         },
 
-        update: function (dt) {},
+        update: function (dt) {
+            if (this.delay >= 0)
+                this.delay += dt;
+            if (this.delay > 0.1)
+                this.delay = -1;
+        },
+
+        toggleState: function (state) {
+            this.entity.getChildren().forEach(function (x) {
+                x.enabled = state;
+            });
+            this.active = state;
+            this.entity.script.font_renderer.text = state ? '<<' : '$';
+            tank.script.tank.toggleState(!state);
+            spawner.script.enabled = !state;
+            var enemies = app.root.findByLabel('enemy');
+            enemies.forEach(function (e) {
+                //                e.charmed = state;
+                e.model.enabled = !state;
+                e.script.enabled = !state;
+                if (e.rigidbody) {
+                    if (state) {
+                        e.rigidbody._linearVelocity = e.rigidbody.linearVelocity;
+                        e.rigidbody.linearVelocity = pc.Vec3.ZERO;
+                    } else {
+                        e.rigidbody.linearVelocity = e.rigidbody._linearVelocity;
+                    }
+                }
+            });
+            light.enabled = !state;
+            store_light.enabled = state;
+            //                app.root.removeChild(this.thing);
+
+            var _angles = cam.getEulerAngles().clone();
+            var _pos = cam.getLocalPosition().clone();
+
+            cam.setEulerAngles(this.angles);
+            cam.setLocalPosition(this.pos);
+
+            this.angles = _angles;
+            this.pos = _pos;
+        },
 
         onTouch: function () {
-            if (this.active) {} else {
-                //            tank.script.tank.die();
-                //            var angles = cam.getLocalEulerAngles();
-                //            var pos = cam.getLocalPosition();
-                //            cam.setEulerAngles(-90, 0, 0);
-                //            cam.setLocalPosition(0, 5, 0);
-
-                //            store.enabled = false;
-                this.active = true;
-                this.entity.script.font_renderer.text = '<<';
-
-                tank.script.tank.die();
-                var angles = cam.getLocalEulerAngles();
-                var pos = cam.getLocalPosition();
-                cam.setEulerAngles(-90, 0, 0);
-                cam.setLocalPosition(0, 5, 0);
-
-
-
-                var thing = new pc.fw.Entity();
-                thing.addComponent('model', {
-                    type: 'box',
-                    receiveShadows: false,
-                    castShadows: true
-                });
-                //            var thing_light = new pc.Entity();
-                //            thing_light.addComponent('light', {
-                //                type: 'directional',
-                //                intensity: 0.5,
-                //                color: light.light.color,
-                //                castShadows: true
-                //            });
-                //            var thing_light = light.clone();
-                //            thing_light.light.intensity = 1;
-                //            thing_light.light.type = 'directional';
-                thing.setPosition(0, 1, -1);
-                //            thing_light.setPosition(0, 1, 0);
-                //            light.light.intensity = 1;
-                light.enabled = false;
-                store_light.enabled = true;
-
-                app.root.addChild(thing);
-                //            app.root.addChild(thing_light);
-                this.buildText('$0');
+            if (this.delay >= 0)
+                return;
+            else
+                this.delay = 0;
+            if (this.active) {
+                //                console.log("TOUCH");
+                this.toggleState(false);
+            } else {
+                //                console.log("TOUCH");
+                this.toggleState(true);
             }
-        },
-
-        buildText: function (text) {
-            var thing = new pc.fw.Entity();
-            thing.setName('text_' + text);
-            var thingText = {
-                name: 'thingText',
-                url: 'scripts/font_renderer.js',
-                attributes: [{
-                    name: 'fontAtlas',
-                    value: 'boombox_72.png'
-        }, {
-                    name: 'fontJson',
-                    value: 'boombox'
-        }, {
-                    name: 'text',
-                    value: text
-        }, {
-                    name: 'maxTextLength',
-                    value: '64'
-        }, {
-                    name: 'x',
-                    value: 0
-        }, {
-                    name: 'y',
-                    value: 0
-        }, {
-                    name: 'anchor',
-                    value: 4
-        }, {
-                    name: 'pivot',
-                    value: 4
-        }, {
-                    name: 'tint',
-                    type: 'rgba',
-                    value: [0.5, 0.5, 0.5, 1]
-        }, {
-                    name: 'maxResHeight',
-                    value: 360
-        }, {
-                    name: 'depth',
-                    value: 1
-        }]
-
-            };
-
-            thing.addComponent('script', {
-                enabled: true,
-                scripts: [thingText]
-            });
-
-            app.root.addChild(thing);
-        },
+        }
 
 
     }

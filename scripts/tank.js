@@ -27,20 +27,21 @@ pc.script.create("tank", function (app) {
             //            this.entity.model.enabled = false;
             //            this.entity.script.burn.reset();
             this.entity.getParent().script.tank.die();
-            gameOver.enabled = true;
-            if (highscore.script.highscore)
-                highscore.script.highscore.checkHighScore();
+            //            gameOver.enabled = true;
+            //            if (highscore.script.highscore)
+            //                highscore.script.highscore.checkHighScore();
         },
 
         //        killttttttttttrertrerfewrdsfderrfgreftgy
 
         die: function () {
             this.toggleState(false);
-            var children = this.entity.getChildren(); // forEach(function (x) {
-            for (var i = 0; i < children.length; i++) {
-                if (children[i].name == 'glow')
-                    children[i--].destroy();
-            };
+
+            gameOver.enabled = true;
+            if (highscore.script.highscore)
+                highscore.script.highscore.checkHighScore();
+            store.enabled = false;
+            //            store.enabled = false;
             //            gameOver.enabled = true;
             //            if (highscore.script.highscore)
             //                highscore.script.highscore.checkHighScore();
@@ -68,6 +69,16 @@ pc.script.create("tank", function (app) {
             //            glow.enabled = state;
             this.entity.script.enabled = state;
             this.entity.collision.enabled = state;
+
+            if (!state) {
+                var children = this.entity.getChildren(); // forEach(function (x) {
+                for (var i = 0; i < children.length; i++) {
+                    if (children[i].name == 'glow') {
+                        children[i].enemy.glow = null;
+                        children[i--].destroy();
+                    }
+                };
+            }
         },
 
         update: function (dt) {

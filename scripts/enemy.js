@@ -111,6 +111,7 @@ pc.script.create("enemy", function (app) {
 
                         tank.addChild(glow);
                         this.entity.glow = glow;
+                        glow.enemy = this.entity;
 
                     } else if (this.entity.glow && this.entity.glow.light) {
                         if (this.entity.charmed || cam.camera.frustum.containsPoint(this.entity.getPosition())) {

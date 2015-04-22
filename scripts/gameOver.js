@@ -18,6 +18,7 @@ pc.script.create("gameOver", function (app) {
         onTouch: function () {
             //            app.root.findByName('tank').script.tank.reset();
             //            if (this.gun.dead || this.base.dead) {
+            store.enabled = true;
             health.script.health.reset();
             score.script.score.reset();
             //            var gameOver = app.root.findByName('gameOver');
