@@ -2,6 +2,7 @@ pc.script.create("shoot", function (app) {
 
     var shootScript = function (entity) {
         this.entity = entity;
+        this.bullet = GreenBullet;
 
         app.mouse.on(pc.input.EVENT_MOUSEDOWN, this.onMouseDown, this);
         app.touch.on('touchstart', this.onTouchStart, this);
@@ -27,11 +28,19 @@ pc.script.create("shoot", function (app) {
                 //            console.log('You touched me!? o.O');
                 var touches = event.changedTouches;
                 var width = event.element.width;
+                var height = event.element.height;
 
                 for (var i = 0; i < touches.length; i++) {
                     var t = touches[0];
                     //                console.log(t.x < width / 2);
-                    if (t.x < width / 2) {
+                    if (t.x < width / 2 && t.x > width / 3 &&
+                        t.y < height / 10 && t.y > 0) {
+
+                        var index = BulletTypes.indexOf(this.bullet) + 1;
+                        index = index >= BulletTypes.length ? 0 : index;
+                        this.bullet = BulletTypes[index];
+                        activeBullet.model.material = this.bullet.getMaterial();
+                    } else if (t.x < width / 2) {
                         this.createBullet();
                     }
                 }
@@ -40,7 +49,7 @@ pc.script.create("shoot", function (app) {
 
         createBullet: function () {
 
-            var newBullet = new GreenBullet(this.entity.getRotation(),
+            var newBullet = new this.bullet(this.entity.getEulerAngles(),
                 this.entity.getPosition());
 
 

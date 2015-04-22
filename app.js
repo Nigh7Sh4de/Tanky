@@ -33,12 +33,18 @@ var tank,
     light,
     store_light,
     cam,
-    spawner;
+    spawner,
+    activeBullet;
 
 var EnemyTypes = {
     Red: RedEnemy,
     Yellow: YellowEnemy
 }
+
+var BulletTypes = [
+    GreenBullet,
+    PinkBullet
+]
 
 // load all textures
 var textures = [
@@ -144,6 +150,11 @@ pc.promise.all(promises).then(function (results) {
     //        negz: results[0].asset.id
     //    });
 
+    //Create a representation of the active bullet
+    activeBullet = new GreenBullet(pc.Vec3.ZERO, new pc.Vec3(-0.45, 0.95, -3));
+    activeBullet.removeComponent('collision');
+    activeBullet.displayOnly = true;
+
     // Create tank entity
     tank = new pc.fw.Entity();
     tank.setName('tank');
@@ -230,9 +241,6 @@ pc.promise.all(promises).then(function (results) {
     //    gun.dead = true;
     //    base.dead = true;
 
-    tank.addChild(base);
-    tank.addChild(gun);
-    gun.addChild(cam);
 
     //    tank.script.tank.die();
 
@@ -744,6 +752,11 @@ pc.promise.all(promises).then(function (results) {
         enabled: true,
         scripts: [info_move_sprite]
     });
+
+    cam.addChild(activeBullet);
+    tank.addChild(base);
+    tank.addChild(gun);
+    gun.addChild(cam);
 
     gameOver.addChild(info_shoot);
     gameOver.addChild(info_move);
