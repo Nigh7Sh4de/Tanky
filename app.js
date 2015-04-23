@@ -170,13 +170,13 @@ pc.promise.all(promises).then(function (results) {
     store_bullet_green.setName('store_bullet_green');
     store_bullet_green.removeComponent('collision');
     store_bullet_green.displayOnly = true;
-    store_bullet_green.addChild(buildText("$0", 0, 75));
+    store_bullet_green.addChild(buildText("$", 0, 75));
 
     store_bullet_pink = new PinkBullet(pc.Vec3.ZERO, new pc.Vec3(0, 1, 0.7));
     store_bullet_pink.setName('store_bullet_pink');
     store_bullet_pink.removeComponent('collision');
     store_bullet_pink.displayOnly = true;
-    store_bullet_pink.addChild(buildText("$5", 0, -210));
+    store_bullet_pink.addChild(buildText("$", 0, -210));
 
     store_listing = new pc.Entity();
     store_listing.setName('store_listing');

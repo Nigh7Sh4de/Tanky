@@ -33,7 +33,7 @@ pc.script.create("shoot", function (app) {
                 for (var i = 0; i < touches.length; i++) {
                     var t = touches[0];
                     //                console.log(t.x < width / 2);
-                    if (t.x < width / 2 && t.x > width / 3 &&
+                    if (t.x < width / 2.1 && t.x > width / 3 &&
                         t.y < height / 10 && t.y > 0) {
 
                         var index = BulletTypes.indexOf(this.bullet) + 1;
@@ -46,8 +46,8 @@ pc.script.create("shoot", function (app) {
                         //                        text.destroy();
                         //                        activeBullet.removeChild();
                         //                        activeBullet.addChild(buildText(this.bullet.prototype.ammo.toString(), -100, 250));
-                        console.log(activeBullet._children.length);
-                    } else if (t.x < width / 2) {
+                        //                        console.log(activeBullet._children.length);
+                    } else if (t.x < width / 2 && t.y > height * 0.2) {
                         this.createBullet();
                     }
                 }
@@ -57,8 +57,11 @@ pc.script.create("shoot", function (app) {
         createBullet: function () {
 
             if (this.bullet.prototype.ammo > 0) {
-                if (this.bullet != BulletTypes.DefaultBullet)
+                if (this.bullet != BulletTypes.DefaultBullet) {
                     this.bullet.prototype.ammo--;
+                    if (store.script.store)
+                        store.script.store.updateListings();
+                }
                 var newBullet = new this.bullet(this.entity.getEulerAngles(),
                     this.entity.getPosition());
                 app.root.addChild(newBullet);

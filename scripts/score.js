@@ -26,6 +26,13 @@ pc.script.create("score", function (app) {
             this.updateText();
         },
 
+        decrease: function (amount) {
+            if (this.points < amount)
+                throw "Points cannot be negative";
+            this.points -= amount;
+            this.updateText();
+        },
+
         reset: function () {
             this.points = 0;
             this.updateText();

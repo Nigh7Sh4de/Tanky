@@ -30,3 +30,5 @@ PinkBullet.getMaterial = function () {
 }
 
 inherit(PinkBullet, Bullet);
+
+PinkBullet.prototype.cost = 5;
