@@ -10,6 +10,7 @@ function YellowEnemy() {
         //        var dir = tpos.sub(pos);
         var dir = this.dir;
         var up = this.entity.rigidbody.linearVelocity.y;
+        var amp = 0.2;
         //        console.log(pos.y < pos.length() * 0.12);
         //        console.log(pos.length());
         //        this.entity.lookAt(0, 0, 5, 0, 1, -1);
@@ -26,11 +27,11 @@ function YellowEnemy() {
         //            this.entity.rigidbody.applyImpulse(0, 0.05 * 200 * MULT, 0);
         //        } else if (pos.y < pos.length() * 0.12) {
         if (pos.y < pos.length() * 0.2) {
-            this.entity.rigidbody.applyImpulse(0, 0.1 * MULT, 0);
+            this.entity.rigidbody.applyImpulse(0, amp * MULT, 0);
             //            this.entity.rigidbody.applyTorqueImpulse(-1 * 0.1, 0, 0);
             //            this.entity.rigidbody.applyTorqueImpulse(0, 1 * 0.01, 0);
         } else {
-            this.entity.rigidbody.applyImpulse(0, -0.1 * MULT, 0);
+            this.entity.rigidbody.applyImpulse(0, -amp * MULT, 0);
             //            this.entity.rigidbody.applyTorqueImpulse(+1 * 0.1, 0, 0);
             //            this.entity.rigidbody.applyTorqueImpulse(0, -1 * 0.01, 0);
 
