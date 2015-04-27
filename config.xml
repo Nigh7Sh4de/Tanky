@@ -15,5 +15,8 @@
     <preference name="orientation" value="landscape" />
     <preference name="fullscreen" value="true" />
     <preference name="android-minSdkVersion" value="14" />
+    <preference name="permissions" value="none" />
+
+    <icon src="icon.png" />
 
 </widget>
