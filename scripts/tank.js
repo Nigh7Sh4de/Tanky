@@ -41,6 +41,11 @@ pc.script.create("tank", function (app) {
             if (highscore.script.highscore)
                 highscore.script.highscore.checkHighScore();
             store.enabled = false;
+
+            BulletTypes.forEach(function (type) {
+                if (type != BulletTypes.DefaultBullet)
+                    type.prototype.ammo = 0;
+            });
             //            store.enabled = false;
             //            gameOver.enabled = true;
             //            if (highscore.script.highscore)
