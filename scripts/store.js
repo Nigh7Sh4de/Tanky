@@ -51,7 +51,8 @@ pc.script.create("store", function (app) {
 
                 if (t.x >= tl.x && t.x <= br.x &&
                     t.y >= tl.y && t.y <= br.y) {
-                    self.buy(l);
+                    if (l.constructor != BulletTypes.DefaultBullet)
+                        self.buy(l);
                     return;
                 }
             });
