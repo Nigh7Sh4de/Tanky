@@ -8,6 +8,7 @@ var PinkBullet = function (rotation, position) {
             other.rigidbody.linearVelocity = pc.Vec3.ZERO;
 
             other.charmed = true;
+            other.setName('charmed_enemy');
             this.burn(this.entity);
 
             score.script.score.increase(10);

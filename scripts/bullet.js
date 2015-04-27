@@ -21,9 +21,14 @@ pc.script.create("bullet", function (app) {
             this.entity.script.burn.die = this.die;
 
             if (this.entity.collision)
-                this.entity.collision.on('triggerenter', this.onTriggerEnter, this);
+                this.entity.collision.on('triggerenter', this.onTrigger, this);
 
             //            this.entity.collision.on
+        },
+
+        onTrigger: function (other) {
+            if (other.charmed != true)
+                this.onTriggerEnter(other);
         },
 
         onTriggerEnter: function (other) {},

@@ -46,6 +46,10 @@ pc.script.create("tank", function (app) {
                 if (type != BulletTypes.DefaultBullet)
                     type.prototype.ammo = 0;
             });
+
+            var enemy;
+            while ((enemy = app.root.findByName('charmed_enemy')) != null)
+                enemy.destroy();
             //            store.enabled = false;
             //            gameOver.enabled = true;
             //            if (highscore.script.highscore)
