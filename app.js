@@ -24,6 +24,7 @@ var tank,
     gameOver,
     congrats,
     store,
+    store_listing,
     //    stats,
     health,
     score,
@@ -33,21 +34,34 @@ var tank,
     light,
     store_light,
     cam,
-    spawner;
+    spawner,
+    activeBullet,
+    store_bullet_green,
+    store_bullet_pink;
 
 var EnemyTypes = {
     Red: RedEnemy,
     Yellow: YellowEnemy
 }
 
+var BulletTypes = [
+    GreenBullet,
+    PinkBullet
+]
+
+BulletTypes.DefaultBullet = GreenBullet;
+BulletTypes.DefaultBullet.prototype.ammo = 999;
+//GreenBullet.ammo = 999;
+//PinkBullet.ammo = 0;
+
 // load all textures
 var textures = [
-//    "assets/skybox/posy.png",
-//    "assets/skybox/negy.png",
-//    "assets/skybox/negx.png",
-//    "assets/skybox/posx.png",
-//    "assets/skybox/posz.png",
-//    "assets/skybox/negz.png",
+    //    "assets/skybox/posy.png",
+    //    "assets/skybox/negy.png",
+    //    "assets/skybox/negx.png",
+    //    "assets/skybox/posx.png",
+    //    "assets/skybox/posz.png",
+    //    "assets/skybox/negz.png",
     "assets/Hex_Plating.png",
     "assets/clouds.jpg",
     "assets/red.png",
@@ -58,7 +72,7 @@ var textures = [
     "assets/tank/tank_icon.png",
     "assets/menu/shoot-icon.png",
     "assets/menu/move-icon.png"
-//    "assets/fonts/boombox_144.png"
+    //    "assets/fonts/boombox_144.png"
 ];
 
 var materials = [
@@ -67,7 +81,7 @@ var materials = [
 
 var assets_json = [
     "assets/fonts/boombox.json",
-//    "assets/fonts/boombox_144.json"
+    //    "assets/fonts/boombox_144.json"
 ];
 
 var models = [
@@ -144,6 +158,30 @@ pc.promise.all(promises).then(function (results) {
     //        negz: results[0].asset.id
     //    });
 
+    //Create a representation of the active bullet
+    activeBullet = new GreenBullet(pc.Vec3.ZERO, new pc.Vec3(-0.45, 0.95, -3));
+    activeBullet.setName('activeBullet');
+    activeBullet.removeComponent('collision');
+    activeBullet.displayOnly = true;
+    activeBullet.addChild(buildText(activeBullet.ammo.toString(), -132, 300));
+    activeBullet.enabled = false;
+
+    store_bullet_green = new GreenBullet(pc.Vec3.ZERO, new pc.Vec3(0, 1, -0.8));
+    store_bullet_green.setName('store_bullet_green');
+    store_bullet_green.removeComponent('collision');
+    store_bullet_green.displayOnly = true;
+    store_bullet_green.addChild(buildText("$", 0, 75));
+
+    store_bullet_pink = new PinkBullet(pc.Vec3.ZERO, new pc.Vec3(0, 1, 0.7));
+    store_bullet_pink.setName('store_bullet_pink');
+    store_bullet_pink.removeComponent('collision');
+    store_bullet_pink.displayOnly = true;
+    store_bullet_pink.addChild(buildText("$", 0, -210));
+
+    store_listing = new pc.Entity();
+    store_listing.setName('store_listing');
+    store_listing.enabled = false;
+
     // Create tank entity
     tank = new pc.fw.Entity();
     tank.setName('tank');
@@ -203,7 +241,7 @@ pc.promise.all(promises).then(function (results) {
             name: 'maps',
             type: 'string',
             value: 'clouds.jpg'
-        }]
+            }]
     };
 
     gun.addComponent('script', {
@@ -230,9 +268,6 @@ pc.promise.all(promises).then(function (results) {
     //    gun.dead = true;
     //    base.dead = true;
 
-    tank.addChild(base);
-    tank.addChild(gun);
-    gun.addChild(cam);
 
     //    tank.script.tank.die();
 
@@ -321,6 +356,7 @@ pc.promise.all(promises).then(function (results) {
     congrats.enabled = false;
     store = new pc.Entity();
     store.setName('store');
+    store.enabled = false;
     gameOver = new pc.fw.Entity();
     gameOver.setName('gameOver');
 
@@ -330,39 +366,39 @@ pc.promise.all(promises).then(function (results) {
         attributes: [{
             name: 'fontAtlas',
             value: 'boombox_72.png'
-    }, {
+            }, {
             name: 'fontJson',
             value: 'boombox'
-    }, {
+            }, {
             name: 'text',
             value: 'Start Game'
-    }, {
+            }, {
             name: 'maxTextLength',
             value: '64'
-    }, {
+            }, {
             name: 'x',
             value: 0
-    }, {
+            }, {
             name: 'y',
             value: 30
-    }, {
+            }, {
             name: 'anchor',
             value: 4
-    }, {
+            }, {
             name: 'pivot',
             value: 4
-    }, {
+            }, {
             name: 'tint',
             type: 'rgba',
             //            value: [0.2, 0.5, 1, 1]
             value: [0.8, 0.8, 0, 1]
-    }, {
+            }, {
             name: 'maxResHeight',
             value: 300
-    }, {
+            }, {
             name: 'depth',
             value: 1
-    }]
+            }]
 
     };
 
@@ -372,39 +408,39 @@ pc.promise.all(promises).then(function (results) {
         attributes: [{
             name: 'fontAtlas',
             value: 'boombox_72.png'
-    }, {
+            }, {
             name: 'fontJson',
             value: 'boombox'
-    }, {
+            }, {
             name: 'text',
             value: ''
-    }, {
+            }, {
             name: 'maxTextLength',
             value: '14'
-    }, {
+            }, {
             name: 'x',
             value: 5
-    }, {
+            }, {
             name: 'y',
             value: -5
-    }, {
+            }, {
             name: 'anchor',
             value: 0
-    }, {
+            }, {
             name: 'pivot',
             value: 0
-    }, {
+            }, {
             name: 'tint',
             type: 'rgba',
             value: [1, 1, 1, 1]
                 //            value: [0, 0, 0, 1]
-    }, {
+            }, {
             name: 'maxResHeight',
             value: 720
-    }, {
+            }, {
             name: 'depth',
             value: 1
-    }]
+            }]
 
     };
 
@@ -414,39 +450,39 @@ pc.promise.all(promises).then(function (results) {
         attributes: [{
             name: 'fontAtlas',
             value: 'boombox_72.png'
-    }, {
+            }, {
             name: 'fontJson',
             value: 'boombox'
-    }, {
+            }, {
             name: 'text',
             value: 'High Score: '
-    }, {
+            }, {
             name: 'maxTextLength',
             value: '20'
-    }, {
+            }, {
             name: 'x',
             value: -5
-    }, {
+            }, {
             name: 'y',
             value: -5
-    }, {
+            }, {
             name: 'anchor',
             value: 2
-    }, {
+            }, {
             name: 'pivot',
             value: 2
-    }, {
+            }, {
             name: 'tint',
             type: 'rgba',
             value: [1, 1, 1, 1]
                 //            value: [0, 0, 0, 1]
-    }, {
+            }, {
             name: 'maxResHeight',
             value: 720
-    }, {
+            }, {
             name: 'depth',
             value: 1
-    }]
+            }]
 
     };
 
@@ -456,39 +492,39 @@ pc.promise.all(promises).then(function (results) {
         attributes: [{
             name: 'fontAtlas',
             value: 'boombox_72.png'
-    }, {
+            }, {
             name: 'fontJson',
             value: 'boombox'
-    }, {
+            }, {
             name: 'text',
             value: 'You beat your high score!'
-    }, {
+            }, {
             name: 'maxTextLength',
             value: '32'
-    }, {
+            }, {
             name: 'x',
             value: 0
-    }, {
+            }, {
             name: 'y',
             value: -30
-    }, {
+            }, {
             name: 'anchor',
             value: 4
-    }, {
+            }, {
             name: 'pivot',
             value: 4
-    }, {
+            }, {
             name: 'tint',
             type: 'rgba',
             value: [1, 1, 1, 1]
                 //            value: [0, 0, 0, 1]
-    }, {
+            }, {
             name: 'maxResHeight',
             value: 720
-    }, {
+            }, {
             name: 'depth',
             value: 1
-    }]
+            }]
 
     };
 
@@ -541,39 +577,39 @@ pc.promise.all(promises).then(function (results) {
         attributes: [{
             name: 'fontAtlas',
             value: 'boombox_72.png'
-    }, {
+            }, {
             name: 'fontJson',
             value: 'boombox'
-    }, {
+            }, {
             name: 'text',
             value: '$'
-    }, {
+            }, {
             name: 'maxTextLength',
             value: '3'
-    }, {
+            }, {
             name: 'x',
             value: 0
-    }, {
+            }, {
             name: 'y',
             value: -5
-    }, {
+            }, {
             name: 'anchor',
             value: 1
-    }, {
+            }, {
             name: 'pivot',
             value: 1
-    }, {
+            }, {
             name: 'tint',
             type: 'rgba',
             value: [0.8, 0.8, 0, 1]
                 //            value: [0, 0, 0, 1]
-    }, {
+            }, {
             name: 'maxResHeight',
             value: 360
-    }, {
+            }, {
             name: 'depth',
             value: 1
-    }]
+            }]
 
     };
 
@@ -653,41 +689,41 @@ pc.promise.all(promises).then(function (results) {
         attributes: [{
             name: 'textureAsset',
             value: 'shoot-icon.png'
-                    }, {
+            }, {
             name: 'x',
             value: 100
-                    }, {
+            }, {
             name: 'y',
             value: 50
-                    }, {
+            }, {
             name: 'width',
             value: 64
-                    }, {
+            }, {
             name: 'height',
             value: 64
-                    }, {
+            }, {
             name: 'anchor',
             value: 6
-                    }, {
+            }, {
             name: 'pivot',
             value: 6
-                    }, {
+            }, {
             name: 'tint',
             type: 'rgba',
             value: [1, 1, 1, 1]
-                    }, {
+            }, {
             name: 'maxResHeight',
             value: 300
-                    }, {
+            }, {
             name: 'depth',
             value: 10
-                    }, {
+            }, {
             name: 'uPercentage',
             value: 1
-                    }, {
+            }, {
             name: 'vPercentage',
             value: 1
-                    }]
+            }]
     }
 
     info_shoot.addComponent('script', {
@@ -703,47 +739,56 @@ pc.promise.all(promises).then(function (results) {
         attributes: [{
             name: 'textureAsset',
             value: 'move-icon.png'
-                    }, {
+            }, {
             name: 'x',
             value: -100
-                    }, {
+            }, {
             name: 'y',
             value: 50
-                    }, {
+            }, {
             name: 'width',
             value: 64
-                    }, {
+            }, {
             name: 'height',
             value: 64
-                    }, {
+            }, {
             name: 'anchor',
             value: 8
-                    }, {
+            }, {
             name: 'pivot',
             value: 8
-                    }, {
+            }, {
             name: 'tint',
             type: 'rgba',
             value: [1, 1, 1, 1]
-                    }, {
+            }, {
             name: 'maxResHeight',
             value: 300
-                    }, {
+            }, {
             name: 'depth',
             value: 10
-                    }, {
+            }, {
             name: 'uPercentage',
             value: 1
-                    }, {
+            }, {
             name: 'vPercentage',
             value: 1
-                    }]
+            }]
     }
 
     info_move.addComponent('script', {
         enabled: true,
         scripts: [info_move_sprite]
     });
+
+    store_listing.addChild(store_bullet_green);
+    store_listing.addChild(store_bullet_pink);
+    store.addChild(store_listing);
+
+    cam.addChild(activeBullet);
+    tank.addChild(base);
+    tank.addChild(gun);
+    gun.addChild(cam);
 
     gameOver.addChild(info_shoot);
     gameOver.addChild(info_move);

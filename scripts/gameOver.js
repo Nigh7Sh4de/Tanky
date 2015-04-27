@@ -18,12 +18,17 @@ pc.script.create("gameOver", function (app) {
         onTouch: function () {
             //            app.root.findByName('tank').script.tank.reset();
             //            if (this.gun.dead || this.base.dead) {
+            store.enabled = true;
             health.script.health.reset();
             score.script.score.reset();
             //            var gameOver = app.root.findByName('gameOver');
             gameOver.script.font_renderer.text = 'Play Again';
             gameOver.enabled = false;
             congrats.enabled = false;
+//            BulletTypes.forEach(function (t) {
+            //                if (t != BulletTypes.DefaultBullet)
+            //                    t.prototype.ammo = 0;
+            //            });
             tank.script.tank.reset();
 
             var x;

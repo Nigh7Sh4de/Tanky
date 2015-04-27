@@ -27,22 +27,33 @@ pc.script.create("tank", function (app) {
             //            this.entity.model.enabled = false;
             //            this.entity.script.burn.reset();
             this.entity.getParent().script.tank.die();
-            gameOver.enabled = true;
-            if (highscore.script.highscore)
-                highscore.script.highscore.checkHighScore();        },
+            //            gameOver.enabled = true;
+            //            if (highscore.script.highscore)
+            //                highscore.script.highscore.checkHighScore();
+        },
 
         //        killttttttttttrertrerfewrdsfderrfgreftgy
 
         die: function () {
             this.toggleState(false);
-            var children = this.entity.getChildren(); // forEach(function (x) {
-            for (var i = 0; i < children.length; i++) {
-                if (children[i].name == 'glow')
-                    children[i--].destroy();
-            };
-//            gameOver.enabled = true;
-//            if (highscore.script.highscore)
-//                highscore.script.highscore.checkHighScore();
+
+            gameOver.enabled = true;
+            if (highscore.script.highscore)
+                highscore.script.highscore.checkHighScore();
+            store.enabled = false;
+
+            BulletTypes.forEach(function (type) {
+                if (type != BulletTypes.DefaultBullet)
+                    type.prototype.ammo = 0;
+            });
+
+            var enemy;
+            while ((enemy = app.root.findByName('charmed_enemy')) != null)
+                enemy.destroy();
+            //            store.enabled = false;
+            //            gameOver.enabled = true;
+            //            if (highscore.script.highscore)
+            //                highscore.script.highscore.checkHighScore();
 
         },
 
@@ -59,6 +70,7 @@ pc.script.create("tank", function (app) {
             //                x.model.enabled = state;
             //            });
             //            //                this.entity.enabled = true;
+            activeBullet.enabled = state;
             gun.script.enabled = state;
             gun.model.enabled = state;
             base.script.enabled = state;
@@ -66,6 +78,18 @@ pc.script.create("tank", function (app) {
             //            glow.enabled = state;
             this.entity.script.enabled = state;
             this.entity.collision.enabled = state;
+            if (store.script.store)
+                store.script.store.updateListings();
+
+            if (!state) {
+                var children = this.entity.getChildren(); // forEach(function (x) {
+                for (var i = 0; i < children.length; i++) {
+                    if (children[i].name == 'glow') {
+                        children[i].enemy.glow = null;
+                        children[i--].destroy();
+                    }
+                };
+            }
         },
 
         update: function (dt) {
