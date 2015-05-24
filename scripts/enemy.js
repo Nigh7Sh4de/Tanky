@@ -1,6 +1,6 @@
 pc.script.create("enemy", function (app) {
 
-    const MULT = 8;
+    const MULT = 5;
     const INTENSITY_MULT = 5;
     const INTENSITY_MIN = 25;
     const INTENSITY_MAX = 125;

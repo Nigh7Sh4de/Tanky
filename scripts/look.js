@@ -37,18 +37,22 @@ pc.script.create("look", function (app) {
         },
 
         update: function (dt) {
+            var shift = 1;
+            if (app.keyboard.isPressed(pc.input.KEY_SHIFT)) {
+                shift = 3;
+            }
 
             if (app.keyboard.isPressed(pc.input.KEY_UP)) {
-                this.ex -= 1 * 100 * MULT * dt;
+                this.ex -= 1 * 100 * MULT * dt * shift;
             }
             if (app.keyboard.isPressed(pc.input.KEY_DOWN)) {
-                this.ex += 1 * 100 * MULT * dt;
+                this.ex += 1 * 100 * MULT * dt * shift;
             }
             if (app.keyboard.isPressed(pc.input.KEY_LEFT)) {
-                this.ey += 20 * 100 * MULT * dt;
+                this.ey += 20 * 100 * MULT * dt * shift;
             }
             if (app.keyboard.isPressed(pc.input.KEY_RIGHT)) {
-                this.ey -= 20 * 100 * MULT * dt;
+                this.ey -= 20 * 100 * MULT * dt * shift;
             }
 
             this.ex = pc.math.clamp(this.ex, -17, 1);
