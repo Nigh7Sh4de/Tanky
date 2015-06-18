@@ -51,17 +51,9 @@ var BulletTypes = [
 
 BulletTypes.DefaultBullet = GreenBullet;
 BulletTypes.DefaultBullet.prototype.ammo = 999;
-//GreenBullet.ammo = 999;
-//PinkBullet.ammo = 0;
 
 // load all textures
 var textures = [
-    //    "assets/skybox/posy.png",
-    //    "assets/skybox/negy.png",
-    //    "assets/skybox/negx.png",
-    //    "assets/skybox/posx.png",
-    //    "assets/skybox/posz.png",
-    //    "assets/skybox/negz.png",
     "assets/Hex_Plating.png",
     "assets/clouds.jpg",
     "assets/red.png",
@@ -72,16 +64,10 @@ var textures = [
     "assets/tank/tank_icon.png",
     "assets/menu/shoot-icon.png",
     "assets/menu/move-icon.png"
-    //    "assets/fonts/boombox_144.png"
-];
-
-var materials = [
-    "assets/yellow.png",
 ];
 
 var assets_json = [
     "assets/fonts/boombox.json",
-    //    "assets/fonts/boombox_144.json"
 ];
 
 var models = [
@@ -100,11 +86,6 @@ for (var i = 0; i < assets_json.length; i++)
 for (var i = 0; i < models.length; i++)
     promises.push(app.context.assets.loadFromUrl(models[i], "model"));
 
-//for (var i = 0; i < materials.length; i++)
-//    promises.push(app.context.assets.loadFromUrl(materials[i], "material"));
-
-
-// check for all assets to load then create skybox
 pc.promise.all(promises).then(function (results) {
 
     app.context.systems.rigidbody.setGravity(0, -10, 0);
@@ -142,21 +123,6 @@ pc.promise.all(promises).then(function (results) {
         castShadows: true
     });
     store_light.enabled = false;
-
-
-    //    //Create a skybox entity
-    //    skybox = new pc.fw.Entity();
-    //    skybox.setName('skybox');
-    //
-    //    skybox.addComponent('skybox', {
-    //        enabled: true,
-    //        posy: results[0].asset.id,
-    //        negy: results[0].asset.id,
-    //        negx: results[0].asset.id,
-    //        posx: results[0].asset.id,
-    //        posz: results[0].asset.id,
-    //        negz: results[0].asset.id
-    //    });
 
     //Create a representation of the active bullet
     activeBullet = new GreenBullet(pc.Vec3.ZERO, new pc.Vec3(-0.45, 0.95, -3));
@@ -257,19 +223,12 @@ pc.promise.all(promises).then(function (results) {
     tank.addComponent('script', {
         enabled: true,
         scripts: [tankScript]
-            //        scripts: [moveScript, tankScript]
     });
 
     base.addComponent('script', {
         enabled: true,
         scripts: [burnScript]
     });
-
-    //    gun.dead = true;
-    //    base.dead = true;
-
-
-    //    tank.script.tank.die();
 
     //Create a floor
     floor = new pc.fw.Entity();
@@ -304,21 +263,9 @@ pc.promise.all(promises).then(function (results) {
     wall.removeComponent('rigidbody');
     wall.removeComponent('collision');
     wall.setName('wall');
-    //    wall.rotate(0, 0, 90);
 
     wall.setLocalScale(1, 60, 60);
     wall.setLocalPosition(-30, 30, 0);
-
-    //    wall.addComponent('model', {
-    //        type: "box",
-    //        castShadows: true,
-    //        receiveShadows: true
-    //    });
-    //    var wallMaterial = new pc.scene.PhongMaterial();
-    //    wallMaterial.diffuseMap = results[0].resource[0];
-    //    wallMaterial.diffuseMapTiling = new pc.Vec2(10, 10);
-    //    wallMaterial.update();
-    //    wall.model.model.meshInstances[0].material = wallMaterial;
 
     var wall2 = wall.clone();
     wall2.translate(60, 0, 0);
@@ -345,8 +292,6 @@ pc.promise.all(promises).then(function (results) {
     });
 
     //Create a HUD
-    //    stats = new pc.fw.Entity();
-    //    stats.setName('stats');
     score = new pc.fw.Entity();
     score.setName('score');
     highscore = new pc.fw.Entity();
@@ -390,7 +335,6 @@ pc.promise.all(promises).then(function (results) {
             }, {
             name: 'tint',
             type: 'rgba',
-            //            value: [0.2, 0.5, 1, 1]
             value: [0.8, 0.8, 0, 1]
             }, {
             name: 'maxResHeight',
@@ -433,7 +377,6 @@ pc.promise.all(promises).then(function (results) {
             name: 'tint',
             type: 'rgba',
             value: [1, 1, 1, 1]
-                //            value: [0, 0, 0, 1]
             }, {
             name: 'maxResHeight',
             value: 720
@@ -475,7 +418,6 @@ pc.promise.all(promises).then(function (results) {
             name: 'tint',
             type: 'rgba',
             value: [1, 1, 1, 1]
-                //            value: [0, 0, 0, 1]
             }, {
             name: 'maxResHeight',
             value: 720
@@ -517,7 +459,6 @@ pc.promise.all(promises).then(function (results) {
             name: 'tint',
             type: 'rgba',
             value: [1, 1, 1, 1]
-                //            value: [0, 0, 0, 1]
             }, {
             name: 'maxResHeight',
             value: 720
@@ -527,49 +468,6 @@ pc.promise.all(promises).then(function (results) {
             }]
 
     };
-
-    //    var storeSprite = {
-    //        name: 'storeSprite',
-    //        url: 'scripts/sprite.js',
-    //        attributes: [{
-    //            name: 'textureAsset',
-    //            value: 'tank_icon.png'
-    //                    }, {
-    //            name: 'x',
-    //            value: 0
-    //                    }, {
-    //            name: 'y',
-    //            value: -10
-    //                    }, {
-    //            name: 'width',
-    //            value: 128
-    //                    }, {
-    //            name: 'height',
-    //            value: 128
-    //                    }, {
-    //            name: 'anchor',
-    //            value: 1
-    //                    }, {
-    //            name: 'pivot',
-    //            value: 1
-    //                    }, {
-    //            name: 'tint',
-    //            type: 'rgba',
-    //            value: [1, 1, 1, 1]
-    //                    }, {
-    //            name: 'maxResHeight',
-    //            value: 720
-    //                    }, {
-    //            name: 'depth',
-    //            value: 1
-    //                    }, {
-    //            name: 'uPercentage',
-    //            value: 1
-    //                    }, {
-    //            name: 'vPercentage',
-    //            value: 1
-    //                    }]
-    //    }
 
     var storeText = {
         name: 'scoreText',
@@ -602,7 +500,6 @@ pc.promise.all(promises).then(function (results) {
             name: 'tint',
             type: 'rgba',
             value: [0.8, 0.8, 0, 1]
-                //            value: [0, 0, 0, 1]
             }, {
             name: 'maxResHeight',
             value: 360
@@ -624,8 +521,6 @@ pc.promise.all(promises).then(function (results) {
         scripts: [gameOverText, gameOverScript]
     });
 
-    //    gameOver.enabled = true;
-
     var scoreScript = {
         name: 'score',
         url: 'scripts/score.js'
@@ -646,15 +541,9 @@ pc.promise.all(promises).then(function (results) {
         scripts: [highScoreText, highScoreScript]
     });
 
-    //    var highScoreScript = {
-    //        name: 'highscore',
-    //        url: 'scripts/highscore.js'
-    //    }
-
     congrats.addComponent('script', {
         enabled: true,
         scripts: [congratsText]
-            //        scripts: [highScoreText, highScoreScript]
     });
 
     var storeScript = {
@@ -665,7 +554,6 @@ pc.promise.all(promises).then(function (results) {
     store.addComponent('script', {
         enabled: true,
         scripts: [storeText, storeScript]
-            //        scripts: [storeSprite]
     });
 
     health = new pc.fw.Entity();
