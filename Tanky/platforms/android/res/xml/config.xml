@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.thenigh7sh4de.tanky" version="0.5.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <preference name="loglevel" value="DEBUG" />
+    <name>Tanky</name>
+    <description>
+        A fun and cute little mobile game where you must protect your tank.
+                <br />
+</description>
+    <author email="plotnikd@gmail.com" href="https://github.com/nigh7sh4de/tanky">
+        Nigh7Sh4de
+    </author>
+    <preference name="orientation" value="landscape" />
+    <preference name="fullscreen" value="true" />
+    <preference name="android-minSdkVersion" value="14" />
+    <preference name="permissions" value="none" />
+    <icon src="icon.png" />
+</widget>
