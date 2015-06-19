@@ -18,28 +18,27 @@ app.setCanvasFillMode(pc.fw.FillMode.FILL_WINDOW);
 app.setCanvasResolution(pc.fw.ResolutionMode.AUTO);
 
 //Prepare global variables for Entities
-var tank,
-    base,
-    gun,
-    gameOver,
-    congrats,
-    store,
-    store_listing,
-    //    stats,
-    health,
-    score,
-    highscore,
-    floor,
-    skybox,
-    light,
-    store_light,
-    cam,
-    spawner,
-    activeBullet,
-    store_bullet_green,
-    store_bullet_pink,
-    info,
-    infoButton;
+var tank, //Tank
+    base, //Tank -> Base
+    gun, //Tank -> Gun
+    gameOver, //Gameover text
+    congrats, //Gameover -> (potential) congrats on high score text
+    store, //Store text (contains script)
+    store_listing, //All options purchasable in store
+    info, //Overlay
+    infoButton, //Info Text
+    health, //Health controller
+    score, //Score controller
+    highscore, //highscore text
+    floor, //floor
+    skybox, //not used?
+    light, //main light
+    store_light, //store light (def disabled)
+    cam, //main cam
+    spawner, //enemy spawning controller
+    activeBullet, //activebullet display (instanceof Bullet)
+    store_bullet_green, //store_listing -> green
+    store_bullet_pink; //store_listing -> green
 
 var EnemyTypes = {
     Red: RedEnemy,
@@ -154,7 +153,7 @@ pc.promise.all(promises).then(function (results) {
     store_listing.setName('store_listing');
     store_listing.enabled = false;
 
-    // Create tank entity
+    // Create tank
     tank = new pc.Entity();
     tank.setName('tank');
     tank.rotate(0, 180, 0);
@@ -167,6 +166,8 @@ pc.promise.all(promises).then(function (results) {
         type: 'box',
         halfExtents: tank.getLocalScale().clone().scale(0.5)
     });
+
+    var tankScript = buildScript('tank');
 
     base = new pc.Entity();
     base.setName('base');
@@ -191,22 +192,35 @@ pc.promise.all(promises).then(function (results) {
         enabled: false
     });
 
+    var lookScript = buildScript('look');
+
+    var shootScript = buildScript('shoot');
+
+    var burnScript = buildScript('burn');
+    burnScript.attributes = [{
+        name: 'maps',
+        type: 'string',
+        value: 'clouds.jpg'
+    }];
+
     gun.addComponent('script', {
         enabled: true,
-        scripts: [buildScript('look'), buildScript('shoot'), buildScript('burn')]
+        scripts: [lookScript, shootScript, burnScript]
     });
+
+    var moveScript = buildScript('move');
 
     tank.addComponent('script', {
         enabled: true,
-        scripts: [buildScript('tank')]
+        scripts: [tankScript]
     });
 
     base.addComponent('script', {
         enabled: true,
-        scripts: [buildScript('burn')]
+        scripts: [burnScript]
     });
 
-    //Create a floor
+    //Create environment
     floor = new pc.Entity();
     floor.setName('floor');
 
@@ -219,7 +233,7 @@ pc.promise.all(promises).then(function (results) {
     });
     var floorMaterial = new pc.scene.PhongMaterial();
     floorMaterial.diffuseMap = results[0].resource[0];
-    floorMaterial.diffuseMapTiling = pc.Vec2.ONE.clone().scale(10); //(1, 10);
+    floorMaterial.diffuseMapTiling = pc.Vec2.ONE.clone().scale(10);
     floorMaterial.update();
     floor.model.model.meshInstances[0].material = floorMaterial;
 
@@ -256,9 +270,12 @@ pc.promise.all(promises).then(function (results) {
     //Create an enemy spawner
     spawner = new pc.Entity();
     spawner.setName('spawner');
+
+    var spawnScript = buildScript('spawn');
+
     spawner.addComponent('script', {
         enabled: true,
-        scripts: [buildScript('spawn')]
+        scripts: [spawnScript]
     });
 
     //Create a HUD
@@ -281,19 +298,25 @@ pc.promise.all(promises).then(function (results) {
     var congratsText = buildText('scoreText', 'You beat your high score!', 0, -30, 4, 720, 1, 1, 1, 1);
     var storeText = buildText('storeText', '||', 0, -5, 1, 360, 1, 0.8, 0.8, 0);
 
+    var gameOverScript = buildScript('gameOver');
+    var scoreScript = buildScript('score');
+    var highScoreScript = buildScript('highscore');
+    var storeScript = buildScript('store');
+
+
     gameOver.addComponent('script', {
         enabled: true,
-        scripts: [gameOverText, buildScript('gameOver')]
+        scripts: [gameOverText, gameOverScript]
     });
 
     score.addComponent('script', {
         enabled: true,
-        scripts: [scoreText, buildScript('score')]
+        scripts: [scoreText, scoreScript]
     });
 
     highscore.addComponent('script', {
         enabled: true,
-        scripts: [highScoreText, buildScript('highscore')]
+        scripts: [highScoreText, highScoreScript]
     });
 
     congrats.addComponent('script', {
@@ -303,17 +326,19 @@ pc.promise.all(promises).then(function (results) {
 
     store.addComponent('script', {
         enabled: true,
-        scripts: [storeText, buildScript('store')]
+        scripts: [storeText, storeScript]
     });
 
     health = new pc.Entity();
     health.setName('health');
+    var healthScript = buildScript('health');
 
     health.addComponent('script', {
         enabled: true,
-        scripts: [buildScript('health')]
+        scripts: [healthScript]
     });
 
+    //Add to scene
     store_listing.addChild(store_bullet_green);
     store_listing.addChild(store_bullet_pink);
     store.addChild(store_listing);
