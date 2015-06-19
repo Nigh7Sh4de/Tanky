@@ -25,7 +25,7 @@ pc.script.create("gameOver", function (app) {
             gameOver.script.font_renderer.text = 'Play Again';
             gameOver.enabled = false;
             congrats.enabled = false;
-//            BulletTypes.forEach(function (t) {
+            //            BulletTypes.forEach(function (t) {
             //                if (t != BulletTypes.DefaultBullet)
             //                    t.prototype.ammo = 0;
             //            });

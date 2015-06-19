@@ -64,7 +64,8 @@ var textures = [
     "assets/fonts/boombox_72.png",
     "assets/tank/tank_icon.png",
     "assets/menu/shoot-icon.png",
-    "assets/menu/move-icon.png"
+    "assets/menu/move-icon.png",
+    "screenshots/in_game.png"
 ];
 
 var assets_json = [
@@ -291,17 +292,26 @@ pc.promise.all(promises).then(function (results) {
     store.enabled = false;
     gameOver = new pc.Entity();
     gameOver.setName('gameOver');
+    info = new pc.Entity();
+    info.setName('info');
+    info.enabled = false;
+    infoButton = new pc.Entity();
+    infoButton.setName('infoButton');
 
     var gameOverText = buildText('gameOverText', 'Start Game', 0, 30, 4, 300, 1, 0.8, 0.8, 0);
     var scoreText = buildText('scoreText', '', 5, -5, 0, 720, 1, 1, 1, 1);
     var highScoreText = buildText('scoreText', 'High Score: ', -5, -5, 2, 720, 1, 1, 1, 1);
     var congratsText = buildText('scoreText', 'You beat your high score!', 0, -30, 4, 720, 1, 1, 1, 1);
     var storeText = buildText('storeText', '||', 0, -5, 1, 360, 1, 0.8, 0.8, 0);
+    var infoButtonText = buildText('infoButtonText', '?', 0, 10, 7, 360, 1, 0.8, 0.8, 0);
+
+    var infoSprite = buildSprite('infoSprite', 'in_game.png', 0, 0, 640, 360, 4, 360, 0.5, 1, 1, 1);
 
     var gameOverScript = buildScript('gameOver');
     var scoreScript = buildScript('score');
     var highScoreScript = buildScript('highscore');
     var storeScript = buildScript('store');
+    var infoButtonScript = buildScript('info');
 
 
     gameOver.addComponent('script', {
@@ -329,6 +339,16 @@ pc.promise.all(promises).then(function (results) {
         scripts: [storeText, storeScript]
     });
 
+    info.addComponent('script', {
+        enabled: true,
+        scripts: [infoSprite]
+    });
+
+    infoButton.addComponent('script', {
+        enabled: true,
+        scripts: [infoButtonScript, infoButtonText]
+    });
+
     health = new pc.Entity();
     health.setName('health');
     var healthScript = buildScript('health');
@@ -350,10 +370,13 @@ pc.promise.all(promises).then(function (results) {
 
     gameOver.addChild(congrats);
     app.root.addChild(gameOver);
+
     app.root.addChild(score);
     app.root.addChild(health);
     app.root.addChild(highscore);
     app.root.addChild(store);
+    infoButton.addChild(info);
+    app.root.addChild(infoButton);
 
     app.root.addChild(tank);
     app.root.addChild(floor);
