@@ -27,6 +27,25 @@ pc.script.create("info", function (app) {
             this.toggleState();
         },
 
+        pause: function (state) {
+            //            tank.script.tank.toggleState(!state);
+            spawner.script.enabled = !state;
+            var enemies = app.root.findByLabel('enemy');
+            enemies.forEach(function (e) {
+                //                e.charmed = state;
+                e.model.enabled = !state;
+                e.script.enabled = !state;
+                if (e.rigidbody) {
+                    if (state) {
+                        e.rigidbody._linearVelocity = e.rigidbody.linearVelocity;
+                        e.rigidbody.linearVelocity = pc.Vec3.ZERO;
+                    } else {
+                        e.rigidbody.linearVelocity = e.rigidbody._linearVelocity;
+                    }
+                }
+            });
+        },
+
         toggleState: function () {
             this.active = !this.active;
             if (this.active) {
@@ -43,6 +62,7 @@ pc.script.create("info", function (app) {
 
 
             if (this.active) {
+                this.pause(true);
                 store.enabled = true;
                 store.script.enabled = false;
                 store.script.store.updateListings(false);
@@ -54,14 +74,15 @@ pc.script.create("info", function (app) {
             } else {
                 store.script.enabled = true;
                 store.script.font_renderer.text = '<<';
-                store.script.store.updateListings(true);
                 if (this.parent == gameOver) {
+                    this.pause(false);
                     store.script.font_renderer.text = '||';
                     gameOver.enabled = !this.active;
                     spawner.script.enabled = !this.active;
                     store.enabled = false;
                     activeBullet.enabled = false;
-                }
+                } else
+                    store.script.store.updateListings(true);
 
             }
         },

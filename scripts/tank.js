@@ -78,8 +78,8 @@ pc.script.create("tank", function (app) {
             //            glow.enabled = state;
             this.entity.script.enabled = state;
             this.entity.collision.enabled = state;
-            if (store.script.store)
-                store.script.store.updateListings();
+//            if (store.script.store)
+//store.script.store.updateListings();
 
             if (!state) {
                 var children = this.entity.getChildren(); // forEach(function (x) {
