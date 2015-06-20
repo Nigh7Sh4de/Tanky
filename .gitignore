@@ -12,5 +12,5 @@ gen
 out
 # Gradle builds
 /build
-platforms/android/.gradle/
-*.bin
+/platforms/android/.gradle/
+/platforms/android/CordovaLib/build/
