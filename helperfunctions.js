@@ -6,11 +6,86 @@ inherit = function (Self, Super) {
     Self.prototype.constructor = Self;
 }
 
-buildText = function (text, x, y) {
+buildSpriteEntity = function (name, texture, x, y, w, h, anchor, maxResHeight, depth, r, g, b) {
     var thing = new pc.fw.Entity();
-    thing.setName('text_' + text);
+    thing.setName(name);
+    var thingText = buildSprite(name, texture, x, y, w, h, anchor, maxResHeight, depth, r, g, b);
+    thing.addComponent('script', {
+        enabled: true,
+        scripts: [thingText]
+    });
+
+    return thing;
+}
+
+buildSprite = function (name, texture, x, y, w, h, anchor, maxResHeight, depth, r, g, b) {
     var thingText = {
-        name: 'thingText',
+        name: name + 'Text',
+        url: 'scripts/sprite.js',
+        attributes: [{
+            name: 'textureAsset',
+            value: texture
+        }, {
+            name: 'x',
+            value: x
+        }, {
+            name: 'y',
+            value: y
+        }, {
+            name: 'width',
+            value: w
+        }, {
+            name: 'height',
+            value: h
+        }, {
+            name: 'anchor',
+            value: anchor
+        }, {
+            name: 'pivot',
+            value: anchor
+        }, {
+            name: 'tint',
+            type: 'rgba',
+            value: [r, g, b, 1]
+        }, {
+            name: 'maxResHeight',
+            value: maxResHeight != null && maxResHeight != 0 ? maxResHeight : 720
+        }, {
+            name: 'uPercentage',
+            value: 1
+        }, {
+            name: 'vPercentage',
+            value: 1
+        }, {
+            name: 'depth',
+            value: depth != null && depth > 1 ? depth : 1
+        }]
+
+    };
+    return thingText;
+}
+
+buildTextEntity = function (name, text, x, y, anchor, maxResHeight, depth, r, g, b, a) {
+    var thing = new pc.fw.Entity();
+    thing.setName(name);
+    var thingText = buildText(name, text, x, y, anchor, maxResHeight, depth, r, g, b);
+    thing.addComponent('script', {
+        enabled: true,
+        scripts: [thingText]
+    });
+    return thing;
+}
+
+buildText = function (name, text, x, y, anchor, maxResHeight, depth, r, g, b) {
+    var color = new pc.Color(1, 1, 1, 1);
+    if (r != null)
+        color = new pc.Color(r, r, r, 1);
+    if (g != null)
+        color.g = g;
+    if (b != null)
+        color.b = b;
+    var thingText = {
+        name: name + 'Text',
         url: 'scripts/font_renderer.js',
         attributes: [{
             name: 'fontAtlas',
@@ -23,7 +98,7 @@ buildText = function (text, x, y) {
             value: text
         }, {
             name: 'maxTextLength',
-            value: '64'
+            value: '128'
         }, {
             name: 'x',
             value: x
@@ -32,28 +107,30 @@ buildText = function (text, x, y) {
             value: y
         }, {
             name: 'anchor',
-            value: 4
+            value: anchor == null ? 0 : anchor
         }, {
             name: 'pivot',
-            value: 4
+            value: anchor == null ? 0 : anchor
         }, {
             name: 'tint',
             type: 'rgba',
-            value: [0, 0, 0, 1]
+            value: color
         }, {
             name: 'maxResHeight',
-            value: 720
+            value: (maxResHeight != 0 && maxResHeight != null) ? maxResHeight : 720
         }, {
             name: 'depth',
-            value: 1
+            value: depth > 1 ? depth : 1
         }]
 
     };
 
-    thing.addComponent('script', {
-        enabled: true,
-        scripts: [thingText]
-    });
+    return thingText;
+}
 
-    return thing;
+var buildScript = function (name) {
+    return {
+        name: name,
+        url: 'scripts/' + name + '.js'
+    };
 }
