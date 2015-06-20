@@ -18,26 +18,27 @@ app.setCanvasFillMode(pc.fw.FillMode.FILL_WINDOW);
 app.setCanvasResolution(pc.fw.ResolutionMode.AUTO);
 
 //Prepare global variables for Entities
-var tank,
-    base,
-    gun,
-    gameOver,
-    congrats,
-    store,
-    store_listing,
-    //    stats,
-    health,
-    score,
-    highscore,
-    floor,
-    skybox,
-    light,
-    store_light,
-    cam,
-    spawner,
-    activeBullet,
-    store_bullet_green,
-    store_bullet_pink;
+var tank, //Tank
+    base, //Tank -> Base
+    gun, //Tank -> Gun
+    gameOver, //Gameover text
+    congrats, //Gameover -> (potential) congrats on high score text
+    store, //Store text (contains script)
+    store_listing, //All options purchasable in store
+    info, //Overlay
+    infoButton, //Info Text
+    health, //Health controller
+    score, //Score controller
+    highscore, //highscore text
+    floor, //floor
+    skybox, //not used?
+    light, //main light
+    store_light, //store light (def disabled)
+    cam, //main cam
+    spawner, //enemy spawning controller
+    activeBullet, //activebullet display (instanceof Bullet)
+    store_bullet_green, //store_listing -> green
+    store_bullet_pink; //store_listing -> green
 
 var EnemyTypes = {
     Red: RedEnemy,
@@ -51,17 +52,9 @@ var BulletTypes = [
 
 BulletTypes.DefaultBullet = GreenBullet;
 BulletTypes.DefaultBullet.prototype.ammo = 999;
-//GreenBullet.ammo = 999;
-//PinkBullet.ammo = 0;
 
 // load all textures
 var textures = [
-    //    "assets/skybox/posy.png",
-    //    "assets/skybox/negy.png",
-    //    "assets/skybox/negx.png",
-    //    "assets/skybox/posx.png",
-    //    "assets/skybox/posz.png",
-    //    "assets/skybox/negz.png",
     "assets/Hex_Plating.png",
     "assets/clouds.jpg",
     "assets/red.png",
@@ -71,17 +64,12 @@ var textures = [
     "assets/fonts/boombox_72.png",
     "assets/tank/tank_icon.png",
     "assets/menu/shoot-icon.png",
-    "assets/menu/move-icon.png"
-    //    "assets/fonts/boombox_144.png"
-];
-
-var materials = [
-    "assets/yellow.png",
+    "assets/menu/move-icon.png",
+    "screenshots/in_game.png"
 ];
 
 var assets_json = [
     "assets/fonts/boombox.json",
-    //    "assets/fonts/boombox_144.json"
 ];
 
 var models = [
@@ -100,18 +88,13 @@ for (var i = 0; i < assets_json.length; i++)
 for (var i = 0; i < models.length; i++)
     promises.push(app.context.assets.loadFromUrl(models[i], "model"));
 
-//for (var i = 0; i < materials.length; i++)
-//    promises.push(app.context.assets.loadFromUrl(materials[i], "material"));
-
-
-// check for all assets to load then create skybox
 pc.promise.all(promises).then(function (results) {
 
     app.context.systems.rigidbody.setGravity(0, -10, 0);
     app.scene.ambientLight = new pc.Color(0.35, 0.35, 0.35);
 
     // Create camera entity
-    cam = new pc.fw.Entity();
+    cam = new pc.Entity();
     cam.setName('cam');
     cam.addComponent('camera', {
         clearColor: [0.3, 0.3, 0.3]
@@ -121,7 +104,7 @@ pc.promise.all(promises).then(function (results) {
     cam.rotateLocal(-20, 180, 0);
 
     // Create light entities
-    light = new pc.fw.Entity();
+    light = new pc.Entity();
     light.setName('light');
     light.translate(0, 2, 0);
     light.addComponent('light', {
@@ -143,47 +126,36 @@ pc.promise.all(promises).then(function (results) {
     });
     store_light.enabled = false;
 
-
-    //    //Create a skybox entity
-    //    skybox = new pc.fw.Entity();
-    //    skybox.setName('skybox');
-    //
-    //    skybox.addComponent('skybox', {
-    //        enabled: true,
-    //        posy: results[0].asset.id,
-    //        negy: results[0].asset.id,
-    //        negx: results[0].asset.id,
-    //        posx: results[0].asset.id,
-    //        posz: results[0].asset.id,
-    //        negz: results[0].asset.id
-    //    });
-
     //Create a representation of the active bullet
     activeBullet = new GreenBullet(pc.Vec3.ZERO, new pc.Vec3(-0.45, 0.95, -3));
+    activeBullet.model.castShadows = false;
+    activeBullet.model.receiveShadows = false;
     activeBullet.setName('activeBullet');
     activeBullet.removeComponent('collision');
     activeBullet.displayOnly = true;
-    activeBullet.addChild(buildText(activeBullet.ammo.toString(), -132, 300));
+    activeBullet.addChild(buildTextEntity('activeBulletText', activeBullet.ammo.toString(), -132, 300, 4));
     activeBullet.enabled = false;
 
     store_bullet_green = new GreenBullet(pc.Vec3.ZERO, new pc.Vec3(0, 1, -0.8));
     store_bullet_green.setName('store_bullet_green');
     store_bullet_green.removeComponent('collision');
     store_bullet_green.displayOnly = true;
-    store_bullet_green.addChild(buildText("$", 0, 75));
+    store_bullet_green.addChild(buildTextEntity('storeBulletGreen', '$', 0, 75, 4, 720, 1, 0, 0, 0));
+    store_bullet_green.enabled = false;
 
     store_bullet_pink = new PinkBullet(pc.Vec3.ZERO, new pc.Vec3(0, 1, 0.7));
     store_bullet_pink.setName('store_bullet_pink');
     store_bullet_pink.removeComponent('collision');
     store_bullet_pink.displayOnly = true;
-    store_bullet_pink.addChild(buildText("$", 0, -210));
+    store_bullet_pink.addChild(buildTextEntity('storeBulletPink', '$', 0, -210, 4, 720, 1, 0, 0, 0));
+    store_bullet_pink.enabled = false;
 
     store_listing = new pc.Entity();
     store_listing.setName('store_listing');
     store_listing.enabled = false;
 
-    // Create tank entity
-    tank = new pc.fw.Entity();
+    // Create tank
+    tank = new pc.Entity();
     tank.setName('tank');
     tank.rotate(0, 180, 0);
 
@@ -196,15 +168,12 @@ pc.promise.all(promises).then(function (results) {
         halfExtents: tank.getLocalScale().clone().scale(0.5)
     });
 
-    var tankScript = {
-        name: 'tank',
-        url: 'scripts/tank.js'
-    };
+    var tankScript = buildScript('tank');
 
-    base = new pc.fw.Entity();
+    base = new pc.Entity();
     base.setName('base');
 
-    gun = new pc.fw.Entity();
+    gun = new pc.Entity();
     gun.setName('gun');
     gun.translateLocal(0, 0.55, 0);
 
@@ -224,40 +193,27 @@ pc.promise.all(promises).then(function (results) {
         enabled: false
     });
 
-    var lookScript = {
-        name: 'look',
-        url: 'scripts/look.js'
-    }
+    var lookScript = buildScript('look');
 
-    var shootScript = {
-        name: 'shoot',
-        url: 'scripts/shoot.js'
-    }
+    var shootScript = buildScript('shoot');
 
-    var burnScript = {
-        name: 'burn',
-        url: 'scripts/burn.js',
-        attributes: [{
-            name: 'maps',
-            type: 'string',
-            value: 'clouds.jpg'
-            }]
-    };
+    var burnScript = buildScript('burn');
+    burnScript.attributes = [{
+        name: 'maps',
+        type: 'string',
+        value: 'clouds.jpg'
+    }];
 
     gun.addComponent('script', {
         enabled: true,
         scripts: [lookScript, shootScript, burnScript]
     });
 
-    var moveScript = {
-        name: 'move',
-        url: 'scripts/move.js'
-    }
+    var moveScript = buildScript('move');
 
     tank.addComponent('script', {
         enabled: true,
         scripts: [tankScript]
-            //        scripts: [moveScript, tankScript]
     });
 
     base.addComponent('script', {
@@ -265,14 +221,8 @@ pc.promise.all(promises).then(function (results) {
         scripts: [burnScript]
     });
 
-    //    gun.dead = true;
-    //    base.dead = true;
-
-
-    //    tank.script.tank.die();
-
-    //Create a floor
-    floor = new pc.fw.Entity();
+    //Create environment
+    floor = new pc.Entity();
     floor.setName('floor');
 
     floor.setLocalScale(100, 1, 100);
@@ -284,7 +234,7 @@ pc.promise.all(promises).then(function (results) {
     });
     var floorMaterial = new pc.scene.PhongMaterial();
     floorMaterial.diffuseMap = results[0].resource[0];
-    floorMaterial.diffuseMapTiling = pc.Vec2.ONE.clone().scale(10); //(1, 10);
+    floorMaterial.diffuseMapTiling = pc.Vec2.ONE.clone().scale(10);
     floorMaterial.update();
     floor.model.model.meshInstances[0].material = floorMaterial;
 
@@ -304,21 +254,9 @@ pc.promise.all(promises).then(function (results) {
     wall.removeComponent('rigidbody');
     wall.removeComponent('collision');
     wall.setName('wall');
-    //    wall.rotate(0, 0, 90);
 
     wall.setLocalScale(1, 60, 60);
     wall.setLocalPosition(-30, 30, 0);
-
-    //    wall.addComponent('model', {
-    //        type: "box",
-    //        castShadows: true,
-    //        receiveShadows: true
-    //    });
-    //    var wallMaterial = new pc.scene.PhongMaterial();
-    //    wallMaterial.diffuseMap = results[0].resource[0];
-    //    wallMaterial.diffuseMapTiling = new pc.Vec2(10, 10);
-    //    wallMaterial.update();
-    //    wall.model.model.meshInstances[0].material = wallMaterial;
 
     var wall2 = wall.clone();
     wall2.translate(60, 0, 0);
@@ -331,13 +269,10 @@ pc.promise.all(promises).then(function (results) {
     wall4.translate(0, 0, -60);
 
     //Create an enemy spawner
-    spawner = new pc.fw.Entity();
+    spawner = new pc.Entity();
     spawner.setName('spawner');
 
-    var spawnScript = {
-        name: 'spawn',
-        url: 'scripts/spawn.js'
-    }
+    var spawnScript = buildScript('spawn');
 
     spawner.addComponent('script', {
         enabled: true,
@@ -345,442 +280,85 @@ pc.promise.all(promises).then(function (results) {
     });
 
     //Create a HUD
-    //    stats = new pc.fw.Entity();
-    //    stats.setName('stats');
-    score = new pc.fw.Entity();
+    score = new pc.Entity();
     score.setName('score');
-    highscore = new pc.fw.Entity();
+    highscore = new pc.Entity();
     highscore.setName('highscore');
-    congrats = new pc.fw.Entity();
+    congrats = new pc.Entity();
     congrats.setName('congrats');
     congrats.enabled = false;
     store = new pc.Entity();
     store.setName('store');
     store.enabled = false;
-    gameOver = new pc.fw.Entity();
+    gameOver = new pc.Entity();
     gameOver.setName('gameOver');
+    info = new pc.Entity();
+    info.setName('info');
+    info.enabled = false;
+    infoButton = new pc.Entity();
+    infoButton.setName('infoButton');
 
-    var gameOverText = {
-        name: 'gameOverText',
-        url: 'scripts/font_renderer.js',
-        attributes: [{
-            name: 'fontAtlas',
-            value: 'boombox_72.png'
-            }, {
-            name: 'fontJson',
-            value: 'boombox'
-            }, {
-            name: 'text',
-            value: 'Start Game'
-            }, {
-            name: 'maxTextLength',
-            value: '64'
-            }, {
-            name: 'x',
-            value: 0
-            }, {
-            name: 'y',
-            value: 30
-            }, {
-            name: 'anchor',
-            value: 4
-            }, {
-            name: 'pivot',
-            value: 4
-            }, {
-            name: 'tint',
-            type: 'rgba',
-            //            value: [0.2, 0.5, 1, 1]
-            value: [0.8, 0.8, 0, 1]
-            }, {
-            name: 'maxResHeight',
-            value: 300
-            }, {
-            name: 'depth',
-            value: 1
-            }]
+    var gameOverText = buildText('gameOverText', 'Start Game', 0, 30, 4, 300, 1, 0.8, 0.8, 0);
+    var scoreText = buildText('scoreText', '', 5, -5, 0, 720, 1, 1, 1, 1);
+    var highScoreText = buildText('scoreText', 'High Score: ', -5, -5, 2, 720, 1, 1, 1, 1);
+    var congratsText = buildText('scoreText', 'You beat your high score!', 0, -30, 4, 720, 1, 1, 1, 1);
+    var storeText = buildText('storeText', '||', 0, -5, 1, 360, 1, 0.8, 0.8, 0);
+    var infoButtonText = buildText('infoButtonText', '?', 0, 10, 7, 360, 1, 0.8, 0.8, 0);
 
-    };
+    var infoSprite = buildSprite('infoSprite', 'in_game.png', 0, 0, 640, 360, 4, 360, 0.5, 1, 1, 1);
 
-    var scoreText = {
-        name: 'scoreText',
-        url: 'scripts/font_renderer.js',
-        attributes: [{
-            name: 'fontAtlas',
-            value: 'boombox_72.png'
-            }, {
-            name: 'fontJson',
-            value: 'boombox'
-            }, {
-            name: 'text',
-            value: ''
-            }, {
-            name: 'maxTextLength',
-            value: '14'
-            }, {
-            name: 'x',
-            value: 5
-            }, {
-            name: 'y',
-            value: -5
-            }, {
-            name: 'anchor',
-            value: 0
-            }, {
-            name: 'pivot',
-            value: 0
-            }, {
-            name: 'tint',
-            type: 'rgba',
-            value: [1, 1, 1, 1]
-                //            value: [0, 0, 0, 1]
-            }, {
-            name: 'maxResHeight',
-            value: 720
-            }, {
-            name: 'depth',
-            value: 1
-            }]
+    var gameOverScript = buildScript('gameOver');
+    var scoreScript = buildScript('score');
+    var highScoreScript = buildScript('highscore');
+    var storeScript = buildScript('store');
+    var infoButtonScript = buildScript('info');
 
-    };
-
-    var highScoreText = {
-        name: 'scoreText',
-        url: 'scripts/font_renderer.js',
-        attributes: [{
-            name: 'fontAtlas',
-            value: 'boombox_72.png'
-            }, {
-            name: 'fontJson',
-            value: 'boombox'
-            }, {
-            name: 'text',
-            value: 'High Score: '
-            }, {
-            name: 'maxTextLength',
-            value: '20'
-            }, {
-            name: 'x',
-            value: -5
-            }, {
-            name: 'y',
-            value: -5
-            }, {
-            name: 'anchor',
-            value: 2
-            }, {
-            name: 'pivot',
-            value: 2
-            }, {
-            name: 'tint',
-            type: 'rgba',
-            value: [1, 1, 1, 1]
-                //            value: [0, 0, 0, 1]
-            }, {
-            name: 'maxResHeight',
-            value: 720
-            }, {
-            name: 'depth',
-            value: 1
-            }]
-
-    };
-
-    var congratsText = {
-        name: 'scoreText',
-        url: 'scripts/font_renderer.js',
-        attributes: [{
-            name: 'fontAtlas',
-            value: 'boombox_72.png'
-            }, {
-            name: 'fontJson',
-            value: 'boombox'
-            }, {
-            name: 'text',
-            value: 'You beat your high score!'
-            }, {
-            name: 'maxTextLength',
-            value: '32'
-            }, {
-            name: 'x',
-            value: 0
-            }, {
-            name: 'y',
-            value: -30
-            }, {
-            name: 'anchor',
-            value: 4
-            }, {
-            name: 'pivot',
-            value: 4
-            }, {
-            name: 'tint',
-            type: 'rgba',
-            value: [1, 1, 1, 1]
-                //            value: [0, 0, 0, 1]
-            }, {
-            name: 'maxResHeight',
-            value: 720
-            }, {
-            name: 'depth',
-            value: 1
-            }]
-
-    };
-
-    //    var storeSprite = {
-    //        name: 'storeSprite',
-    //        url: 'scripts/sprite.js',
-    //        attributes: [{
-    //            name: 'textureAsset',
-    //            value: 'tank_icon.png'
-    //                    }, {
-    //            name: 'x',
-    //            value: 0
-    //                    }, {
-    //            name: 'y',
-    //            value: -10
-    //                    }, {
-    //            name: 'width',
-    //            value: 128
-    //                    }, {
-    //            name: 'height',
-    //            value: 128
-    //                    }, {
-    //            name: 'anchor',
-    //            value: 1
-    //                    }, {
-    //            name: 'pivot',
-    //            value: 1
-    //                    }, {
-    //            name: 'tint',
-    //            type: 'rgba',
-    //            value: [1, 1, 1, 1]
-    //                    }, {
-    //            name: 'maxResHeight',
-    //            value: 720
-    //                    }, {
-    //            name: 'depth',
-    //            value: 1
-    //                    }, {
-    //            name: 'uPercentage',
-    //            value: 1
-    //                    }, {
-    //            name: 'vPercentage',
-    //            value: 1
-    //                    }]
-    //    }
-
-    var storeText = {
-        name: 'scoreText',
-        url: 'scripts/font_renderer.js',
-        attributes: [{
-            name: 'fontAtlas',
-            value: 'boombox_72.png'
-            }, {
-            name: 'fontJson',
-            value: 'boombox'
-            }, {
-            name: 'text',
-            value: '$'
-            }, {
-            name: 'maxTextLength',
-            value: '3'
-            }, {
-            name: 'x',
-            value: 0
-            }, {
-            name: 'y',
-            value: -5
-            }, {
-            name: 'anchor',
-            value: 1
-            }, {
-            name: 'pivot',
-            value: 1
-            }, {
-            name: 'tint',
-            type: 'rgba',
-            value: [0.8, 0.8, 0, 1]
-                //            value: [0, 0, 0, 1]
-            }, {
-            name: 'maxResHeight',
-            value: 360
-            }, {
-            name: 'depth',
-            value: 1
-            }]
-
-    };
-
-
-    var gameOverScript = {
-        name: 'gameOver',
-        url: 'scripts/gameOver.js'
-    }
 
     gameOver.addComponent('script', {
         enabled: true,
         scripts: [gameOverText, gameOverScript]
     });
 
-    //    gameOver.enabled = true;
-
-    var scoreScript = {
-        name: 'score',
-        url: 'scripts/score.js'
-    }
-
     score.addComponent('script', {
         enabled: true,
         scripts: [scoreText, scoreScript]
     });
-
-    var highScoreScript = {
-        name: 'highscore',
-        url: 'scripts/highscore.js'
-    }
 
     highscore.addComponent('script', {
         enabled: true,
         scripts: [highScoreText, highScoreScript]
     });
 
-    //    var highScoreScript = {
-    //        name: 'highscore',
-    //        url: 'scripts/highscore.js'
-    //    }
-
     congrats.addComponent('script', {
         enabled: true,
         scripts: [congratsText]
-            //        scripts: [highScoreText, highScoreScript]
     });
-
-    var storeScript = {
-        name: 'store',
-        url: 'scripts/store.js'
-    }
 
     store.addComponent('script', {
         enabled: true,
         scripts: [storeText, storeScript]
-            //        scripts: [storeSprite]
     });
 
-    health = new pc.fw.Entity();
+    info.addComponent('script', {
+        enabled: true,
+        scripts: [infoSprite]
+    });
+
+    infoButton.addComponent('script', {
+        enabled: true,
+        scripts: [infoButtonScript, infoButtonText]
+    });
+
+    health = new pc.Entity();
     health.setName('health');
-    var healthScript = {
-        name: 'health',
-        url: 'scripts/health.js'
-    }
+    var healthScript = buildScript('health');
 
     health.addComponent('script', {
         enabled: true,
         scripts: [healthScript]
     });
 
-    var info_shoot = new pc.fw.Entity();
-    info_shoot.setName('info_shoot');
-
-    var info_shoot_sprite = {
-        name: 'sprite',
-        url: 'scripts/sprite.js',
-        attributes: [{
-            name: 'textureAsset',
-            value: 'shoot-icon.png'
-            }, {
-            name: 'x',
-            value: 100
-            }, {
-            name: 'y',
-            value: 50
-            }, {
-            name: 'width',
-            value: 64
-            }, {
-            name: 'height',
-            value: 64
-            }, {
-            name: 'anchor',
-            value: 6
-            }, {
-            name: 'pivot',
-            value: 6
-            }, {
-            name: 'tint',
-            type: 'rgba',
-            value: [1, 1, 1, 1]
-            }, {
-            name: 'maxResHeight',
-            value: 300
-            }, {
-            name: 'depth',
-            value: 10
-            }, {
-            name: 'uPercentage',
-            value: 1
-            }, {
-            name: 'vPercentage',
-            value: 1
-            }]
-    }
-
-    info_shoot.addComponent('script', {
-        enabled: true,
-        scripts: [info_shoot_sprite]
-    });
-
-    var info_move = new pc.fw.Entity;
-    info_move.setName('info_move');
-    var info_move_sprite = {
-        name: 'sprite',
-        url: 'scripts/sprite.js',
-        attributes: [{
-            name: 'textureAsset',
-            value: 'move-icon.png'
-            }, {
-            name: 'x',
-            value: -100
-            }, {
-            name: 'y',
-            value: 50
-            }, {
-            name: 'width',
-            value: 64
-            }, {
-            name: 'height',
-            value: 64
-            }, {
-            name: 'anchor',
-            value: 8
-            }, {
-            name: 'pivot',
-            value: 8
-            }, {
-            name: 'tint',
-            type: 'rgba',
-            value: [1, 1, 1, 1]
-            }, {
-            name: 'maxResHeight',
-            value: 300
-            }, {
-            name: 'depth',
-            value: 10
-            }, {
-            name: 'uPercentage',
-            value: 1
-            }, {
-            name: 'vPercentage',
-            value: 1
-            }]
-    }
-
-    info_move.addComponent('script', {
-        enabled: true,
-        scripts: [info_move_sprite]
-    });
-
+    //Add to scene
     store_listing.addChild(store_bullet_green);
     store_listing.addChild(store_bullet_pink);
     store.addChild(store_listing);
@@ -790,15 +368,15 @@ pc.promise.all(promises).then(function (results) {
     tank.addChild(gun);
     gun.addChild(cam);
 
-    gameOver.addChild(info_shoot);
-    gameOver.addChild(info_move);
-
+    gameOver.addChild(congrats);
     app.root.addChild(gameOver);
+
     app.root.addChild(score);
     app.root.addChild(health);
     app.root.addChild(highscore);
-    app.root.addChild(congrats);
     app.root.addChild(store);
+    infoButton.addChild(info);
+    app.root.addChild(infoButton);
 
     app.root.addChild(tank);
     app.root.addChild(floor);
