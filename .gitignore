@@ -14,3 +14,5 @@ out
 /build
 /platforms/android/.gradle/
 /platforms/android/CordovaLib/build/
+# Duplicated source code
+/platforms/android/assets/www/
