@@ -1,0 +1,8 @@
+{
+    "android": {
+        "release": {
+            "keystore": "nigh7sh4de.keystore",
+            "alias": "nigh7sh4de"
+        }
+    }
+}
