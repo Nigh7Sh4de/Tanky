@@ -19,3 +19,4 @@ out
 /platforms/android/assets/www/
 # PASSWORDS
 /build.json
+/platforms/android/release-signing.properties
