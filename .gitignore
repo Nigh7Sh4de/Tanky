@@ -12,6 +12,7 @@ gen
 out
 # Gradle builds
 /build
+/plugins/android.json
 /platforms/android/.gradle/
 /platforms/android/CordovaLib/build/
 # Duplicated source code
