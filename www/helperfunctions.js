@@ -7,7 +7,7 @@ inherit = function (Self, Super) {
 }
 
 buildSpriteEntity = function (name, texture, x, y, w, h, anchor, maxResHeight, depth, r, g, b) {
-    var thing = new pc.fw.Entity();
+    var thing = new pc.Entity();
     thing.setName(name);
     var thingText = buildSprite(name, texture, x, y, w, h, anchor, maxResHeight, depth, r, g, b);
     thing.addComponent('script', {
@@ -66,7 +66,7 @@ buildSprite = function (name, texture, x, y, w, h, anchor, maxResHeight, depth, 
 }
 
 buildTextEntity = function (name, text, x, y, anchor, maxResHeight, depth, r, g, b, a) {
-    var thing = new pc.fw.Entity();
+    var thing = new pc.Entity();
     thing.setName(name);
     var thingText = buildText(name, text, x, y, anchor, maxResHeight, depth, r, g, b);
     thing.addComponent('script', {

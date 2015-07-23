@@ -95,7 +95,7 @@ pc.script.create("enemy", function (app) {
                 if (gun.script.enabled) {
                     if (!this.entity.charmed && !this.entity.glow && !cam.camera.frustum.containsPoint(this.entity.getPosition())) {
 
-                        var glow = new pc.fw.Entity();
+                        var glow = new pc.Entity();
                         glow.addComponent('light', {
                             type: 'spot',
                             color: new pc.Color(1, 0, 0),

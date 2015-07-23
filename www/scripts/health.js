@@ -14,7 +14,7 @@ pc.script.create("health", function (app) {
     healthScript.prototype = {
         initialize: function () {
             for (var i = 0; i < this.value; i++) {
-                var healthSprite = new pc.fw.Entity();
+                var healthSprite = new pc.Entity();
                 healthSprite.setName('healthSprite' + i);
 
                 var healthSpriteScript = {
