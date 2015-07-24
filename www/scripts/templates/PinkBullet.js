@@ -4,7 +4,6 @@ var PinkBullet = function (rotation, position) {
         if (other.name == 'enemy' && !other.charmed) {
 
             other.model.material = PinkBullet.getMaterial();
-            //            other.model.material.update();
             other.rigidbody.linearVelocity = pc.Vec3.ZERO;
 
             other.charmed = true;
@@ -25,7 +24,6 @@ PinkBullet.getMaterial = function () {
     var material = new pc.scene.PhongMaterial();
     var texture = app.assets.find('pink.png');
     material.diffuseMap = texture.resource;
-    //            material.diffuse = new pc.Color(1.0, 0.0, 0.0, 1.0);
     material.update();
     return material;
 }

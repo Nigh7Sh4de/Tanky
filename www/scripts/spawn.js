@@ -15,11 +15,7 @@ pc.script.create("spawn", function (app) {
     spawnScript.prototype = {
         initialize: function () {
             this.time = 0;
-
-            //            this.spawnEnemy();
-
         },
-
         update: function (dt) {
             this.time += dt;
             if (this.time > interval) {
@@ -31,7 +27,6 @@ pc.script.create("spawn", function (app) {
                 if (0 <= r && r < 0.34)
                     type = EnemyTypes.Yellow;
                 else if (0.34 <= r && r < 1.0)
-                //                    type = EnemyTypes.Yellow;
                     type = EnemyTypes.Red;
 
 
@@ -45,11 +40,7 @@ pc.script.create("spawn", function (app) {
 
             if (enemyType == null)
                 console.error("Enemy type cannot be null");
-            //            Enemy
-            //            var enemy = Enemy.clone();
-            //            var enemy = Enemy();
             var enemy = new enemyType();
-            //            enemy.setPosition(tank.getPosition());
 
             app.root.addChild(enemy);
             this.enemies.push(enemy);

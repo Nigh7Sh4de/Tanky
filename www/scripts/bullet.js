@@ -17,13 +17,11 @@ pc.script.create("bullet", function (app) {
             this.onTriggerEnter = this.entity.onTriggerEnter;
 
             this.force = this.entity.forward.clone().scale(-50);
-            //            this.entity.rigidbody.applyImpulse(this.force);
             this.entity.script.burn.die = this.die;
 
             if (this.entity.collision)
                 this.entity.collision.on('triggerenter', this.onTrigger, this);
 
-            //            this.entity.collision.on
         },
 
         onTrigger: function (other) {
@@ -34,17 +32,9 @@ pc.script.create("bullet", function (app) {
         onTriggerEnter: function (other) {},
 
         update: function (dt) {
-            //            if (this.entity.dead) {
-            //                //                this.entity.enabled = false;
-            //                //                this.entity.model.
-            //                this.entity.destroy();
-            //                return;
-            //
-            //            }
             if (this.entity.displayOnly == true) {
                 this.entity.rotateLocal(0, dt * DISPLAY_ROTATE_MULT, 0);
             } else if (!this.entity.script.burn.active) {
-                //                this.entity.rigidbody.applyForce(0, 9.8, 0);
                 this.entity.translateLocal(0, 0, dt * MULT);
 
                 this.entity.time += dt;
@@ -58,8 +48,6 @@ pc.script.create("bullet", function (app) {
                 if (arguments[i].rigidbody)
                     arguments[i].rigidbody.enabled = false;
                 arguments[i].script.burn.activate();
-                //                arguments[i].rigidbody.
-                //                arguments[i].model.castShadows = false;
             }
         },
 

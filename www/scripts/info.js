@@ -20,7 +20,6 @@ pc.script.create("info", function (app) {
         },
 
         onTouch: function () {
-            //            info.enabled = !info.enabled;
             if (this.touchDelay >= 0)
                 return;
             this.touchDelay = 0;
@@ -28,11 +27,9 @@ pc.script.create("info", function (app) {
         },
 
         pause: function (state) {
-            //            tank.script.tank.toggleState(!state);
             spawner.script.enabled = !state;
             var enemies = app.root.findByLabel('enemy');
             enemies.forEach(function (e) {
-                //                e.charmed = state;
                 e.model.enabled = !state;
                 e.script.enabled = !state;
                 if (e.rigidbody) {
@@ -55,7 +52,6 @@ pc.script.create("info", function (app) {
                     this.parent = gameOver;
             }
             info.enabled = this.active;
-            //            if (activeBullet.enabled)
             this.entity.script.font_renderer.text = this.active ?
                 '<<' : '?';
 
@@ -70,7 +66,6 @@ pc.script.create("info", function (app) {
                 activeBullet.enabled = true;
                 gameOver.enabled = false;
                 spawner.script.enabled = false;
-                //
             } else {
                 store.script.enabled = true;
                 store.script.font_renderer.text = '<<';

@@ -1,7 +1,5 @@
 pc.script.create("store", function (app) {
 
-    //    const MULT = 25;
-    //    const MAX_TIME = 2;
     const DELAY_THRESHOLD = 0.1;
 
     var storeScript = function (entity) {
@@ -77,16 +75,12 @@ pc.script.create("store", function (app) {
                     "$" + l.cost.toString() +
                     " / " + l.ammo.toString();
                 l.enabled = state;
-                //                l.enabled = state != null ? state : true;
             });
             var text = activeBullet.getChildren()[1];
             text.script.font_renderer.text = gun.script.shoot.bullet.prototype.ammo.toString();
         },
 
         toggleState: function (state) {
-            //            this.entity.getChildren().forEach(function (x) {
-            //                x.enabled = state;
-            //            });
             this.updateListings(state);
             infoButton.enabled = state;
             this.active = state;

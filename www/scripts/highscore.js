@@ -10,13 +10,10 @@ pc.script.create("highscore", function (app) {
 
     highScoreScript.prototype = {
         initialize: function () {
-            //            this.entity.script.font_renderer.text = 'fuck you too';
-            //this.reset();
             if (localStorage) {
                 var highScore = localStorage.getItem('tanky-high-score');
                 if (highScore !== null)
                     this.maxPoints = parseFloat(highScore);
-//                console.log('High Score: ' + this.maxPoints);
                 this.updateText();
             }
         },
@@ -28,7 +25,7 @@ pc.script.create("highscore", function (app) {
             this.updateText();
         },
 
-        checkHighScore: function() {
+        checkHighScore: function () {
             var points = score.script.score.points;
             if (points > this.maxPoints && localStorage) {
                 this.maxPoints = points;

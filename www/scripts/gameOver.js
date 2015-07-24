@@ -5,7 +5,6 @@ pc.script.create("gameOver", function (app) {
 
     var gameOverScript = function (entity) {
         this.entity = entity;
-        //        this.tank = app.root.findByName('tank');
 
     };
 
@@ -16,27 +15,18 @@ pc.script.create("gameOver", function (app) {
         },
 
         onTouch: function () {
-            //            app.root.findByName('tank').script.tank.reset();
-            //            if (this.gun.dead || this.base.dead) {
             infoButton.enabled = false;
             store.enabled = true;
             health.script.health.reset();
             score.script.score.reset();
-            //            var gameOver = app.root.findByName('gameOver');
             gameOver.script.font_renderer.text = 'Play Again';
             gameOver.enabled = false;
             congrats.enabled = false;
-            //            BulletTypes.forEach(function (t) {
-            //                if (t != BulletTypes.DefaultBullet)
-            //                    t.prototype.ammo = 0;
-            //            });
             tank.script.tank.reset();
 
             var x;
             while (x = app.root.findByName('enemy'))
                 x.script.enemy.die();
-
-            //            }
         },
 
         update: function (dt) {

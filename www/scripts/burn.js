@@ -63,7 +63,6 @@ pc.script.create('burn', function (app) {
 
             // Get the "clouds" height map from the assets and set the material to use it
             this.heightMap = app.assets.find(this.maps).resource;
-            //            this.heightMap = this.maps;
             this.material.setParameter('uHeightMap', this.heightMap);
 
             this.active = true;
@@ -80,7 +79,7 @@ pc.script.create('burn', function (app) {
                     this.material.setParameter('uTime', t);
                 else {
                     this.reset();
-                    this.die(); // = true;
+                    this.die();
                     this.active = false;
                 }
             }

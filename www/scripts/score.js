@@ -12,7 +12,6 @@ pc.script.create("score", function (app) {
     scoreScript.prototype = {
 
         initialize: function () {
-            // this.entity.script.font_renderer.text = 'fuck you too';
             this.reset();
             this.mouse = app.mouse;
             this.touch = app.touch;
