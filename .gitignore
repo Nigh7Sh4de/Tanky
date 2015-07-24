@@ -1,0 +1,22 @@
+# Non-project-specific build files:
+build.xml
+local.properties
+/gradlew
+/gradlew.bat
+/gradle
+# Ant builds
+ant-build
+ant-gen
+# Eclipse builds
+gen
+out
+# Gradle builds
+/build
+/plugins/android.json
+/platforms/android/.gradle/
+/platforms/android/CordovaLib/build/
+# Duplicated source code
+/platforms/android/assets/www/
+# PASSWORDS
+/build.json
+/platforms/android/release-signing.properties
