@@ -23,9 +23,7 @@ pc.script.create('burn', function (app) {
         },
 
         activate: function () {
-            this.originalMaterial = this.entity.model.model.meshInstances[0].material;
 
-            this.time = 0;
 
             var model = this.entity.model.model;
             var gd = app.graphicsDevice;
@@ -34,8 +32,6 @@ pc.script.create('burn', function (app) {
 
             this.entity.model.castShadows = false;
 
-            // Save the diffuse map from the original material before we replace it.
-            this.diffuseTexture = model.meshInstances[0].material.diffuseMap;
 
             // A shader definition used to create a new shader.
             var shaderDefinition = {
@@ -48,45 +44,65 @@ pc.script.create('burn', function (app) {
             };
 
             // Create the shader from the definition
-            this.shader = new pc.Shader(gd, shaderDefinition);
-
-            // Create a new material and set the shader
-            this.material = new pc.Material();
-            this.material.setShader(this.shader);
-
-            // Set the initial parameters
-            this.material.setParameter('uTime', 0);
-            this.material.setParameter('uDiffuseMap', this.diffuseTexture);
-
-            // Replace the material on the model with our new material
-            model.meshInstances[0].material = this.material;
-
-            // Get the "clouds" height map from the assets and set the material to use it
             this.heightMap = app.assets.find(this.maps).resource;
-            this.material.setParameter('uHeightMap', this.heightMap);
 
+            model.meshInstances.forEach(function (mesh) {
+                mesh.originalMaterial = mesh.material.clone();
+
+                // Create a new material and set the shader
+                var shader = new pc.Shader(gd, shaderDefinition);
+                var material = new pc.Material();
+                material.setShader(shader);
+                material.setParameter('uHeightMap', this.heightMap);
+
+                // Set the initial parameters
+                material.setParameter('uTime', 0);
+                material.setParameter('uDiffuseMap', mesh.material.diffuseMap);
+
+                // Replace the material on the model with our new material
+                mesh.material = material;
+                mesh.time = 0;
+                mesh.burnActive = true;
+
+
+                // Get the "clouds" height map from the assets and set the material to use it
+
+            }.bind(this));
             this.active = true;
         },
 
         // Called every frame, dt is time in seconds since last update
         update: function (dt) {
             if (this.active) {
-                this.time += dt * MULT;
+                this.active = false;
+                this.entity.model.model.meshInstances.forEach(function (mesh) {
+                    if (!mesh.burnActive)
+                        return;
 
-                var t = (this.time % 2);
-                if (t < 1)
-                // Update the time value in the material
-                    this.material.setParameter('uTime', t);
-                else {
+                    this.active = true;
+                    mesh.time += dt * MULT;
+
+                    var t = (mesh.time % 2);
+                    if (t < 1) {
+                        // Update the time value in the material
+                        mesh.material.setParameter('uTime', t);
+                        return;
+                    }
+                    mesh.burnActive = false;
+
+                }.bind(this))
+                if (!this.active) {
                     this.reset();
                     this.die();
-                    this.active = false;
                 }
             }
         },
 
         reset: function () {
-            this.entity.model.model.meshInstances[0].material = this.originalMaterial;
+
+            this.entity.model.model.meshInstances.forEach(function (mesh) {
+                mesh.material = mesh.originalMaterial;
+            });
             this.entity.model.castShadows = true;
         },
 
