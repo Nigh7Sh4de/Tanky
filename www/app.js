@@ -74,7 +74,8 @@ var assets_json = [
 
 var models = [
     "assets/tank/Tank_base.json",
-    "assets/tank/Tank_gun_turret.json"
+    "assets/tank/Tank_gun_turret.json",
+    "assets/redenemy/redenemy.json"
 ];
 
 var promises = [];

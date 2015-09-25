@@ -1,7 +1,8 @@
 function YellowEnemy() {
     var self = this;
     this.move = function (dt, MULT) {
-        MULT /= 2;
+        MULT /= 4;
+        //        MULT /= 2;
         var pos = this.entity.getPosition().clone();
         var tpos = tank.getPosition().clone();
         var dir = this.dir;

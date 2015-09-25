@@ -9,7 +9,7 @@ var Enemy = function (move) {
     this.setEulerAngles(0, pc.math.random(0, 360), 0);
     this.translateLocal(0, 0, -30);
     this.setLocalScale(1, 1, 1);
-    this.rotateLocal(90, 0, 0);
+    //    this.rotateLocal(90, 0, 0);
 
     this.addComponent('rigidbody', {
         type: 'dynamic',
