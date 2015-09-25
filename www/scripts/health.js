@@ -11,8 +11,9 @@ pc.script.create("health", function (app) {
     healthScript.prototype = {
         initialize: function () {
             for (var i = 0; i < this.value; i++) {
-                var healthSprite = new pc.Entity();
-                healthSprite.setName('healthSprite' + i);
+                /*
+               var healthSprite = new pc.Entity();
+                                healthSprite.setName('healthSprite' + i);
 
                 var healthSpriteScript = {
                     name: 'healthSpriteScript',
@@ -57,10 +58,12 @@ pc.script.create("health", function (app) {
                     }]
                 }
 
-                healthSprite.addComponent('script', {
-                    enabled: true,
-                    scripts: [healthSpriteScript]
-                });
+                                healthSprite.addComponent('script', {
+                                    enabled: true,
+                                    scripts: [healthSpriteScript]
+                                });
+*/
+                var healthSprite = buildSpriteEntity('healthSprite' + i, 'tank_icon.png', 5 + (64 + 5) * i, -50, 64, 64, 0, 720, 1, 1, 1, 1);
 
                 this.entity.addChild(healthSprite);
 

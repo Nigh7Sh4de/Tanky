@@ -19,7 +19,7 @@ buildSpriteEntity = function (name, texture, x, y, w, h, anchor, maxResHeight, d
 buildSprite = function (name, texture, x, y, w, h, anchor, maxResHeight, depth, r, g, b) {
     var thingText = {
         name: name + 'Text',
-        url: 'scripts/sprite.js',
+        url: 'scripts/sprite-20150925-edited.js',
         attributes: [{
             name: 'textureAsset',
             value: texture
@@ -84,13 +84,13 @@ buildText = function (name, text, x, y, anchor, maxResHeight, depth, r, g, b) {
         color.b = b;
     var thingText = {
         name: name + 'Text',
-        url: 'scripts/font_renderer.js',
+        url: 'scripts/font_renderer-20150925-edited.js',
         attributes: [{
             name: 'fontAtlas',
             value: 'boombox_72.png'
         }, {
             name: 'fontJson',
-            value: 'boombox'
+            value: 'boombox.json'
         }, {
             name: 'text',
             value: text

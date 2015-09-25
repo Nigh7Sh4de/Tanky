@@ -8,8 +8,8 @@ var app = new pc.fw.Application(canvas, {
     touch: new pc.input.TouchDevice(canvas)
 });
 
-app.context.loader._handlers['texture'].crossOrigin = 'anonymous';
-app.context.loader._handlers['model'].crossOrigin = 'anonymous';
+//app.context.loader._handlers['texture'].crossOrigin = 'anonymous';
+//app.context.loader._handlers['model'].crossOrigin = 'anonymous';
 
 app.start();
 
@@ -68,7 +68,7 @@ var textures = [
     "screenshots/in_game.png"
 ];
 
-var assets_json = [
+var JSONs = [
     "assets/fonts/boombox.json",
 ];
 
@@ -78,19 +78,30 @@ var models = [
     "assets/redenemy/redenemy.json"
 ];
 
-var promises = [];
+var assets = textures.concat(JSONs).concat(models);
+assets.loadingCounter = 0;
 
-for (var i = 0; i < textures.length; i++)
-    promises.push(app.context.assets.loadFromUrl(textures[i], "texture"));
+var ready = function (err, asset) {
+    app.assets.add(asset);
+    assets.loadingCounter++;
+    if (assets.loadingCounter >= assets.length) {
+        start();
+    }
+}
 
-for (var i = 0; i < assets_json.length; i++)
-    promises.push(app.context.assets.loadFromUrl(assets_json[i], "json"));
+textures.forEach(function (t) {
+    app.assets.loadFromUrl(t, 'texture', ready);
+});
 
-for (var i = 0; i < models.length; i++)
-    promises.push(app.context.assets.loadFromUrl(models[i], "model"));
+JSONs.forEach(function (t) {
+    app.assets.loadFromUrl(t, 'json', ready);
+});
 
-pc.promise.all(promises).then(function (results) {
+models.forEach(function (t) {
+    app.assets.loadFromUrl(t, 'model', ready);
+});
 
+var start = function () {
     app.context.systems.rigidbody.setGravity(0, -10, 0);
     app.scene.ambientLight = new pc.Color(0.35, 0.35, 0.35);
 
@@ -178,17 +189,20 @@ pc.promise.all(promises).then(function (results) {
     gun.setName('gun');
     gun.translateLocal(0, 0.55, 0);
 
-    base.addComponent('model', {
-        type: "asset",
-        asset: app.assets.find('Tank_base'),
-        castShadows: true,
-        receiveShadows: true,
-        enabled: false
-    });
+    //    base.addComponent('model', {
+    //        type: "asset",
+    //        asset: app.assets.find('Tank_base.json'),
+    //        castShadows: true,
+    //        receiveShadows: true,
+    //        enabled: false
+    //    });
+
+    base.addComponent('model');
+    base.model.model = app.assets.find('Tank_base.json').resource;
 
     gun.addComponent('model', {
         type: "asset",
-        asset: app.assets.find('Tank_gun_turret'),
+        asset: app.assets.find('Tank_gun_turret.json'),
         castShadows: true,
         receiveShadows: true,
         enabled: false
@@ -203,7 +217,7 @@ pc.promise.all(promises).then(function (results) {
         name: 'maps',
         type: 'string',
         value: 'clouds.jpg'
-    }];
+}];
 
     gun.addComponent('script', {
         enabled: true,
@@ -234,7 +248,7 @@ pc.promise.all(promises).then(function (results) {
         receiveShadows: true
     });
     var floorMaterial = new pc.scene.PhongMaterial();
-    floorMaterial.diffuseMap = results[0].resource[0];
+    floorMaterial.diffuseMap = app.assets.find('Hex_Plating.png').resource;
     floorMaterial.diffuseMapTiling = pc.Vec2.ONE.clone().scale(10);
     floorMaterial.update();
     floor.model.model.meshInstances[0].material = floorMaterial;
@@ -255,19 +269,24 @@ pc.promise.all(promises).then(function (results) {
     wall.removeComponent('rigidbody');
     wall.removeComponent('collision');
     wall.setName('wall');
+    wall.model.model.meshInstances[0].material = floorMaterial;
+
 
     wall.setLocalScale(1, 60, 60);
     wall.setLocalPosition(-30, 30, 0);
 
     var wall2 = wall.clone();
     wall2.translate(60, 0, 0);
+    wall2.model.model.meshInstances[0].material = floorMaterial;
 
     var wall3 = wall.clone();
     wall3.translate(30, 0, 30);
     wall3.rotate(0, 90, 0);
+    wall3.model.model.meshInstances[0].material = floorMaterial;
 
     var wall4 = wall3.clone();
     wall4.translate(0, 0, -60);
+    wall4.model.model.meshInstances[0].material = floorMaterial;
 
     //Create an enemy spawner
     spawner = new pc.Entity();
@@ -387,6 +406,4 @@ pc.promise.all(promises).then(function (results) {
     app.root.addChild(wall2);
     app.root.addChild(wall3);
     app.root.addChild(wall4);
-
-
-});
+}
