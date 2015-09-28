@@ -7,33 +7,22 @@ pc.script.create('burn', function (app) {
     var burnScript = function (entity) {
         this.entity = entity;
 
+
         this.time = 0;
         this.heightMap = null;
         this.shader = null;
 
         this.active = false;
-        this.originalMaterial;
+        //        this.originalMaterial;
     };
 
 
     burnScript.prototype = {
         // Called once after all resources are loaded and before the first update
         initialize: function () {
-            //            this.originalMaterial = this.entity.model.model.meshInstances[0].material;
-        },
-
-        activate: function () {
-
-
-            var model = this.entity.model.model;
             var gd = app.graphicsDevice;
             var vs = burn_vshader(gd.precision);
             var fs = burn_fshader(gd.precision);
-
-            this.entity.model.castShadows = false;
-
-
-            // A shader definition used to create a new shader.
             var shaderDefinition = {
                 attributes: {
                     aPosition: pc.SEMANTIC_POSITION,
@@ -42,31 +31,23 @@ pc.script.create('burn', function (app) {
                 vshader: vs,
                 fshader: fs
             };
-
-            // Create the shader from the definition
+            this.shader = new pc.Shader(gd, shaderDefinition);
             this.heightMap = app.assets.find(this.maps).resource;
+        },
+
+        activate: function () {
+            var model = this.entity.model.model;
+            this.entity.model.castShadows = false;
 
             model.meshInstances.forEach(function (mesh) {
-                mesh.originalMaterial = mesh.material.clone();
-
-                // Create a new material and set the shader
-                var shader = new pc.Shader(gd, shaderDefinition);
-                var material = new pc.Material();
-                material.setShader(shader);
-                material.setParameter('uHeightMap', this.heightMap);
-
-                // Set the initial parameters
-                material.setParameter('uTime', 0);
-                material.setParameter('uDiffuseMap', mesh.material.diffuseMap);
-
-                // Replace the material on the model with our new material
-                mesh.material = material;
+                var diffuseMap = mesh.material.diffuseMap;
+                mesh.material = new pc.Material();
+                mesh.material.setShader(this.shader);
+                mesh.material.setParameter('uHeightMap', this.heightMap);
+                mesh.material.setParameter('uTime', 0);
+                mesh.material.setParameter('uDiffuseMap', diffuseMap);
                 mesh.time = 0;
                 mesh.burnActive = true;
-
-
-                // Get the "clouds" height map from the assets and set the material to use it
-
             }.bind(this));
             this.active = true;
         },
@@ -78,7 +59,6 @@ pc.script.create('burn', function (app) {
                 this.entity.model.model.meshInstances.forEach(function (mesh) {
                     if (!mesh.burnActive)
                         return;
-
                     this.active = true;
                     mesh.time += dt * MULT;
 
@@ -90,7 +70,7 @@ pc.script.create('burn', function (app) {
                     }
                     mesh.burnActive = false;
 
-                }.bind(this))
+                }.bind(this));
                 if (!this.active) {
                     this.reset();
                     this.die();

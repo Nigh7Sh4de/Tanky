@@ -31,22 +31,15 @@ function RedEnemy() {
         castShadows: true,
         receiveShadows: true
     });
+    setupForBurn(this);
 
     this.addComponent('animation', {
         assets: [app.assets.find('redenemy.anim.json')],
         speed: 1
     });
 
-    //    this.addComponent('model');
-    //    this.model.model = app.assets.find('redenemy.json').resource.clone();
     this.setLocalScale(0.3, 0.3, 0.3);
     this.lookAt(tank.getPosition());
-
-    //    this.model.material = new pc.scene.PhongMaterial();
-    //    this.model.material.diffuseMap = app.assets.find('red.png').resource;
-    //    this.model.material.update();
-
-
 
 }
 inherit(RedEnemy, Enemy);

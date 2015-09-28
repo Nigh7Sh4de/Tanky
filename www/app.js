@@ -189,16 +189,18 @@ var start = function () {
     gun.setName('gun');
     gun.translateLocal(0, 0.55, 0);
 
-    //    base.addComponent('model', {
-    //        type: "asset",
-    //        asset: app.assets.find('Tank_base.json'),
-    //        castShadows: true,
-    //        receiveShadows: true,
-    //        enabled: false
-    //    });
+    base.addComponent('model', {
+        type: "asset",
+        asset: app.assets.find('Tank_base.json'),
+        castShadows: true,
+        receiveShadows: true,
+        enabled: false
+    });
+    setupForBurn(base);
 
-    base.addComponent('model');
-    base.model.model = app.assets.find('Tank_base.json').resource;
+
+    //    base.addComponent('model');
+    //    base.model.model = app.assets.find('Tank_base.json').resource;
 
     gun.addComponent('model', {
         type: "asset",
@@ -207,6 +209,7 @@ var start = function () {
         receiveShadows: true,
         enabled: false
     });
+    setupForBurn(gun);
 
     var lookScript = buildScript('look');
 

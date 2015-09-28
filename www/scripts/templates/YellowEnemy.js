@@ -32,6 +32,7 @@ function YellowEnemy() {
         castShadows: true,
         receiveShadows: true
     });
+    setupForBurn(this);
 
     this.model.material = new pc.scene.PhongMaterial();
     this.model.material.diffuseMap = app.assets.find('yellow.png').resource;

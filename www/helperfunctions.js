@@ -4,6 +4,13 @@ inherit = function (Self, Super) {
     Self.prototype.constructor = Self;
 }
 
+setupForBurn = function (entity) {
+    var model = entity.model.model;
+    model.meshInstances.forEach(function (mesh) {
+        mesh.originalMaterial = mesh.material.clone();
+    });
+}
+
 buildSpriteEntity = function (name, texture, x, y, w, h, anchor, maxResHeight, depth, r, g, b) {
     var thing = new pc.Entity();
     thing.setName(name);

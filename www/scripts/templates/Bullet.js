@@ -12,6 +12,7 @@ var Bullet = function (rotation, position) {
         castShadows: true,
         receiveShadows: true
     });
+    setupForBurn(this);
 
     if (rotation != null)
         this.setEulerAngles(rotation);
