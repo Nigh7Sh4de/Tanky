@@ -78,7 +78,11 @@ var models = [
     "assets/redenemy/redenemy.json"
 ];
 
-var assets = textures.concat(JSONs).concat(models);
+var animations = [
+    "assets/redenemy/redenemy.anim.json"
+]
+
+var assets = textures.concat(JSONs).concat(models).concat(animations);
 assets.loadingCounter = 0;
 
 var ready = function (err, asset) {
@@ -100,6 +104,10 @@ JSONs.forEach(function (t) {
 models.forEach(function (t) {
     app.assets.loadFromUrl(t, 'model', ready);
 });
+
+animations.forEach(function (a) {
+    app.assets.loadFromUrl(a, 'animation', ready);
+})
 
 var start = function () {
     app.context.systems.rigidbody.setGravity(0, -10, 0);
