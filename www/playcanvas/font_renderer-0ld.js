@@ -344,7 +344,9 @@ pc.script.create('font_renderer', function (app) {
 
                 // offset the cursor by the appropriate amount for each letter
                 tempCursorX = cursorX + xoffset;
+                //!!!!!!!!!!!!
                 tempCursorY = 0; // -yoffset; DIRTY HACK
+                //!!!!!!!!!!!!
 
                 this.width = Math.max(this.width, tempCursorX + width);
                 this.height = Math.max(this.height, tempCursorY + height);
