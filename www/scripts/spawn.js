@@ -36,6 +36,33 @@ pc.script.create("spawn", function (app) {
 
         },
 
+        toggleState: function (state) {
+            this.entity.enabled = state = state != null ? state : this.entity.enabled = !this.entity.enabled;
+            var enemies = app.root.findByLabel('enemy');
+            enemies.forEach(function (e, i) {
+                e.model.enabled = state;
+                e.script.enabled = state;
+                if (e.rigidbody) {
+                    e.rigidbody.enabled = state;
+                    if (state) {
+                        e.rigidbody.linearVelocity = e.rigidbody._linearVelocity;
+                    } else {
+                        e.rigidbody._linearVelocity = e.rigidbody.linearVelocity;
+                        e.rigidbody.linearVelocity = pc.Vec3.ZERO;
+                    }
+                }
+            });
+        },
+
+        //        freeze: function () {
+        //            console.error('Not implemented: spawn.freeze');
+        //        },
+        //
+        //        resume: function () {
+        //            console.error('Not implemented: spawn.resume');
+        //        },
+
+
         spawnEnemy: function (enemyType) {
 
             if (enemyType == null)

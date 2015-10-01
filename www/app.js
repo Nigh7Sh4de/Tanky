@@ -23,8 +23,9 @@ var tank, //Tank
     gun, //Tank -> Gun
     gameOver, //Gameover text
     congrats, //Gameover -> (potential) congrats on high score text
+    pause, //Pause button
     store, //Store text (contains script)
-    store_listing, //All options purchasable in store
+    //    store_listing, //All options purchasable in store
     info, //Overlay
     infoButton, //Info Text
     health, //Health controller
@@ -170,9 +171,9 @@ var start = function () {
     store_bullet_pink.addChild(buildTextEntity('storeBulletPink', '$', 0, -210, 4, 720, 1, 0, 0, 0));
     store_bullet_pink.enabled = false;
 
-    store_listing = new pc.Entity();
-    store_listing.setName('store_listing');
-    store_listing.enabled = false;
+    //    store_listing = new pc.Entity();
+    //    store_listing.setName('store_listing');
+    //    store_listing.enabled = false;
 
     // Create tank
     tank = new pc.Entity();
@@ -318,6 +319,9 @@ var start = function () {
     congrats = new pc.Entity();
     congrats.setName('congrats');
     congrats.enabled = false;
+    pause = new pc.Entity();
+    pause.setName('pause');
+    pause.enabled = false;
     store = new pc.Entity();
     store.setName('store');
     store.enabled = false;
@@ -333,7 +337,7 @@ var start = function () {
     var scoreText = buildText('scoreText', '', 5, -5, 0, 720, 1, 1, 1, 1);
     var highScoreText = buildText('scoreText', 'High Score: ', -5, -5, 2, 720, 1, 1, 1, 1);
     var congratsText = buildText('scoreText', 'You beat your high score!', 0, -30, 4, 720, 1, 1, 1, 1);
-    var storeText = buildText('storeText', '||', 0, -5, 1, 360, 1, 0.8, 0.8, 0);
+    var pauseText = buildText('pauseText', '||', 0, -5, 1, 360, 1, 0.8, 0.8, 0);
     var infoButtonText = buildText('infoButtonText', '?', 0, 10, 7, 360, 1, 0.8, 0.8, 0);
 
     var infoSprite = buildSprite('infoSprite', 'in_game.png', 0, 0, 640, 360, 4, 360, 0.5, 1, 1, 1);
@@ -345,6 +349,7 @@ var start = function () {
         name: 'score',
         value: score.getGuid()
     }];
+    var pauseScript = buildScript('pause');
     var storeScript = buildScript('store');
     var infoButtonScript = buildScript('info');
 
@@ -369,9 +374,14 @@ var start = function () {
         scripts: [congratsText]
     });
 
+    pause.addComponent('script', {
+        enabled: true,
+        scripts: [pauseScript, pauseText]
+    })
+
     store.addComponent('script', {
         enabled: true,
-        scripts: [storeText, storeScript]
+        scripts: [storeScript]
     });
 
     info.addComponent('script', {
@@ -394,9 +404,9 @@ var start = function () {
     });
 
     //Add to scene
-    store_listing.addChild(store_bullet_green);
-    store_listing.addChild(store_bullet_pink);
-    store.addChild(store_listing);
+    store.addChild(store_bullet_green);
+    store.addChild(store_bullet_pink);
+    //    store.addChild(store_listing);
 
     cam.addChild(activeBullet);
     tank.addChild(base);
@@ -410,6 +420,7 @@ var start = function () {
     app.root.addChild(health);
     app.root.addChild(highscore);
     app.root.addChild(store);
+    app.root.addChild(pause);
     infoButton.addChild(info);
     app.root.addChild(infoButton);
 

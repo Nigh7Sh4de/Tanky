@@ -13,10 +13,11 @@ pc.script.create("store", function (app) {
     storeScript.prototype = {
         initialize: function () {
             var self = this;
-            this.entity.script.font_renderer.on('click', this.onTouch, this);
+            //            this.entity.script.font_renderer.on('click', this.onTouch, this);
             if (app.touch)
                 app.touch.on('touchstart', this.onTouchStore, this);
-            this.listings = store_listing.getChildren();
+            this.listings = this.entity.getChildren();
+            this.listings = this.listings != null ? this.listings : [];
         },
 
         onTouchStore: function (e) {
@@ -69,7 +70,6 @@ pc.script.create("store", function (app) {
         },
 
         updateListings: function (state) {
-            store_listing.enabled = state;
             this.listings.forEach(function (l) {
                 l.getChildren()[1].script.font_renderer.text =
                     "$" + l.cost.toString() +
@@ -80,27 +80,22 @@ pc.script.create("store", function (app) {
             text.script.font_renderer.text = gun.script.shoot.bullet.prototype.ammo.toString();
         },
 
-        toggleState: function (state) {
-            this.updateListings(state);
-            infoButton.enabled = state;
+        toggleState: function (state, swapCam) {
+            state = state != null ? state : !this.active;
             this.active = state;
-            this.entity.script.font_renderer.text = state ? '<<' : '||';
+            this.entity.enabled = state;
+            this.updateListings(state);
 
-            infoButton.script.info.pause(state);
-            tank.script.tank.toggleState(!state);
-
-
-            light.enabled = !state;
-            store_light.enabled = state;
-
-            var _angles = cam.getEulerAngles().clone();
-            var _pos = cam.getLocalPosition().clone();
-
-            cam.setEulerAngles(this.angles);
-            cam.setLocalPosition(this.pos);
-
-            this.angles = _angles;
-            this.pos = _pos;
+            if (swapCam || swapCam === undefined) {
+                light.enabled = !state;
+                store_light.enabled = state;
+                var _angles = cam.getEulerAngles().clone();
+                var _pos = cam.getLocalPosition().clone();
+                cam.setEulerAngles(this.angles);
+                cam.setLocalPosition(this.pos);
+                this.angles = _angles;
+                this.pos = _pos;
+            }
         },
 
         onTouch: function () {

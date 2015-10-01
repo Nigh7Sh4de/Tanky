@@ -1,62 +1,68 @@
-pc.script.create("info", function (app) {
+pc.script.create("pause", function (app) {
 
-    var infoScript = function (entity) {
+    var pauseScript = function (entity) {
         this.entity = entity;
         this.active = false;
         this.parent;
         this.touchDelay = -1;
     };
 
-    infoScript.prototype = {
+    pauseScript.prototype = {
         initialize: function () {
             this.entity.script.font_renderer.on('click', this.onTouch, this);
         },
 
         update: function (dt) {
-            if (this.touchDelay >= 0)
-                this.touchDelay += dt;
-            if (this.touchDelay > 0.2)
-                this.touchDelay = -1;
+            if (this.touchDelay > 0)
+                this.touchDelay -= dt;
         },
 
         onTouch: function () {
-            if (this.touchDelay >= 0)
-                return;
-            this.touchDelay = 0;
-            this.toggleState();
+            if (this.touchDelay <= 0) {
+                this.toggleState();
+                this.touchDelay = 0.2;
+            }
         },
 
         toggleState: function (state) {
             this.active = state != null ? state : !this.active;
-            if (this.active) {
-                if (store.enabled) {
-                    this.parent = store;
-                    store.script.store.toggleState(false, false);
-                    pause.enabled = true;
-                    pause.script.enabled = false;
-                    pause.script.font_renderer.text = '||';
-                } else {
-                    this.parent = gameOver;
-                    gameOver.enabled = false;
-                }
-            } else {
-                if (this.parent == store) {
-                    store.script.store.toggleState(true, false);
-                    pause.script.enabled = true;
-                    pause.script.font_renderer.text = '<<';
-                } else
-                    gameOver.enabled = !this.active;
-
-            }
-
-            this.entity.script.font_renderer.text = this.active ? '<<' : '?';
-            info.enabled = this.active;
-            activeBullet.enabled = this.active;
+            tank.script.tank.toggleState(!this.active);
+            this.entity.script.font_renderer.text = this.active ? '<<' : '||';
             spawner.script.spawn.toggleState(!this.active);
-
-
+            activeBullet.enabled = !this.active;
+            store.script.store.toggleState(this.active);
+            infoButton.enabled = this.active;
         },
 
+        //        pause: function () {
+        //            tank.script.tank.hide();
+        //            this.entity.script.font_renderer.text = '<<';
+        //            store_listing.toggleState(true);
+        //            spawner.script.spawn.freeze();
+        //            activeBullet.enabled = false;
+        //        },
+
+        //        resume: function () {
+
+        //        }
+
+        //        pause: function (state) {
+        //            spawner.script.enabled = !state;
+        //            var enemies = app.root.findByLabel('enemy');
+        //            enemies.forEach(function (e) {
+        //                e.model.enabled = !state;
+        //                e.script.enabled = !state;
+        //                if (e.rigidbody) {
+        //                    if (state) {
+        //                        e.rigidbody._linearVelocity = e.rigidbody.linearVelocity;
+        //                        e.rigidbody.linearVelocity = pc.Vec3.ZERO;
+        //                    } else {
+        //                        e.rigidbody.linearVelocity = e.rigidbody._linearVelocity;
+        //                    }
+        //                }
+        //            });
+        //        },
+        //
         //        toggleState: function () {
         //            this.active = !this.active;
         //            if (this.active) {
@@ -95,15 +101,15 @@ pc.script.create("info", function (app) {
         //
         //            }
         //        },
-
-        enable: function (parent) {
-            this.parent = parent;
-            this.entity.enabled = false;
-        }
+        //
+        //        enable: function (parent) {
+        //            this.parent = parent;
+        //            this.entity.enabled = false;
+        //        }
 
 
     }
 
-    return infoScript;
+    return pauseScript;
 
 });

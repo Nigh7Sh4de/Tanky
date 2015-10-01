@@ -16,13 +16,15 @@ pc.script.create("gameOver", function (app) {
 
         onTouch: function () {
             infoButton.enabled = false;
-            store.enabled = true;
+            pause.enabled = true;
+            //            store.enabled = true;
             health.script.health.reset();
             score.script.score.reset();
             gameOver.script.font_renderer.text = 'Play Again';
             gameOver.enabled = false;
             congrats.enabled = false;
             tank.script.tank.reset();
+            activeBullet.enabled = true;
 
             var x;
             while (x = app.root.findByName('enemy'))

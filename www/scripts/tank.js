@@ -43,7 +43,11 @@ pc.script.create("tank", function (app) {
         },
 
         toggleState: function (state) {
-            activeBullet.enabled = state;
+            //            console.error('Method not implemented: tank.toggleState');
+
+
+            //            activeBullet.enabled = state;
+
             gun.script.enabled = state;
             gun.model.enabled = state;
             base.script.enabled = state;
@@ -61,6 +65,10 @@ pc.script.create("tank", function (app) {
                 };
             }
         },
+
+        //        hide: function () {
+        //            console.error('Method not implemented: tank.hide');
+        //        }
 
         update: function (dt) {}
     }
