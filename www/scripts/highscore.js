@@ -1,3 +1,4 @@
+pc.script.attribute('score', 'entity', null);
 pc.script.create("highscore", function (app) {
 
     const MULT = 25;
@@ -26,13 +27,15 @@ pc.script.create("highscore", function (app) {
         },
 
         checkHighScore: function () {
-            var points = score.script.score.points;
+            var points = this.score.points;
             if (points > this.maxPoints && localStorage) {
                 this.maxPoints = points;
                 localStorage.setItem('tanky-high-score', this.maxPoints);
                 this.updateText();
                 congrats.enabled = true;
-            }
+                return true;
+            } else
+                return false;
         },
 
         updateText: function () {

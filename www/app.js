@@ -341,6 +341,10 @@ var start = function () {
     var gameOverScript = buildScript('gameOver');
     var scoreScript = buildScript('score');
     var highScoreScript = buildScript('highscore');
+    highScoreScript.attributes = [{
+        name: 'score',
+        value: score.getGuid()
+    }];
     var storeScript = buildScript('store');
     var infoButtonScript = buildScript('info');
 
